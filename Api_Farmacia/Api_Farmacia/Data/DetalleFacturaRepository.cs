@@ -9,8 +9,9 @@ namespace Api_Farmacia.Data
         {
             _context = context;
         }
-        public bool AddOne(DetalleFactura detalle)
+        public bool AddOne(DetalleFactura detalle, Medicamento medicamento)
         {
+            detalle.IdMedicamento = medicamento.Id;
             try
             {
                 _context.DetallesFacturas.Add(detalle);

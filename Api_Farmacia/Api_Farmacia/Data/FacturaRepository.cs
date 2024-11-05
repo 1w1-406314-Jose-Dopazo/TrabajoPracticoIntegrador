@@ -11,6 +11,10 @@ namespace Api_Farmacia.Data
         }
         public bool AddOne(Factura factura, List<DetalleFactura> detalles)
         {
+            foreach(DetalleFactura d in detalles) 
+            {
+                d.IdFactura = factura.Id;
+            }
             factura.DetallesFacturas = detalles;
             try
             {
@@ -63,6 +67,23 @@ namespace Api_Farmacia.Data
             }
             catch (Exception)
             {
+                _context.Dispose();
+                return false;
+            }
+        }
+
+        public bool AddDetail(Factura factura,DetalleFactura detalle)
+        {
+            try
+            {
+                factura.DetallesFacturas.Add(detalle);
+                _context.Facturas.Update(factura);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
                 _context.Dispose();
                 return false;
             }

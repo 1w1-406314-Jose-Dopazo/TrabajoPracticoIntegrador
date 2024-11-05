@@ -13,5 +13,7 @@ namespace Api_Farmacia.Data
         bool Delete(int id);
 
         bool AddOne(Factura factura,List<DetalleFactura> detalles);
+
+        bool AddDetail(Factura factura, DetalleFactura detalle);
     }
 }

@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\services\\farmaciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\services\\farmaciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\data\\medicamentorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\data\\medicamentorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\data\\imedicamentorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\data\\imedicamentorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\models\\farmaciacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\models\\farmaciacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,50 +18,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MedicamentoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Data\\MedicamentoRepository.cs",
-              "RelativeDocumentMoniker": "Api_Farmacia\\Data\\MedicamentoRepository.cs",
-              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Data\\MedicamentoRepository.cs",
-              "RelativeToolTip": "Api_Farmacia\\Data\\MedicamentoRepository.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAYwEYAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T16:10:49.798Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FarmaciaContext.cs",
-              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Models\\FarmaciaContext.cs",
-              "RelativeDocumentMoniker": "Api_Farmacia\\Models\\FarmaciaContext.cs",
-              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Models\\FarmaciaContext.cs",
-              "RelativeToolTip": "Api_Farmacia\\Models\\FarmaciaContext.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAkwGgAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T16:07:06.214Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IMedicamentoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Data\\IMedicamentoRepository.cs",
-              "RelativeDocumentMoniker": "Api_Farmacia\\Data\\IMedicamentoRepository.cs",
-              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Data\\IMedicamentoRepository.cs",
-              "RelativeToolTip": "Api_Farmacia\\Data\\IMedicamentoRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T15:56:13.351Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FarmaciaService.cs",
+              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Services\\FarmaciaService.cs",
+              "RelativeDocumentMoniker": "Api_Farmacia\\Services\\FarmaciaService.cs",
+              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Services\\FarmaciaService.cs",
+              "RelativeToolTip": "Api_Farmacia\\Services\\FarmaciaService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEBAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-05T16:46:46.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Program.cs",
               "RelativeDocumentMoniker": "Api_Farmacia\\Program.cs",
