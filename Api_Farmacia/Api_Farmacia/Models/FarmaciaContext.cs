@@ -102,7 +102,7 @@ public partial class FarmaciaContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.CodigoGs1128).HasColumnName("codigo_GS1_128");
+            entity.Property(e => e.estado).HasColumnName("estado");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(255)
                 .IsUnicode(false)

@@ -6,7 +6,7 @@ create table Medicamentos
 (
 id int,
 constraint PK_Suministro primary key (id),
-codigo_GS1_128 int,
+estado bit,
 nombre varchar(100),
 descripcion varchar(255)
 )

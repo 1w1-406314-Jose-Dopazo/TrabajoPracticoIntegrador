@@ -15,6 +15,10 @@ var cnn = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<FarmaciaContext>(options => options.UseSqlServer(cnn));
 builder.Services.AddScoped<FarmaciaContext, FarmaciaContext>();
 builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
+builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
