@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\services\\farmaciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\services\\farmaciaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\controllers\\tipousuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|solutionrelative:api_farmacia\\controllers\\tipousuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3B8C565D-D07C-4759-A3AE-D123300F631D}|Api_Farmacia\\Api_Farmacia.csproj|c:\\users\\jos\u00E9\\source\\repos\\api_farmacia\\api_farmacia\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,14 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "FarmaciaService.cs",
-              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Services\\FarmaciaService.cs",
-              "RelativeDocumentMoniker": "Api_Farmacia\\Services\\FarmaciaService.cs",
-              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Services\\FarmaciaService.cs",
-              "RelativeToolTip": "Api_Farmacia\\Services\\FarmaciaService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEBAAAIAAAAAAAAAA==",
+              "Title": "TipoUsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Controllers\\TipoUsuarioController.cs",
+              "RelativeDocumentMoniker": "Api_Farmacia\\Controllers\\TipoUsuarioController.cs",
+              "ToolTip": "C:\\Users\\JOS\u00C9\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Controllers\\TipoUsuarioController.cs",
+              "RelativeToolTip": "Api_Farmacia\\Controllers\\TipoUsuarioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-05T16:46:46.703Z",
+              "WhenOpened": "2024-11-05T17:37:04.153Z",
               "EditorCaption": ""
             },
             {

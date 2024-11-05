@@ -1,0 +1,81 @@
+[
+  {
+    "ContainingType": "Api_Farmacia.Controllers.TipoUsuarioController",
+    "Method": "GetTiposUsuarios",
+    "RelativePath": "Tipos_Usuarios",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Farmacia.Controllers.TipoUsuarioController",
+    "Method": "NewTipoUsuario",
+    "RelativePath": "Tipos_Usuarios",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "descripcion",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Farmacia.Controllers.TipoUsuarioController",
+    "Method": "UpdateTipoUsuario",
+    "RelativePath": "Tipos_Usuarios",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "descripcion",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Farmacia.Controllers.TipoUsuarioController",
+    "Method": "GetTipoUsuarioById",
+    "RelativePath": "Tipos_Usuarios/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Farmacia.Controllers.TipoUsuarioController",
+    "Method": "DeleteTipoUsuario",
+    "RelativePath": "Tipos_Usuarios/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
