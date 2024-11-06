@@ -1,6 +1,8 @@
 CREATE DATABASE Farmacia
+go
 
 use Farmacia
+go
 
 create table Medicamentos 
 (
@@ -55,7 +57,7 @@ CREATE TABLE Usuarios
 (
 id int,
 id_tipo_usuario int,
-contraseÃ±a varchar (100) ,
+contraseña varchar (100) ,
 usuario varchar (100),
 CONSTRAINT PK_Usuario PRIMARY KEY (id),
 CONSTRAINT FK_Tipo_Usuario FOREIGN KEY (id_tipo_usuario) REFERENCES Tipos_Usuarios (id)
