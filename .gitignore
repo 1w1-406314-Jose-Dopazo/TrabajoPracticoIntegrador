@@ -1,6 +1,5 @@
 # Ignorar la carpeta .vs y archivos relacionados
-.vs/
-
 # Ignorar la carpeta obj y bin
-obj/
-bin/
+Api_Farmacia.vs
+Api_Farmacia\Api_Farmacia\obj
+Api_Farmacia\Api_Farmacia\bin
