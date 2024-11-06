@@ -1,6 +1,7 @@
 ﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Implementations
 {
     public class FacturaRepository : IFacturaRepository
     {
@@ -11,7 +12,7 @@ namespace Api_Farmacia.Data
         }
         public bool AddOne(Factura factura, List<DetalleFactura> detalles)
         {
-            foreach(DetalleFactura d in detalles) 
+            foreach (DetalleFactura d in detalles)
             {
                 d.IdFactura = factura.Id;
             }
@@ -53,7 +54,7 @@ namespace Api_Farmacia.Data
         public Factura GetById(int id)
         {
             List<Factura> lstF = new List<Factura>();
-            lstF = _context.Facturas.Where(f => f.Id==id).ToList();
+            lstF = _context.Facturas.Where(f => f.Id == id).ToList();
             return lstF[0];
         }
 
@@ -72,7 +73,7 @@ namespace Api_Farmacia.Data
             }
         }
 
-        public bool AddDetail(Factura factura,DetalleFactura detalle)
+        public bool AddDetail(Factura factura, DetalleFactura detalle)
         {
             try
             {

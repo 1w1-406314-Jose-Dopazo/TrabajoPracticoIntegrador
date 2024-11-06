@@ -1,21 +1,22 @@
 ﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Implementations
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class MedicamentoRepository : IMedicamentoRepository
     {
+
         FarmaciaContext _context;
 
-        public UsuarioRepository(FarmaciaContext context)
+        public MedicamentoRepository(FarmaciaContext context)
         {
             _context = context;
         }
-        public bool AddOne(Usuario usuario, TipoUsuario tipoUsuario)
+        public bool AddOne(Medicamento medicamento)
         {
             try
             {
-                usuario.IdTipoUsuario = tipoUsuario.Id;
-                _context.Usuarios.Add(usuario);
+                _context.Medicamentos.Add(medicamento);
                 _context.SaveChanges();
                 return true;
             }
@@ -31,7 +32,7 @@ namespace Api_Farmacia.Data
         {
             try
             {
-                _context.Usuarios.Remove(GetById(id));
+                _context.Medicamentos.Remove(GetById(id));
                 _context.SaveChanges();
                 return true;
             }
@@ -43,28 +44,30 @@ namespace Api_Farmacia.Data
             }
         }
 
-        public List<Usuario> GetAll()
+        public List<Medicamento> GetAll()
         {
-            return _context.Usuarios.ToList();
+
+            return _context.Medicamentos.ToList();
         }
 
-        public Usuario GetById(int id)
+        public Medicamento GetById(int id)
         {
-            List<Usuario> lstU = new List<Usuario>();
-            lstU = _context.Usuarios.Where(u => u.Id == id).ToList();
-            return lstU[0];
+            List<Medicamento> lstM = new List<Medicamento>();
+            lstM = _context.Medicamentos.Where(M => M.Id == id).ToList();
+            return lstM[0];
         }
 
-        public bool Update(Usuario usuario)
+        public bool Update(Medicamento medicamento)
         {
             try
             {
-                _context.Usuarios.Update(usuario);
+                _context.Medicamentos.Update(medicamento);
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
+
                 _context.Dispose();
                 return false;
             }

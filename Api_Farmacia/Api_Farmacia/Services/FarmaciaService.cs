@@ -1,5 +1,5 @@
-﻿using Api_Farmacia.Data;
-using Api_Farmacia.Models;
+﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
 namespace Api_Farmacia.Services
 {

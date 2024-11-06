@@ -1,6 +1,6 @@
 ﻿using Api_Farmacia.Models;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Interfaces
 {
     public interface IDetalleFacturaRepository
     {
@@ -12,6 +12,6 @@ namespace Api_Farmacia.Data
 
         bool Delete(int id);
 
-        bool AddOne(DetalleFactura detalle,Medicamento medicamento);
+        bool AddOne(DetalleFactura detalle, Medicamento medicamento);
     }
 }

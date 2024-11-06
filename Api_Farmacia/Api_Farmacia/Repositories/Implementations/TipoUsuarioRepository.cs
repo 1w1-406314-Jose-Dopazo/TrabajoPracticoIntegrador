@@ -1,11 +1,12 @@
 ﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Implementations
 {
     public class TipoUsuarioRepository : ITipoUsuarioRepository
     {
-            FarmaciaContext _context;
-        public TipoUsuarioRepository(FarmaciaContext context) 
+        FarmaciaContext _context;
+        public TipoUsuarioRepository(FarmaciaContext context)
         {
             _context = context;
         }
@@ -46,16 +47,16 @@ namespace Api_Farmacia.Data
 
         public List<TipoUsuario> GetAll()
         {
-           return _context.TiposUsuarios.ToList();
-            
+            return _context.TiposUsuarios.ToList();
+
         }
 
         public TipoUsuario GetById(int id)
         {
-            
-                List<TipoUsuario> lstU = _context.TiposUsuarios.Where(t => t.Id == id).ToList();
-                return lstU[0];
-            
+
+            List<TipoUsuario> lstU = _context.TiposUsuarios.Where(t => t.Id == id).ToList();
+            return lstU[0];
+
         }
 
         public bool Update(TipoUsuario tipoUsuario)

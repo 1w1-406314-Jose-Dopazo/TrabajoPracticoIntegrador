@@ -1,26 +1,28 @@
 ﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Implementations
 {
-    public class DetalleFacturaRepository : IDetalleFacturaRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         FarmaciaContext _context;
-        public DetalleFacturaRepository(FarmaciaContext context)
+
+        public UsuarioRepository(FarmaciaContext context)
         {
             _context = context;
         }
-        public bool AddOne(DetalleFactura detalle, Medicamento medicamento)
+        public bool AddOne(Usuario usuario, TipoUsuario tipoUsuario)
         {
-            detalle.IdMedicamento = medicamento.Id;
             try
             {
-                _context.DetallesFacturas.Add(detalle);
+                usuario.IdTipoUsuario = tipoUsuario.Id;
+                _context.Usuarios.Add(usuario);
                 _context.SaveChanges();
                 return true;
-
             }
             catch (Exception)
             {
+
                 _context.Dispose();
                 return false;
             }
@@ -30,10 +32,9 @@ namespace Api_Farmacia.Data
         {
             try
             {
-                _context.DetallesFacturas.Remove(GetById(id));
+                _context.Usuarios.Remove(GetById(id));
                 _context.SaveChanges();
                 return true;
-
             }
             catch (Exception)
             {
@@ -43,24 +44,23 @@ namespace Api_Farmacia.Data
             }
         }
 
-        public List<DetalleFactura> GetAll()
+        public List<Usuario> GetAll()
         {
-            return _context.DetallesFacturas.ToList();
+            return _context.Usuarios.ToList();
         }
 
-        public DetalleFactura GetById(int id)
+        public Usuario GetById(int id)
         {
-            List<DetalleFactura> listD = new List<DetalleFactura>();
-            listD = _context.DetallesFacturas.Where(d => d.Id == id).ToList();
-            return listD[0];
-
+            List<Usuario> lstU = new List<Usuario>();
+            lstU = _context.Usuarios.Where(u => u.Id == id).ToList();
+            return lstU[0];
         }
 
-        public bool Update(DetalleFactura detalleFactura)
+        public bool Update(Usuario usuario)
         {
             try
             {
-                _context.DetallesFacturas.Update(detalleFactura);
+                _context.Usuarios.Update(usuario);
                 _context.SaveChanges();
                 return true;
             }

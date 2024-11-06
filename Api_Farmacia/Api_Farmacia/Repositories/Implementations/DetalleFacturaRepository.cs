@@ -1,27 +1,27 @@
 ﻿using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Interfaces;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Implementations
 {
-    public class MedicamentoRepository : IMedicamentoRepository
+    public class DetalleFacturaRepository : IDetalleFacturaRepository
     {
-
         FarmaciaContext _context;
-
-        public MedicamentoRepository(FarmaciaContext context)
+        public DetalleFacturaRepository(FarmaciaContext context)
         {
             _context = context;
         }
-        public bool AddOne(Medicamento medicamento)
+        public bool AddOne(DetalleFactura detalle, Medicamento medicamento)
         {
+            detalle.IdMedicamento = medicamento.Id;
             try
             {
-                _context.Medicamentos.Add(medicamento);
+                _context.DetallesFacturas.Add(detalle);
                 _context.SaveChanges();
                 return true;
+
             }
             catch (Exception)
             {
-
                 _context.Dispose();
                 return false;
             }
@@ -31,9 +31,10 @@ namespace Api_Farmacia.Data
         {
             try
             {
-                _context.Medicamentos.Remove(GetById(id));
+                _context.DetallesFacturas.Remove(GetById(id));
                 _context.SaveChanges();
                 return true;
+
             }
             catch (Exception)
             {
@@ -43,30 +44,29 @@ namespace Api_Farmacia.Data
             }
         }
 
-        public List<Medicamento> GetAll()
+        public List<DetalleFactura> GetAll()
         {
-           
-            return _context.Medicamentos.ToList();
+            return _context.DetallesFacturas.ToList();
         }
 
-        public Medicamento GetById(int id)
+        public DetalleFactura GetById(int id)
         {
-            List<Medicamento> lstM = new List<Medicamento>();
-            lstM = _context.Medicamentos.Where(M => M.Id == id).ToList();
-            return lstM[0];
+            List<DetalleFactura> listD = new List<DetalleFactura>();
+            listD = _context.DetallesFacturas.Where(d => d.Id == id).ToList();
+            return listD[0];
+
         }
 
-        public bool Update(Medicamento medicamento)
+        public bool Update(DetalleFactura detalleFactura)
         {
             try
             {
-                _context.Medicamentos.Update(medicamento);
+                _context.DetallesFacturas.Update(detalleFactura);
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
-
                 _context.Dispose();
                 return false;
             }

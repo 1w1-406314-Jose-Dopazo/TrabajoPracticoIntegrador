@@ -1,11 +1,11 @@
 ﻿using Api_Farmacia.Models;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Interfaces
 {
     public interface ITipoUsuarioRepository
     {
-        List<TipoUsuario> GetAll() ;
-        
+        List<TipoUsuario> GetAll();
+
         TipoUsuario GetById(int id);
 
         bool Update(TipoUsuario tipoUsuario);

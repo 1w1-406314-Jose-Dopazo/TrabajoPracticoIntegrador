@@ -1,6 +1,6 @@
 ﻿using Api_Farmacia.Models;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Interfaces
 {
     public interface IUsuarioRepository
     {
@@ -12,6 +12,6 @@ namespace Api_Farmacia.Data
 
         bool Delete(int id);
 
-        bool AddOne(Usuario usuario,TipoUsuario tipoUsuario);
+        bool AddOne(Usuario usuario, TipoUsuario tipoUsuario);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Api_Farmacia.Models;
 
-namespace Api_Farmacia.Data
+namespace Api_Farmacia.Repositories.Interfaces
 {
     public interface IMedicamentoRepository
     {

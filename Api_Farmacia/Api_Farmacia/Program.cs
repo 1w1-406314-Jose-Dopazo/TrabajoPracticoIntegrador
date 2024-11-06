@@ -1,5 +1,6 @@
-using Api_Farmacia.Data;
 using Api_Farmacia.Models;
+using Api_Farmacia.Repositories.Implementations;
+using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JOSÉ\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj": {}
+    "C:\\Users\\Lautaro\\Desktop\\1w1\\repo-tpi\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JOSÉ\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj": {
+    "C:\\Users\\Lautaro\\Desktop\\1w1\\repo-tpi\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JOSÉ\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj",
+        "projectUniqueName": "C:\\Users\\Lautaro\\Desktop\\1w1\\repo-tpi\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj",
         "projectName": "Api_Farmacia",
-        "projectPath": "C:\\Users\\JOSÉ\\source\\repos\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj",
-        "packagesPath": "C:\\Users\\JOSÉ\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JOSÉ\\source\\repos\\Api_Farmacia\\Api_Farmacia\\obj\\",
+        "projectPath": "C:\\Users\\Lautaro\\Desktop\\1w1\\repo-tpi\\Api_Farmacia\\Api_Farmacia\\Api_Farmacia.csproj",
+        "packagesPath": "C:\\Users\\Lautaro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lautaro\\Desktop\\1w1\\repo-tpi\\Api_Farmacia\\Api_Farmacia\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\JOSÉ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lautaro\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,6 +47,12 @@
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.10, )"
             },
