@@ -76,6 +76,11 @@ namespace Api_Farmacia.Repositories.Implementations
             }
         }
 
+        /// <summary>
+        /// Agrega un medicamento a la base de datos
+        /// </summary>
+        /// <param name="medicamento">Medicamento a agregar</param>
+        /// <returns>True si se agregó, false si no</returns>
         public bool Create(Medicamento medicamento)
         {
             try
@@ -90,8 +95,11 @@ namespace Api_Farmacia.Repositories.Implementations
             }
         }
 
-
-
+        /// <summary>
+        /// Busca un medicamento por su id
+        /// </summary>
+        /// <param name="id">id del medicamento a buscar</param>
+        /// <returns>La entidad medicamento encontrada o null</returns>
         public Medicamento? GetById(int id)
         {
             try
@@ -104,6 +112,11 @@ namespace Api_Farmacia.Repositories.Implementations
             }
         }
 
+        /// <summary>
+        /// Actualiza los valores de un medicamento si este existe.
+        /// </summary>
+        /// <param name="medicamento">Medicamento con los nuevos valores</param>
+        /// <returns>True si se actualizó, false si no</returns>
         public bool Update(Medicamento medicamento)
         {
             try
@@ -112,9 +125,10 @@ namespace Api_Farmacia.Repositories.Implementations
                 if (medicamentoDb != null)
                 {
                     medicamentoDb = medicamento;
+                    _context.SaveChanges();
+                    return true;
                 }
-                _context.SaveChanges();
-                return true;
+                return false;
             }
             catch (Exception)
             {
