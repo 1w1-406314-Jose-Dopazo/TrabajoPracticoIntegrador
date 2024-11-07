@@ -1,7 +1,8 @@
 using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Implementations;
 using Api_Farmacia.Repositories.Interfaces;
-using Api_Farmacia.Services;
+using Api_Farmacia.Services.Implementations;
+using Api_Farmacia.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 
@@ -16,7 +17,11 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
 builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
 builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
-builder.Services.AddScoped<IFarmaciaService, FarmaciaService>();
+builder.Services.AddScoped<ITipoUsuarioService, ITipoUsuarioService>();
+builder.Services.AddScoped<IUsuarioService,IUsuarioService>();
+builder.Services.AddScoped<IDetalleFacturaService,IDetalleFacturaService>();
+builder.Services.AddScoped<IFacturaService,IFacturaService>();
+builder.Services.AddScoped<IMedicamentoService, IMedicamentoService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

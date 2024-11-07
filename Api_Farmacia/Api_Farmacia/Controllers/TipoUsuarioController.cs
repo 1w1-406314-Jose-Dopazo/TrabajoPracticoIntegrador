@@ -1,5 +1,6 @@
 ﻿using Api_Farmacia.Models;
 using Api_Farmacia.Services;
+using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
@@ -9,9 +10,9 @@ namespace Api_Farmacia.Controllers
     public class TipoUsuarioController : Controller
     {
         // GET: TipoUsuarioController
-        IFarmaciaService _service;
+        ITipoUsuarioService _service;
 
-        public TipoUsuarioController(IFarmaciaService service)
+        public TipoUsuarioController(ITipoUsuarioService service)
         {
             _service = service;
         }

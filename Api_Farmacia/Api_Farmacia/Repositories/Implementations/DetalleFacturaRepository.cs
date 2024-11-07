@@ -1,18 +1,33 @@
 ﻿using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
+using Api_Farmacia.Services.Implementations;
+using Api_Farmacia.Services.Interfaces;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
     public class DetalleFacturaRepository : IDetalleFacturaRepository
     {
         FarmaciaContext _context;
-        public DetalleFacturaRepository(FarmaciaContext context)
+        IMedicamentoService _mediicamentoService;
+        public DetalleFacturaRepository(FarmaciaContext context,MedicamentoService medicamentoService)
         {
             _context = context;
+            _mediicamentoService = medicamentoService;
         }
-        public bool Create(DetalleFactura detalle, Medicamento medicamento)
+        public bool Create(DetalleFactura detalle)
         {
-            detalle.IdMedicamento = medicamento.Id;
+            int id = detalle.Id;
+            if(_mediicamentoService.MedicamentoGetById(id) != null) 
+            {
+                detalle.IdMedicamento = id;
+
+            }
+            else 
+            {
+                return false;
+
+            }
+
             try
             {
                 _context.DetallesFacturas.Add(detalle);

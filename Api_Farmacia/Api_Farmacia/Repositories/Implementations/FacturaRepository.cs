@@ -10,12 +10,10 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             _context = context;
         }
-        public bool Create(Factura factura, List<DetalleFactura> detalles)
+        public bool Create(Factura factura)
         {
-            foreach (DetalleFactura d in detalles)
-            {
-                d.IdFactura = factura.Id;
-            }
+            
+            List<DetalleFactura>detalles = new List<DetalleFactura>();
             factura.DetallesFacturas = detalles;
             try
             {
