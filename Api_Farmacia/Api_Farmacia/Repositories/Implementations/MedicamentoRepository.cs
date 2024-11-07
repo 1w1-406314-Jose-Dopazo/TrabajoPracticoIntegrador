@@ -37,14 +37,18 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             try
             {
-                _context.Medicamentos.Remove(GetById(id));
+                Medicamento? medicamento = _context.Medicamentos.Find(id);
+                if (medicamento == null)
+                {
+                    return false;
+                }
+                _context.Medicamentos.Remove(medicamento);
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
 
@@ -58,20 +62,13 @@ namespace Api_Farmacia.Repositories.Implementations
             try
             {
                 Medicamento? medicamento = _context.Medicamentos.Find(id);
-                if (medicamento == null)
+                if (medicamento == null || medicamento.estado == true)
                 {
-                    throw new Exception($"El medicamento con id {id} no existe");
+                    return false;
                 }
-                else if(medicamento.estado == true)
-                {
-                    throw new Exception($"El medicamento con id {id} ya se encuentra inhabilitado");
-                }
-                else
-                {
-                    medicamento.estado = false;
-                    _context.SaveChanges();
-                    return true;
-                }
+                medicamento.estado = false;
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
@@ -89,33 +86,39 @@ namespace Api_Farmacia.Repositories.Implementations
             }
             catch (Exception)
             {
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
 
 
 
-        public Medicamento GetById(int id)
+        public Medicamento? GetById(int id)
         {
-            List<Medicamento> lstM = new List<Medicamento>();
-            lstM = _context.Medicamentos.Where(M => M.Id == id).ToList();
-            return lstM[0];
+            try
+            {
+                return _context.Medicamentos.Find(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public bool Update(Medicamento medicamento)
         {
             try
             {
-                _context.Medicamentos.Update(medicamento);
+                Medicamento? medicamentoDb = _context.Medicamentos.FirstOrDefault(m => m.Id == medicamento.Id);
+                if (medicamentoDb != null)
+                {
+                    medicamentoDb = medicamento;
+                }
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
-
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
     }

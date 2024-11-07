@@ -8,7 +8,7 @@ namespace Api_Farmacia.Repositories.Interfaces
         bool Delete(int id);
         bool LogicDelete(int id);
 
-        Medicamento GetById(int id);
+        Medicamento? GetById(int id);
 
         bool Update(Medicamento medicamento);
 
