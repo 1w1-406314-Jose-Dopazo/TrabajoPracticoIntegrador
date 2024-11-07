@@ -65,7 +65,6 @@ namespace Api_Farmacia.Services
             try
             {
                 return _Detalle_Factura_Repository.Update(detalleFactura);
-                return true;
             }
             catch (Exception ex)
             {
@@ -149,7 +148,7 @@ namespace Api_Farmacia.Services
         {
             try
             {
-                _Medicamento_Repository.AddOne(medicamento);
+                _Medicamento_Repository.Create(medicamento);
                 return true;
             }
             catch (Exception ex)
