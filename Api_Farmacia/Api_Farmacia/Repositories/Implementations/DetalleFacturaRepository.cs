@@ -10,7 +10,7 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             _context = context;
         }
-        public bool AddOne(DetalleFactura detalle, Medicamento medicamento)
+        public bool Create(DetalleFactura detalle, Medicamento medicamento)
         {
             detalle.IdMedicamento = medicamento.Id;
             try

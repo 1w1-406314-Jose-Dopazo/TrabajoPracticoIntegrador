@@ -5,29 +5,34 @@ namespace Api_Farmacia.Repositories.Implementations
 {
     public class MedicamentoRepository : IMedicamentoRepository
     {
-
-        FarmaciaContext _context;
+        private FarmaciaContext _context;
 
         public MedicamentoRepository(FarmaciaContext context)
         {
             _context = context;
         }
-        public bool AddOne(Medicamento medicamento)
+
+        /// <summary>
+        /// Devuelve todos los medicamentos de la base de datos
+        /// </summary>
+        /// <returns>List<Medicamento></returns>
+        public List<Medicamento> GetAll()
         {
             try
             {
-                _context.Medicamentos.Add(medicamento);
-                _context.SaveChanges();
-                return true;
+                return _context.Medicamentos.ToList();
             }
             catch (Exception)
             {
-
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
 
+        /// <summary>
+        /// Elimina el medicamento de la base de datos
+        /// </summary>
+        /// <param name="id">id del medicamento a borrar</param>
+        /// <returns>Bool que indica si se eliminó exitosamente</returns>
         public bool Delete(int id)
         {
             try
@@ -38,17 +43,58 @@ namespace Api_Farmacia.Repositories.Implementations
             }
             catch (Exception)
             {
-
                 _context.Dispose();
                 return false;
             }
         }
 
-        public List<Medicamento> GetAll()
+        /// <summary>
+        /// Hace un borrado LOGICO del medicamento seteando su estado a false
+        /// </summary>
+        /// <param name="id">id del medicamento a borrar</param>
+        /// <returns>Bool que indica si se cambió el estado del medicamento a false</returns>
+        public bool LogicDelete(int id)
         {
-
-            return _context.Medicamentos.ToList();
+            try
+            {
+                Medicamento? medicamento = _context.Medicamentos.Find(id);
+                if (medicamento == null)
+                {
+                    throw new Exception($"El medicamento con id {id} no existe");
+                }
+                else if(medicamento.estado == true)
+                {
+                    throw new Exception($"El medicamento con id {id} ya se encuentra inhabilitado");
+                }
+                else
+                {
+                    medicamento.estado = false;
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+        public bool Create(Medicamento medicamento)
+        {
+            try
+            {
+                _context.Medicamentos.Add(medicamento);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                _context.Dispose();
+                return false;
+            }
+        }
+
+
 
         public Medicamento GetById(int id)
         {

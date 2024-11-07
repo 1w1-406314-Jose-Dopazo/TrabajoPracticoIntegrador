@@ -12,7 +12,7 @@ namespace Api_Farmacia.Repositories.Interfaces
 
         bool Delete(int id);
 
-        bool AddOne(Factura factura, List<DetalleFactura> detalles);
+        bool Create(Factura factura, List<DetalleFactura> detalles);
 
         bool AddDetail(Factura factura, DetalleFactura detalle);
     }

@@ -11,7 +11,7 @@ namespace Api_Farmacia.Repositories.Implementations
             _context = context;
         }
 
-        public bool AddOne(TipoUsuario tipoUsuario)
+        public bool Create(TipoUsuario tipoUsuario)
         {
             try
             {

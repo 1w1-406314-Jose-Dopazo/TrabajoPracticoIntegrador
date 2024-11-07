@@ -12,6 +12,6 @@ namespace Api_Farmacia.Repositories.Interfaces
 
         bool Delete(int id);
 
-        bool AddOne(DetalleFactura detalle, Medicamento medicamento);
+        bool Create(DetalleFactura detalle, Medicamento medicamento);
     }
 }

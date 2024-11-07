@@ -10,7 +10,7 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             _context = context;
         }
-        public bool AddOne(Factura factura, List<DetalleFactura> detalles)
+        public bool Create(Factura factura, List<DetalleFactura> detalles)
         {
             foreach (DetalleFactura d in detalles)
             {

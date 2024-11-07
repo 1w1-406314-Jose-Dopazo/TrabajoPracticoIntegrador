@@ -12,6 +12,6 @@ namespace Api_Farmacia.Repositories.Interfaces
 
         bool Delete(int id);
 
-        bool AddOne(Usuario usuario, TipoUsuario tipoUsuario);
+        bool Create(Usuario usuario, TipoUsuario tipoUsuario);
     }
 }
