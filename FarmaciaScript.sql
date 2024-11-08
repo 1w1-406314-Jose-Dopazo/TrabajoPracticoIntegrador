@@ -56,7 +56,7 @@ descripcion varchar (255) not null
 CREATE TABLE Usuarios
 (
 id int identity primary key,
-usuario varchar (100) not null,
+nombre varchar (100) not null,
 contraseña varchar (100) not null,
 id_tipo_usuario int not null,
 CONSTRAINT fk_usuarios_tiposUsuarios FOREIGN KEY (id_tipo_usuario) REFERENCES Tipos_Usuarios (id)
