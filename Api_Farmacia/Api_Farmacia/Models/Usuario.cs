@@ -9,11 +9,11 @@ public partial class Usuario
 {
     public int Id { get; set; }
 
-    public int? IdTipoUsuario { get; set; }
+    public string Nombre { get; set; }
 
     public string Contraseña { get; set; }
 
-    public string Alias { get; set; }
+    public int IdTipoUsuario { get; set; }
 
     public virtual TipoUsuario IdTipoUsuarioNavigation { get; set; }
 }

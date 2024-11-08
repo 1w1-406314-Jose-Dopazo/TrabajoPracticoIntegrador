@@ -13,7 +13,7 @@ public partial class Cliente
 
     public string Apellido { get; set; }
 
-    public int? Telefono { get; set; }
+    public string Telefono { get; set; }
 
     public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
 }

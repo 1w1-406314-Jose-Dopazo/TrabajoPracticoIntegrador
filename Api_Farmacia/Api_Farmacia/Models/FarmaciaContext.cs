@@ -8,7 +8,14 @@ namespace Api_Farmacia.Models;
 
 public partial class FarmaciaContext : DbContext
 {
-    public FarmaciaContext(DbContextOptions<FarmaciaContext> options) : base(options) { }
+    public FarmaciaContext()
+    {
+    }
+
+    public FarmaciaContext(DbContextOptions<FarmaciaContext> options)
+        : base(options)
+    {
+    }
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
@@ -22,35 +29,40 @@ public partial class FarmaciaContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        => optionsBuilder.UseSqlServer("Data Source=lautaroatampiz;Initial Catalog=Farmacia;Integrated Security=True;Encrypt=False");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cliente>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Cliente");
+            entity.HasKey(e => e.Id).HasName("PK__Clientes__3213E83F3D35DB6B");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Apellido)
+                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("apellido");
             entity.Property(e => e.Nombre)
+                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Telefono).HasColumnName("telefono");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("telefono");
         });
 
         modelBuilder.Entity<DetalleFactura>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Detalle");
+            entity.HasKey(e => e.Id).HasName("PK__Detalles__3213E83FABB8EB72");
 
             entity.ToTable("Detalles_Facturas");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.IdFactura).HasColumnName("id_factura");
             entity.Property(e => e.IdMedicamento).HasColumnName("id_medicamento");
@@ -60,20 +72,20 @@ public partial class FarmaciaContext : DbContext
 
             entity.HasOne(d => d.IdFacturaNavigation).WithMany(p => p.DetallesFacturas)
                 .HasForeignKey(d => d.IdFactura)
-                .HasConstraintName("FK_Factura");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_detallesFacturas_facturas");
 
             entity.HasOne(d => d.IdMedicamentoNavigation).WithMany(p => p.DetallesFacturas)
                 .HasForeignKey(d => d.IdMedicamento)
-                .HasConstraintName("FK_Medicamento");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_detallesFacturas_medicamentos");
         });
 
         modelBuilder.Entity<Factura>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Factura");
+            entity.HasKey(e => e.Id).HasName("PK__Facturas__3213E83FC8E321DE");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Fecha)
                 .HasColumnType("datetime")
                 .HasColumnName("fecha");
@@ -81,22 +93,21 @@ public partial class FarmaciaContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Facturas)
                 .HasForeignKey(d => d.IdCliente)
-                .HasConstraintName("FK_Cliente");
+                .HasConstraintName("fk_facturas_clientes");
         });
 
         modelBuilder.Entity<Medicamento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Suministro");
+            entity.HasKey(e => e.Id).HasName("PK__Medicame__3213E83F3345DE1D");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.estado).HasColumnName("estado");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("descripcion");
+            entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.Nombre)
+                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
@@ -104,14 +115,13 @@ public partial class FarmaciaContext : DbContext
 
         modelBuilder.Entity<TipoUsuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Tipo_Usuario");
+            entity.HasKey(e => e.Id).HasName("PK__Tipos_Us__3213E83F5D814572");
 
             entity.ToTable("Tipos_Usuarios");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Descripcion)
+                .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("descripcion");
@@ -119,24 +129,25 @@ public partial class FarmaciaContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Usuario");
+            entity.HasKey(e => e.Id).HasName("PK__Usuarios__3213E83FE670934C");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Contraseña)
+                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("contraseña");
             entity.Property(e => e.IdTipoUsuario).HasColumnName("id_tipo_usuario");
-            entity.Property(e => e.Alias)
+            entity.Property(e => e.Nombre)
+                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("usuario");
+                .HasColumnName("Nombre");
 
             entity.HasOne(d => d.IdTipoUsuarioNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdTipoUsuario)
-                .HasConstraintName("FK_Tipo_Usuario");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_usuarios_tiposUsuarios");
         });
 
         OnModelCreatingPartial(modelBuilder);
