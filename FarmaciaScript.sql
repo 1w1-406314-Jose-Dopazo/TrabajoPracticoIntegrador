@@ -12,58 +12,53 @@ go
 use Farmacia
 go
 
-create table Medicamentos 
+CREATE TABLE Medicamentos 
 (
-id int,
-constraint PK_Suministro primary key (id),
-estado bit,
-nombre varchar(100),
-descripcion varchar(255)
-)
+    id int identity primary key,
+    estado bit not null,
+    nombre varchar(100) not null,
+    descripcion varchar(255) null
+);
 
 create table Clientes 
 (
-id int,
-constraint PK_Cliente primary key (id),
-nombre varchar(100),
-apellido varchar(100),
-telefono int
+id int identity primary key,
+nombre varchar(100) not null,
+apellido varchar(100) not null,
+telefono varchar(15)
 )
 
 create table Facturas 
 (
-id int,
-constraint PK_Factura primary key (id),
-id_cliente int,
-constraint FK_Cliente foreign key (id_cliente) references Clientes(id),
-fecha datetime
+id int identity primary key,
+id_cliente int null,
+constraint fk_facturas_clientes foreign key (id_cliente) references Clientes(id),
+fecha datetime not null
 )
 
 create table Detalles_Facturas 
 (
-id int,
-constraint PK_Detalle primary key (id),
-id_medicamento int,
-constraint FK_Medicamento foreign key (id_medicamento) references Medicamentos (id),
-id_factura int,
-constraint FK_Factura foreign key (id_factura) references Facturas (id),
-cantidad int,precio_unitario decimal(10,2)
+id int identity primary key,
+id_medicamento int not null,
+constraint FK_detallesFacturas_medicamentos foreign key (id_medicamento) references Medicamentos (id),
+id_factura int not null,
+constraint FK_detallesFacturas_facturas foreign key (id_factura) references Facturas (id),
+cantidad int not null,
+precio_unitario decimal(10,2) not null
 )
 
 CREATE TABLE Tipos_Usuarios
 (
-id int,
-descripcion varchar (255),
-CONSTRAINT PK_Tipo_Usuario PRIMARY KEY (id)
+id int identity primary key,
+descripcion varchar (255) not null
 )
 
 CREATE TABLE Usuarios
 (
-id int,
-CONSTRAINT PK_Usuario PRIMARY KEY (id),
-usuario varchar (100),
-contraseña varchar (100) ,
-id_tipo_usuario int,
-CONSTRAINT FK_Tipo_Usuario FOREIGN KEY (id_tipo_usuario) REFERENCES Tipos_Usuarios (id)
+id int identity primary key,
+usuario varchar (100) not null,
+contraseña varchar (100) not null,
+id_tipo_usuario int not null,
+CONSTRAINT fk_usuarios_tiposUsuarios FOREIGN KEY (id_tipo_usuario) REFERENCES Tipos_Usuarios (id)
 )
 
