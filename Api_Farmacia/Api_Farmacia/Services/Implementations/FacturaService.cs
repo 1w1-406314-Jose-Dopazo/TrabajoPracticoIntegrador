@@ -17,19 +17,20 @@ namespace Api_Farmacia.Services.Implementations
             _detalleFacturaRepository = dfr;
         }
 
-        public bool FacturaAddDetail(int IdFactura, DetalleFactura detalle)
+        public bool FacturaAddDetail(Factura factura, DetalleFactura detalle)
         {
-            try
-            {
-                Factura factura=_Factura_Repository.GetById(IdFactura);
-                _Factura_Repository.AddDetail(factura, detalle);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            throw new NotImplementedException();
+            //try
+            //{
+            //    Factura factura=_Factura_Repository.GetById(IdFactura);
+            //    _Factura_Repository.AddDetail(factura, detalle);
+            //    return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
         }
 
         public bool FacturaCreate(Factura factura)

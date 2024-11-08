@@ -6,64 +6,41 @@ namespace Api_Farmacia.Services.Implementations
 {
     public class MedicamentoService : IMedicamentoService
     {
-        IMedicamentoRepository _Medicamento_Repository;
+        private IMedicamentoRepository _medicamento_repository;
 
-        public MedicamentoService(IMedicamentoRepository mr)
+        public MedicamentoService(IMedicamentoRepository repository)
         {
-
-            _Medicamento_Repository = mr;
-        }
-        public bool MedicamentoCreate(Medicamento medicamento)
-        {
-            try
-            {
-                _Medicamento_Repository.Create(medicamento);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            _medicamento_repository = repository;
         }
 
-        public bool MedicamentoDelete(int id)
+        public bool Create(Medicamento medicamento)
         {
-            try
-            {
-                _Medicamento_Repository.Delete(id);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            return _medicamento_repository.Create(medicamento);
         }
 
-        public List<Medicamento> MedicamentoGetAll()
+        public bool Delete(int id)
         {
-            return _Medicamento_Repository.GetAll();
-
+            return _medicamento_repository.Delete(id);
         }
 
-        public Medicamento MedicamentoGetById(int id)
+        public List<Medicamento> GetAll()
         {
-            return _Medicamento_Repository.GetById(id);
+            return _medicamento_repository.GetAll();
         }
 
-        public bool MedicamentoUpdate(Medicamento medicamento)
+        public Medicamento? GetById(int id)
         {
-            try
-            {
-                _Medicamento_Repository.Update(medicamento);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            return _medicamento_repository.GetById(id);
+        }
+
+        public bool LogicDelete(int id)
+        {
+            return _medicamento_repository.LogicDelete(id);
+        }
+
+        public bool Update(Medicamento medicamento)
+        {
+            return _medicamento_repository.Update(medicamento);
         }
     }
 }

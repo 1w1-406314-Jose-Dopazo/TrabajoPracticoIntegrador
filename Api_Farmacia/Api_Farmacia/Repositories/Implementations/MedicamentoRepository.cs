@@ -37,7 +37,7 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             try
             {
-                Medicamento? medicamento = _context.Medicamentos.Find(id);
+                Medicamento? medicamento = GetById(id);
                 if (medicamento == null)
                 {
                     return false;
@@ -61,12 +61,12 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             try
             {
-                Medicamento? medicamento = _context.Medicamentos.Find(id);
-                if (medicamento == null || medicamento.estado == true)
+                Medicamento? medicamento = GetById(id);
+                if (medicamento == null)
                 {
                     return false;
                 }
-                medicamento.estado = false;
+                medicamento.Estado = false;
                 _context.SaveChanges();
                 return true;
             }
@@ -121,14 +121,17 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             try
             {
-                Medicamento? medicamentoDb = _context.Medicamentos.FirstOrDefault(m => m.Id == medicamento.Id);
-                if (medicamentoDb != null)
+                Medicamento? medicamentoDb = GetById(medicamento.Id); //Uso el metodo GetById en lugar de llamar al context.
+                //Medicamento? medicamentoDb = _context.Medicamentos.FirstOrDefault(m => m.Id == medicamento.Id); //FirstOrDefault no busca en la base de datos si lo encuentra ya en el context local.
+                if (medicamentoDb == null)
                 {
-                    medicamentoDb = medicamento;
-                    _context.SaveChanges();
-                    return true;
+                    return false;
                 }
-                return false;
+                medicamentoDb.Nombre = medicamento.Nombre;
+                medicamentoDb.Descripcion = medicamento.Descripcion;
+                medicamentoDb.Estado = medicamento.Estado;
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {

@@ -41,7 +41,7 @@ namespace Api_Farmacia.Controllers
         {
             TipoUsuario tipoUsuario = new TipoUsuario();
             tipoUsuario.Descripcion = descripcion;
-            return Ok(_service.TipoUsuarioAddOne(tipoUsuario));
+            return Ok(_service.TipoUsuarioCreate(tipoUsuario));
         }
 
         [HttpPatch("Tipos_Usuarios")]

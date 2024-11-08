@@ -36,7 +36,7 @@ namespace Api_Farmacia.Controllers
         public IActionResult NewUsuario(string nombre,string contraseña,TipoUsuario tipoUsuario)
         {
             
-            Usuario usuario = new Usuario() { Alias=nombre,Contraseña=contraseña};
+            Usuario usuario = new Usuario() { Nombre=nombre,Contraseña=contraseña};
             
             return Ok(_service.UsuarioCreate(usuario,tipoUsuario));
         }
@@ -44,7 +44,7 @@ namespace Api_Farmacia.Controllers
         [HttpPatch("Usuarios")]
         public IActionResult UpdateUsuario(int id,string nombre,string contraseña,TipoUsuario tipoUsuario)
         {
-            Usuario usuario = new Usuario() {Id=id,Alias=nombre,Contraseña=contraseña,IdTipoUsuario=tipoUsuario.Id };
+            Usuario usuario = new Usuario() {Id=id,Nombre=nombre,Contraseña=contraseña,IdTipoUsuario=tipoUsuario.Id };
             return Ok(_service.UsuarioUpdate(usuario));
         }
     }

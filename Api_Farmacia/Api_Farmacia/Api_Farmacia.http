@@ -1,6 +1,31 @@
-@Api_Farmacia_HostAddress = http://localhost:5156
+@Api_Farmacia_HostAddress = https://localhost:7263
 
-GET {{Api_Farmacia_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{Api_Farmacia_HostAddress}}/api/medicamento
+
+###
+
+GET {{Api_Farmacia_HostAddress}}/api/medicamento/0
+
+###
+
+POST {{Api_Farmacia_HostAddress}}/api/medicamento
+Content-Type: application/json
+
+{
+  //Medicamento
+}
+
+###
+
+PUT {{Api_Farmacia_HostAddress}}/api/medicamento/{id}
+Content-Type: application/json
+
+{
+  //Medicamento
+}
+
+###
+
+DELETE {{Api_Farmacia_HostAddress}}/api/medicamento/0
 
 ###

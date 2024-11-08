@@ -17,7 +17,7 @@ namespace Api_Farmacia.Repositories.Implementations
         public bool Create(DetalleFactura detalle)
         {
             int id = detalle.Id;
-            if(_mediicamentoService.MedicamentoGetById(id) != null) 
+            if(_mediicamentoService.GetById(id) != null) 
             {
                 detalle.IdMedicamento = id;
 
