@@ -5,7 +5,7 @@ namespace Api_Farmacia.Repositories.Implementations
 {
     public class FacturaRepository : IFacturaRepository
     {
-        FarmaciaContext _context;
+        private FarmaciaContext _context;
         public FacturaRepository(FarmaciaContext context)
         {
             _context = context;

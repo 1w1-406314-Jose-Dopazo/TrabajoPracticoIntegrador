@@ -6,7 +6,7 @@ namespace Api_Farmacia.Controllers
 {
     public class UsuarioController : Controller
     {
-        IUsuarioService _service;
+       private IUsuarioService _service;
 
         public UsuarioController(IUsuarioService service)
         {

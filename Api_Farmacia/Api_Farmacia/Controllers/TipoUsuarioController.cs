@@ -10,7 +10,7 @@ namespace Api_Farmacia.Controllers
     public class TipoUsuarioController : Controller
     {
         // GET: TipoUsuarioController
-        ITipoUsuarioService _service;
+        private ITipoUsuarioService _service;
 
         public TipoUsuarioController(ITipoUsuarioService service)
         {

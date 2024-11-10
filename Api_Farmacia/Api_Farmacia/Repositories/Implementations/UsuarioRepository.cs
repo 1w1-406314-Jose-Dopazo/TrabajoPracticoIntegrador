@@ -5,7 +5,7 @@ namespace Api_Farmacia.Repositories.Implementations
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        FarmaciaContext _context;
+        private FarmaciaContext _context;
 
         public UsuarioRepository(FarmaciaContext context)
         {

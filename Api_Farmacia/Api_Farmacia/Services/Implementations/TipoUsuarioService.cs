@@ -4,10 +4,10 @@ using Api_Farmacia.Services.Interfaces;
 
 namespace Api_Farmacia.Services.Implementations
 {
-    public class TipoUsuarioService:ITipoUsuarioService
+    public class TipoUsuarioService : ITipoUsuarioService
     {
 
-        ITipoUsuarioRepository _Tipo_Usuario_Repository;
+        private ITipoUsuarioRepository _Tipo_Usuario_Repository;
 
         public TipoUsuarioService(ITipoUsuarioRepository tur)
         {

@@ -7,7 +7,7 @@ namespace Api_Farmacia.Services.Implementations
     public class UsuarioService : IUsuarioService
     {
 
-        IUsuarioRepository _Usuario_Repository;
+        private IUsuarioRepository _Usuario_Repository;
 
         public UsuarioService(IUsuarioRepository ur)
         {

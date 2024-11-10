@@ -6,7 +6,7 @@ namespace Api_Farmacia.Services.Implementations
 {
     public class DetalleFacturaService : IDetalleFacturaService
     {
-        IDetalleFacturaRepository _Detalle_Factura_Repository;
+        private IDetalleFacturaRepository _Detalle_Factura_Repository;
 
         public DetalleFacturaService(IDetalleFacturaRepository dfr)
         {

@@ -7,8 +7,8 @@ namespace Api_Farmacia.Services.Implementations
     public class FacturaService : IFacturaService
     {
 
-        IFacturaRepository _Factura_Repository;
-        IDetalleFacturaRepository _detalleFacturaRepository;
+        private IFacturaRepository _Factura_Repository;
+        private IDetalleFacturaRepository _detalleFacturaRepository;
 
         public FacturaService(IFacturaRepository fr,IDetalleFacturaRepository dfr)
         {
@@ -19,18 +19,18 @@ namespace Api_Farmacia.Services.Implementations
 
         public bool FacturaAddDetail(Factura factura, DetalleFactura detalle)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    Factura factura=_Factura_Repository.GetById(IdFactura);
-            //    _Factura_Repository.AddDetail(factura, detalle);
-            //    return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //    return false;
-            //}
+
+            try
+            {
+                Factura f = _Factura_Repository.GetById(factura.Id);
+                _Factura_Repository.AddDetail(f, detalle);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public bool FacturaCreate(Factura factura)

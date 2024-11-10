@@ -7,9 +7,9 @@ namespace Api_Farmacia.Repositories.Implementations
 {
     public class DetalleFacturaRepository : IDetalleFacturaRepository
     {
-        FarmaciaContext _context;
-        IMedicamentoService _mediicamentoService;
-        public DetalleFacturaRepository(FarmaciaContext context,MedicamentoService medicamentoService)
+        private FarmaciaContext _context;
+        private IMedicamentoService _mediicamentoService;
+        public DetalleFacturaRepository(FarmaciaContext context,IMedicamentoService medicamentoService)
         {
             _context = context;
             _mediicamentoService = medicamentoService;

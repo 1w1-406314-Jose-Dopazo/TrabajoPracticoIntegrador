@@ -11,16 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FarmaciaContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
-//builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-//builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
-//builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
+builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
 builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
-//builder.Services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
-//builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-//builder.Services.AddScoped<IDetalleFacturaService, DetalleFacturaService>();
-//builder.Services.AddScoped<IFacturaService, FacturaService>();
-builder.Services.AddScoped<IMedicamentoService, MedicamentoService>();
+builder.Services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IDetalleFacturaService, DetalleFacturaService>();
+builder.Services.AddScoped<IFacturaService, FacturaService>();
+builder.Services.AddScoped<IMedicamentoService,MedicamentoService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
