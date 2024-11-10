@@ -8,6 +8,9 @@ namespace Api_Farmacia.Repositories.Interfaces
 
         Usuario GetById(int id);
 
+
+        Usuario GetOne(string nombre);
+
         bool Update(Usuario usuario);
 
         bool Delete(int id);

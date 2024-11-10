@@ -1,3 +1,4 @@
+using Api_Farmacia.Models;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -24,11 +25,13 @@ namespace JwtAuthExample.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
-            // Aquí validarías las credenciales del usuario, por ejemplo contra una base de datos.
-            if (model.Username != "usuario" || model.Password != "contraseña")
+            Usuario u = _usuarioService.UsuarioGetOne(model.Username);
+            if (u == null || u.Contraseña != model.Password)
             {
                 return Unauthorized();
             }
+            
+                
 
             // Si las credenciales son válidas, genera el JWT
             var token = GenerateJwtToken(model.Username);
@@ -36,19 +39,19 @@ namespace JwtAuthExample.Controllers
             return Ok(new { token });
         }
 
-        private string GenerateJwtToken(string username)
+         private string GenerateJwtToken(string username)
         {
             var claims = new[]
             {
                 new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, username)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds

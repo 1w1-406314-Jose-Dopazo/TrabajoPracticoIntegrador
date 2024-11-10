@@ -52,6 +52,11 @@ namespace Api_Farmacia.Services.Implementations
             return _Usuario_Repository.GetById(id);
         }
 
+        public Usuario UsuarioGetOne(string nombre)
+        {
+            return _Usuario_Repository.GetOne(nombre);
+        }
+
         public bool UsuarioUpdate(Usuario usuario)
         {
             try

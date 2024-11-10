@@ -6,6 +6,8 @@ namespace Api_Farmacia.Services.Interfaces
     {
         List<Usuario> UsuarioGetAll();
 
+
+        Usuario UsuarioGetOne(string nombre);
         Usuario UsuarioGetById(int id);
 
         bool UsuarioUpdate(Usuario usuario);

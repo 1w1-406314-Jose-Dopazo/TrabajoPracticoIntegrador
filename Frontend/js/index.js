@@ -14,9 +14,8 @@ function load_content(url, panelId) {
 }
 
 // Esta función se ejecuta después de iniciar sesión
-function login_succes() {
-    const nombre = document.getElementById('FormInput1').value;
-    const contraseña = document.getElementById('FormInput2').value;
+function login_succes(nombre) {
+    
 
     const newDisplay = `
         <div class="form-group" id="Form1">
@@ -138,29 +137,35 @@ function login_succes() {
         return new bootstrap.Dropdown(dropdownToggleEl);
     });
 
-    function login(url) {
+    
+}
 
-        const nombre = document.getElementById('FormInput1').value;
-        const contraseña = document.getElementById('FormInput2').value;
+function login(url) {
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: nombre,
-                password: contraseña
-            }),
-            credentials: 'same-origin'  // Esto asegura que las cookies se envíen junto con la solicitud
-        })
-        .then(res => res.json())  // Respuesta en formato JSON
-        .then(data => {
-            // Aquí ya no necesitas hacer nada con el token, el navegador manejará las cookies
-            console.log('Login exitoso', data);
-        })
-        .catch(error => {
-            console.error('Error en el login:', error);
-        });
-    }
+    const nombre = document.getElementById('FormInput1').value;
+    const contraseña = document.getElementById('FormInput2').value;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: nombre,
+            password: contraseña
+        }),
+        credentials: 'same-origin'  // Esto asegura que las cookies se envíen junto con la solicitud
+        
+    })
+    .then(res => res.json())  // Respuesta en formato JSON
+    .then(data => {
+        // Aquí ya no necesitas hacer nada con el token, el navegador manejará las cookies
+        console.log('Login exitoso', data);
+        if(data != null){
+            login_succes(nombre)
+        }
+    })
+    .catch(error => {
+        console.error('Error en el login:', error);
+    });
 }

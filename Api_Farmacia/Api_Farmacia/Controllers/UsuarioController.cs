@@ -26,6 +26,13 @@ namespace Api_Farmacia.Controllers
             return Ok(_service.UsuarioGetById(id));
         }
 
+
+        [HttpGet("Usuarios/getone/{nombre}")]
+        public IActionResult GetUsuarioByName(string nombre)
+        {
+            return Ok(_service.UsuarioGetOne(nombre));
+        }
+
         [HttpDelete("Usuarios/{id}")]
         public IActionResult DeleteUsuario(int id)
         {

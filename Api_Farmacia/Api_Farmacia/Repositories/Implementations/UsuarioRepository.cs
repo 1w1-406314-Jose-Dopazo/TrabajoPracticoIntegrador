@@ -49,6 +49,14 @@ namespace Api_Farmacia.Repositories.Implementations
             return _context.Usuarios.ToList();
         }
 
+
+        public Usuario GetOne(string nombre)
+        {
+            List<Usuario> lstU = new List<Usuario>();
+            lstU = _context.Usuarios.Where(u => u.Nombre == nombre).ToList();
+            return lstU[0];
+        }
+
         public Usuario GetById(int id)
         {
             List<Usuario> lstU = new List<Usuario>();
