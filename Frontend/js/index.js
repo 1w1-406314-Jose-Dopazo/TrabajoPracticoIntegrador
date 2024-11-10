@@ -137,4 +137,30 @@ function login_succes() {
     const dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
         return new bootstrap.Dropdown(dropdownToggleEl);
     });
+
+    function login(url) {
+
+        const nombre = document.getElementById('FormInput1').value;
+        const contraseña = document.getElementById('FormInput2').value;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: nombre,
+                password: contraseña
+            }),
+            credentials: 'same-origin'  // Esto asegura que las cookies se envíen junto con la solicitud
+        })
+        .then(res => res.json())  // Respuesta en formato JSON
+        .then(data => {
+            // Aquí ya no necesitas hacer nada con el token, el navegador manejará las cookies
+            console.log('Login exitoso', data);
+        })
+        .catch(error => {
+            console.error('Error en el login:', error);
+        });
+    }
 }
