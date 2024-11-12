@@ -6,15 +6,11 @@ async function Get(url){
 }
 
 async function LoadTable(url){
-    const entities = Get(url)+
+    const entities = Get(url)
     const $container = document.getElementById('container')
-    let container = 
+    $container.appendChild(CreateTable(entities))
     console.log(entities)
-    entities.forEach(element => {
-        tbody+=
 
-    });
-    $tbody.innerHTML=tbody
 }
 
 
@@ -59,4 +55,5 @@ function CreateTable(entities) {
         )
         body.appendChild(row);
     });
+    return table;
 }
