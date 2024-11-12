@@ -10,7 +10,6 @@ async function LoadTable(url){
     const $container = document.getElementById('container')
     $container.appendChild(CreateTable(entities))
     console.log(entities)
-
 }
 
 
