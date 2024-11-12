@@ -20,7 +20,6 @@ async function Get(url){
             ${element.estado}
             </td>
             <td>
-            <btn class='btn btn-primary'>Editar</btn>
             <btn class='btn btn-danger'>Eliminar</btn>
             </td>
         </tr>

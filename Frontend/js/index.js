@@ -171,3 +171,8 @@ function login(url) {
         console.error('Error en el login:', error);
     });
 }
+const boton = document.getElementById('FormBtn1')
+boton.addEventListener('click',function(event){
+    event.preventDefault();
+    login('https://localhost:7263/api/Auth/login')
+})
