@@ -1,11 +1,19 @@
 <form>
 
-    <button class="btn btn-primary" id="BtnGetMedicamentos">Buscar</button>
-    <ul class="list-group" id="LstGet">
-        <li class="list-group-item">item1</li>
-        <li class="list-group-item">item2</li>
-        <li class="list-group-item">item3</li>
-        <li class="list-group-item">item4</li>
-        <li class="list-group-item">item5</li>
-      </ul>
+    <button class="btn btn-primary" id="BtnGetMedicamentos" onclick="Get()">Buscar</button>
+    <Table class="table mt-3">
+      <thead>
+        <tr>
+          <th style="display: none;" scope="col">id</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripcion</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"> 
+
+
+      </tbody>
+    </Table>
 </form>

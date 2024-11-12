@@ -50,7 +50,7 @@ namespace Api_Farmacia.Controllers
         // POST api/<MedicamentoController>
         [HttpPost]
         //TODO: PONERLO COMO FROMBODY, para pasarlo como json desde el front
-        public ActionResult Post(int id, string nombre, string descripcion, bool estado = true)
+        public ActionResult Post([FromBody]int id, string nombre, string descripcion, bool estado = true)
         {
             Medicamento medicamento = new Medicamento()
             {

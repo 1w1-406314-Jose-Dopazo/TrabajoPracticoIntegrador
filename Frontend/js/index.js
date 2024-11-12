@@ -2,18 +2,21 @@
 
 
 
-function load_content(url, panelId) {
+function load_content(url, panelId, callback=null) {
     fetch(url)
         .then((res) => {
-            return res.text(); // Asegúrate de llamar a .text() como una función
+            return res.text(); 
         })
         .then((data) => {
-            document.getElementById(panelId).innerHTML = data; // Usa innerHTML directamente
+            document.getElementById(panelId).innerHTML = data; 
+            if(callback){
+                callback();
+            }
         })
         .catch(error => console.error("Error al cargar contenido: ", error));
 }
 
-// Esta función se ejecuta después de iniciar sesión
+
 function login_succes(nombre) {
     
 
@@ -122,14 +125,14 @@ function login_succes(nombre) {
         
     `;
 
-    // Insertamos el contenido en el contenedor de menú
+    
     const $menu = document.getElementById('Form0');
     $menu.innerHTML = newDisplay;
 
-    // Añadir evento de logout
+    
     document.getElementById('logoutBtn').addEventListener('click', function() {
         alert('Sesión cerrada');
-        location.reload(); // Recarga la página al cerrar sesión
+        location.reload(); 
     });
 
     const dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
@@ -154,12 +157,11 @@ function login(url) {
             username: nombre,
             password: contraseña
         }),
-        credentials: 'same-origin'  // Esto asegura que las cookies se envíen junto con la solicitud
+        credentials: 'same-origin'  
         
     })
-    .then(res => res.json())  // Respuesta en formato JSON
+    .then(res => res.json())  
     .then(data => {
-        // Aquí ya no necesitas hacer nada con el token, el navegador manejará las cookies
         console.log('Login exitoso', data);
         if(data != null){
             login_succes(nombre)
