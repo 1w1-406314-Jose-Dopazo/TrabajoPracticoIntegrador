@@ -5,9 +5,9 @@ async function Get(url){
     return entities;
 }
 
-async function LoadTable(url){
+async function LoadTable(url, containerId){
     const entities =  await Get(url)
-    const $container = document.getElementById('container')
+    const $container = document.getElementById(containerId)
     const table = await CreateTable(entities);
     $container.appendChild(table)
 }
