@@ -45,7 +45,7 @@ namespace Api_Farmacia.Services.Implementations
             return _medicamento_repository.LogicDelete(id);
         }
 
-        public bool Update(MedicamentoPutDto dtoMedicamento)
+        public bool Update(MedicamentoPutGetDto dtoMedicamento)
         {
             Medicamento medicamento = new Medicamento()
             {

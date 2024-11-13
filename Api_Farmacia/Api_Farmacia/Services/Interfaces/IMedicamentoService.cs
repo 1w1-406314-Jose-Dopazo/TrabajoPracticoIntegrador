@@ -11,7 +11,7 @@ namespace Api_Farmacia.Services.Interfaces
 
         Medicamento? GetById(int id);
 
-        bool Update(MedicamentoPutDto dtoMedicamento);
+        bool Update(MedicamentoPutGetDto dtoMedicamento);
 
         bool Create(MedicamentoPostDto dtoMedicamento);
     }

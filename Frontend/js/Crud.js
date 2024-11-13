@@ -55,6 +55,8 @@ async function GetEntityParameters(url){
  return Parameters
 }
 
+
+
 async function NewEntity(url,obj){
   
   console.log(obj)
@@ -69,6 +71,20 @@ async function NewEntity(url,obj){
 }
 
 
+ async function LoadMedicamento(id){
+    $medicamento = await Get(`https://localhost:7263/api/Medicamento/${id}`);
+    const idInput = document.getElementById('Id');
+    const nombreInput = document.getElementById('name');
+    const estadoInput = document.getElementById('Estado');
+    const descripcionInput = document.getElementById('Medicamento-Description');
+
+    console.log($medicamento)
+    idInput.value = $medicamento.id
+    nombreInput.value = $medicamento.nombre
+    estadoInput.value =$medicamento.estado
+    descripcionInput.value =$medicamento.descripcion
+}
+
 
   function CreateMedicamento(){
      const nombreValue = document.getElementById('name').value;
@@ -82,6 +98,45 @@ async function NewEntity(url,obj){
      return medicamento
 }
 
+function EditarMedicamento(){
+
+     const id = document.getElementById('Id').value;
+     const nombreValue = document.getElementById('name').value;
+     const estadoValue = document.getElementById('Estado').checked;
+     const descripcionValue = document.getElementById('Medicamento-Description').value;
+     let medicamento = {};
+     medicamento.id=id;
+     medicamento.nombre = nombreValue;
+     medicamento.estado = estadoValue;
+     medicamento.descripcion = descripcionValue;
+
+     return medicamento
+}
+
+
+function CreateDetalleFactura(){
+  const idFactura = document.getElementById('ID_Factura_FK').value
+  const idMedicamento = document.getElementById('ID_Medicamento').value;
+  const cantidad = document.getElementById('txtCantidad').value;
+  const precioUnitario = document.getElementById('txtPrecioU').value;
+  let detalleFactura = {};
+  detalleFactura.idMedicamento = idMedicamento;
+  detalleFactura.idFactura=idFactura;
+  detalleFactura.cantidad=cantidad;
+  detalleFactura.precioUnitario=precioUnitario;
+
+  return detalleFactura
+}
+
+function CreateFactura(){
+  const idCliente = document.getElementById('ID_Cliente').value;
+  const fecha = document.getElementById('Fecha').value;
+  let factura = {};
+  factura.idCliente=idCliente;
+  factura.fecha=fecha;
+
+  return factura
+}
 
 
   

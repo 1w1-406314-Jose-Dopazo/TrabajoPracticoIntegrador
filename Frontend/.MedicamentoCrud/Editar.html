@@ -4,7 +4,7 @@
         <label for="MedicamentoID">ID Medicamento</label>
         <input type="number" class="form-control" id="Id" aria-describedby="Medicamento-Id" placeholder="Ingresar Id">
     </div>
-    <button class="btn btn-primary btn-form" id="btnEditarMedicamento">Buscar</button>
+    <button type="button" class="btn btn-primary btn-form" id="btnEditarMedicamento" onclick="LoadMedicamento(document.getElementById('Id').value)">Buscar</button>
 
 
     <div class="form-group" id="FormGroup1">
@@ -19,5 +19,5 @@
           <input type="checkbox" class="form-check-input" id="Estado">
           <label class="form-check-label" for="Estado">Estado</label>
         </div>
-        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <button type="button" class="btn btn-primary" onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',EditarMedicamento())">Confirmar</button>
       </form>
