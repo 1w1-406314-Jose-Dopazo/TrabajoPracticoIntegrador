@@ -48,14 +48,40 @@ async function CreateTable(entities) {
   return table;
 }
 
-function New(url,nombre,descripcion,estado){
+
+async function GetEntityParameters(url){
+  const entities =  await Get(url)
+  Parameters = Object.keys(entities[0])
+ return Parameters
+}
+
+async function NewEntity(url,obj){
+  
+  console.log(obj)
     fetch(url, {
         method: 'POST',
-        body: JSON.stringify({
-            username: nombre,
-            password: contraseña
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj),
         credentials: 'same-origin'
         
     })
+    .catch(error => console.error('Error:', error));
 }
+
+
+
+  function CreateMedicamento(){
+     const nombreValue = document.getElementById('name').value;
+     const estadoValue = document.getElementById('Estado').checked;
+     const descripcionValue = document.getElementById('Medicamento-Description').value;
+     let medicamento = {};
+     medicamento.nombre = nombreValue;
+     medicamento.estado = estadoValue;
+     medicamento.descripcion = descripcionValue;
+
+     return medicamento
+}
+
+
+
+  
