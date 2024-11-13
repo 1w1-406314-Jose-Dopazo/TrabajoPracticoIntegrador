@@ -1,9 +1,14 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.DetalleFactura;
+using Api_Farmacia.Controllers.DTO_s.Factura;
+using Api_Farmacia.Controllers.DTO_s.Medicamento;
+using Api_Farmacia.Models;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FacturaController : Controller
     {
         IFacturaService _service;
@@ -32,19 +37,28 @@ namespace Api_Farmacia.Controllers
             return Ok(_service.FacturaDelete(id));
         }
 
-        [HttpPost("Factura")]
-        public IActionResult NewFacturas(int idCliente, DateTime fecha)
+        
+
+
+        [HttpPost]
+        public ActionResult NewFacturas(FacturaPostDto dtoFactura)
         {
-            List<DetalleFactura>lstDetalles = new List<DetalleFactura>();
-            Factura newFactura = new Factura() {IdCliente = idCliente,Fecha=fecha,DetallesFacturas=lstDetalles };
-            return Ok(_service.FacturaCreate(newFactura));
+
+            try
+            {
+                return Ok(_service.FacturaCreate(dtoFactura));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
+
         [HttpPatch("Factura")]
-        public IActionResult UpdateFacturas(int id,int idCliente, DateTime fecha)
+        public IActionResult UpdateFacturas(FacturaPutDto dtoFactura)
         {
-            Factura DetalleUpd = new Factura() {Id=id,IdCliente=idCliente,Fecha=fecha };
-            return Ok(_service.FacturaUpdate(DetalleUpd));
+            return Ok(_service.FacturaUpdate(dtoFactura));
         }
     }
 }

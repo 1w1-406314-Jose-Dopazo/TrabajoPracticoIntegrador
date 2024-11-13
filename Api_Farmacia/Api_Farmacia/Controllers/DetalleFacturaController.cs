@@ -1,9 +1,13 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.DetalleFactura;
+using Api_Farmacia.Controllers.DTO_s.Medicamento;
+using Api_Farmacia.Models;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class DetalleFacturaController : Controller
     {
         IDetalleFacturaService _service;
@@ -32,19 +36,43 @@ namespace Api_Farmacia.Controllers
             return Ok(_service.DetalleFacturaDelete(id));
         }
 
-        [HttpPost("Detalle_Factura")]
-        public IActionResult NewDetalle(int cantidad, int idFactura, int idMedicamento,decimal precioUnitario)
+      
+
+
+        [HttpPost]
+        public ActionResult NewDetalle(DetalleFacturaPostDto dtoDetalle)
         {
 
-            DetalleFactura newDetalle = new DetalleFactura() { Cantidad=cantidad,IdFactura=idFactura,IdMedicamento=idMedicamento,PrecioUnitario=precioUnitario};
-            return Ok(_service.DetalleFacturaCreate(newDetalle));
+            try
+            {
+                return Ok(_service.DetalleFacturaCreate(dtoDetalle));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
+
+
+
 
         [HttpPatch("Detalle_Factura")]
-        public IActionResult UpdateDetalle(int cantidad, int idFactura, int idMedicamento, decimal precioUnitario)
+        public ActionResult<DetalleFacturaPutDto> UpdateDetalle(DetalleFacturaPutDto dtoDetalle)
         {
-            DetalleFactura DetalleUpd = new DetalleFactura() { Cantidad = cantidad, IdFactura = idFactura, IdMedicamento = idMedicamento, PrecioUnitario = precioUnitario };
-            return Ok(_service.DetalleFacturaUpdate(DetalleUpd));
+
+            try
+            {
+                if (_service.DetalleFacturaUpdate(dtoDetalle))
+                {
+                    return Created();
+                }
+                return NotFound($"El medicamento no existe");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
+
     }
 }

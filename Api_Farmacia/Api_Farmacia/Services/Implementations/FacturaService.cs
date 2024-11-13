@@ -1,4 +1,6 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.DetalleFactura;
+using Api_Farmacia.Controllers.DTO_s.Factura;
+using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services.Interfaces;
 
@@ -17,9 +19,23 @@ namespace Api_Farmacia.Services.Implementations
             _detalleFacturaRepository = dfr;
         }
 
-        public bool FacturaAddDetail(Factura factura, DetalleFactura detalle)
+        public bool FacturaAddDetail(FacturaPutDto dtoFactura, DetalleFacturaPostDto dtoDetalle)
         {
+            DetalleFactura detalle = new DetalleFactura()
+            {
+                Cantidad = dtoDetalle.Cantidad,
+                IdFactura = dtoFactura.Id,
+                IdMedicamento = dtoDetalle.IdMedicamento,
+                PrecioUnitario = dtoDetalle.PrecioUnitario
+            };
 
+            Factura factura = new Factura()
+            {
+                Id = dtoFactura.Id,
+                IdCliente = dtoFactura.IdCliente,
+                Fecha = dtoFactura.Fecha,
+
+            };
             try
             {
                 Factura f = _Factura_Repository.GetById(factura.Id);
@@ -33,8 +49,14 @@ namespace Api_Farmacia.Services.Implementations
             }
         }
 
-        public bool FacturaCreate(Factura factura)
+        public bool FacturaCreate(FacturaPostDto dtoFactura)
         {
+
+            Factura factura = new Factura()
+            {
+                IdCliente = dtoFactura.IdCliente,
+                Fecha = dtoFactura.Fecha
+            };
             try
             {
                 
@@ -72,8 +94,15 @@ namespace Api_Farmacia.Services.Implementations
             return _Factura_Repository.GetById(id);
         }
 
-        public bool FacturaUpdate(Factura factura)
+        public bool FacturaUpdate(FacturaPutDto dtoFactura)
         {
+            Factura factura = new Factura()
+            {
+                Id = dtoFactura.Id,
+                IdCliente = dtoFactura.IdCliente,
+                Fecha = dtoFactura.Fecha,
+                
+            };
             try
             {
                 _Factura_Repository.Update(factura);

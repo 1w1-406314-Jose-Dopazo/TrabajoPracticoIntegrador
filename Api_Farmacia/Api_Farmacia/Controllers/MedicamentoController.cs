@@ -1,4 +1,5 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
+using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services.Implementations;
 using Api_Farmacia.Services.Interfaces;
@@ -50,19 +51,12 @@ namespace Api_Farmacia.Controllers
         // POST api/<MedicamentoController>
         [HttpPost]
         //TODO: PONERLO COMO FROMBODY, para pasarlo como json desde el front
-        public ActionResult Post([FromBody]int id, string nombre, string descripcion, bool estado = true)
+        public ActionResult Post(MedicamentoPostDto dtoMedicamento)
         {
-            Medicamento medicamento = new Medicamento()
-            {
-                Id = id,
-                Nombre = nombre,
-                Descripcion = descripcion,
-                Estado = estado
-            };
+            
             try
             {
-                _service.Create(medicamento);
-                return Created(string.Empty, medicamento.Id);
+               return Ok( _service.Create(dtoMedicamento));
             }
             catch (Exception ex)
             {
@@ -72,15 +66,12 @@ namespace Api_Farmacia.Controllers
 
         // PUT api/<MedicamentoController>/5
         [HttpPut("{id}")]
-        public ActionResult<Medicamento> Put(int id, string nombre, string descripcion, bool estado)
+        public ActionResult<Medicamento> Put(MedicamentoPutDto dtoMedicamento)
         {
-            Medicamento medicamento = new Medicamento()
-            {
-                Id = id, Nombre = nombre, Descripcion = descripcion, Estado = estado
-            };
+            
             try
             {
-                if (_service.Update(medicamento))
+                if (_service.Update(dtoMedicamento))
                 {
                     return Created();
                 }

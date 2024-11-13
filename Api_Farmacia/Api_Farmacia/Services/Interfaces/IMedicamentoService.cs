@@ -1,4 +1,5 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
+using Api_Farmacia.Models;
 
 namespace Api_Farmacia.Services.Interfaces
 {
@@ -10,8 +11,8 @@ namespace Api_Farmacia.Services.Interfaces
 
         Medicamento? GetById(int id);
 
-        bool Update(Medicamento medicamento);
+        bool Update(MedicamentoPutDto dtoMedicamento);
 
-        bool Create(Medicamento medicamento);
+        bool Create(MedicamentoPostDto dtoMedicamento);
     }
 }

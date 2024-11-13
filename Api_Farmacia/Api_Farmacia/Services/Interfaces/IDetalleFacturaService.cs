@@ -1,4 +1,5 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.DetalleFactura;
+using Api_Farmacia.Models;
 
 namespace Api_Farmacia.Services.Interfaces
 {
@@ -8,10 +9,10 @@ namespace Api_Farmacia.Services.Interfaces
 
         DetalleFactura DetalleFacturatGetById(int id);
 
-        bool DetalleFacturaUpdate(DetalleFactura detalleFactura);
+        bool DetalleFacturaUpdate(DetalleFacturaPutDto dto);
 
         bool DetalleFacturaDelete(int id);
 
-        bool DetalleFacturaCreate(DetalleFactura detalle);
+        bool DetalleFacturaCreate(DetalleFacturaPostDto dto);
     }
 }

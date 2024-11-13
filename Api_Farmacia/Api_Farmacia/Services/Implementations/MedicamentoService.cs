@@ -1,4 +1,5 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
+using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services.Interfaces;
 
@@ -13,8 +14,14 @@ namespace Api_Farmacia.Services.Implementations
             _medicamento_repository = repository;
         }
 
-        public bool Create(Medicamento medicamento)
+        public bool Create(MedicamentoPostDto dtoMedicamento)
         {
+            Medicamento medicamento = new Medicamento()
+            {
+                Estado=dtoMedicamento.Estado,
+                Nombre=dtoMedicamento.Nombre,
+                Descripcion=dtoMedicamento.Descripcion
+            };
             return _medicamento_repository.Create(medicamento);
         }
 
@@ -38,8 +45,16 @@ namespace Api_Farmacia.Services.Implementations
             return _medicamento_repository.LogicDelete(id);
         }
 
-        public bool Update(Medicamento medicamento)
+        public bool Update(MedicamentoPutDto dtoMedicamento)
         {
+            Medicamento medicamento = new Medicamento()
+            {
+                Id = dtoMedicamento.Id,
+                Estado= dtoMedicamento.Estado,
+                Nombre= dtoMedicamento.Nombre,
+                Descripcion = dtoMedicamento.Descripcion
+
+            };
             return _medicamento_repository.Update(medicamento);
         }
     }
