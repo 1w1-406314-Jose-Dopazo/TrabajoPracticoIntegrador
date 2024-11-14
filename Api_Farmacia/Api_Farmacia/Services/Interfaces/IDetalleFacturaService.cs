@@ -5,11 +5,11 @@ namespace Api_Farmacia.Services.Interfaces
 {
     public interface IDetalleFacturaService
     {
-        List<DetalleFactura> DetalleFacturaGetAll();
+        List<DetalleFacturaPatchGetDto> DetalleFacturaGetAll();
 
-        DetalleFactura DetalleFacturatGetById(int id);
+        DetalleFacturaPatchGetDto DetalleFacturatGetById(int id);
 
-        bool DetalleFacturaUpdate(DetalleFacturaPutDto dto);
+        bool DetalleFacturaUpdate(DetalleFacturaPatchGetDto dto);
 
         bool DetalleFacturaDelete(int id);
 

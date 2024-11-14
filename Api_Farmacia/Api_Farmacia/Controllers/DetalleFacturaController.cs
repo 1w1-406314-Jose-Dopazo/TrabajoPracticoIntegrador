@@ -19,13 +19,13 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpGet("Detalle_Factura")]
-        public IActionResult GetDetalles()
+        public ActionResult GetDetalles()
         {
             return Ok(_service.DetalleFacturaGetAll());
         }
 
-        [HttpGet("Detalle_Factura/{id}")]
-        public IActionResult GetDetalleById(int id)
+        [HttpGet("{id}")]
+        public ActionResult GetDetalleById(int id)
         {
             return Ok(_service.DetalleFacturatGetById(id));
         }
@@ -57,7 +57,7 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpPatch("Detalle_Factura")]
-        public ActionResult<DetalleFacturaPutDto> UpdateDetalle(DetalleFacturaPutDto dtoDetalle)
+        public ActionResult<DetalleFacturaPatchGetDto> UpdateDetalle(DetalleFacturaPatchGetDto dtoDetalle)
         {
 
             try

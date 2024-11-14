@@ -6,17 +6,17 @@ namespace Api_Farmacia.Services.Interfaces
 {
     public interface IFacturaService
     {
-        List<Factura> FacturaGetAll();
+        List<FacturaPatchGetDto> FacturaGetAll();
 
-        Factura FacturaGetById(int id);
+        FacturaPatchGetDto FacturaGetById(int id);
 
-        bool FacturaUpdate(FacturaPutDto dtoFactura);
+        bool FacturaUpdate(FacturaPatchGetDto dtoFactura);
 
         bool FacturaDelete(int id);
 
         bool FacturaCreate(FacturaPostDto factura);
 
-        bool FacturaAddDetail(FacturaPutDto dtoFactura, DetalleFacturaPostDto dtoDetalle);
+        bool FacturaAddDetail(FacturaPatchGetDto dtoFactura, DetalleFacturaPostDto dtoDetalle);
 
     }
 }

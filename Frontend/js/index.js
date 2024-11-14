@@ -71,50 +71,6 @@ function login_succes(nombre) {
                 <li><a class="dropdown-item" href="#" onclick='load_content(".DetalleFacturaCrud/Eliminar.html","container")'>Eliminar acción</a></li>
             </ul>
 
-            </li>
-
-            <li>
-            
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Usuario
-            </button>
-            <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" onclick='load_content(".UsuarioCrud/Consultar.html","container")'>Consultar</a></li>
-            <li><a class="dropdown-item" href="#" onclick='load_content(".UsuarioCrud/Editar.html","container")'>Editar acción</a></li>
-            <li><a class="dropdown-item" href="#" onclick='load_content(".UsuarioCrud/Nuevo.html","container")'>Nuevo acción</a></li>
-            <li><a class="dropdown-item" href="#" onclick='load_content(".UsuarioCrud/Eliminar.html","container")'>Eliminar acción</a></li>
-            </ul>
-            
-            </li>
-
-            <li>
-            
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Tipo-Usuario
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick='load_content(".TipoUsuarioCrud/Consultar.html","container")'>Consultar</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".TipoUsuarioCrud/Editar.html","container")'>Editar acción</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".TipoUsuarioCrud/Nuevo.html","container")'>Nuevo acción</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".TipoUsuarioCrud/Eliminar.html","container")'>Eliminar acción</a></li>
-            </ul>
-
-            </li>
-
-
-            <li>
-            
-            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Cliente
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick='load_content(".ClienteCrud/Consultar.html","container")'>Consultar</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".ClienteCrud/Editar.html","container")'>Editar acción</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".ClienteCrud/Nuevo.html","container")'>Nuevo acción</a></li>
-                <li><a class="dropdown-item" href="#" onclick='load_content(".ClienteCrud/Eliminar.html","container")'>Eliminar acción</a></li>
-            </ul>
-
-            </li>
 
         </ul>
 

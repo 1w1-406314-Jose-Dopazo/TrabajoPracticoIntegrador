@@ -50,17 +50,44 @@ namespace Api_Farmacia.Services.Implementations
             }
         }
 
-        public List<DetalleFactura> DetalleFacturaGetAll()
+        public List<DetalleFacturaPatchGetDto> DetalleFacturaGetAll()
         {
-            return _Detalle_Factura_Repository.GetAll();
+            List<DetalleFactura> lstDetalles = new List<DetalleFactura>();
+            lstDetalles = _Detalle_Factura_Repository.GetAll();
+            List<DetalleFacturaPatchGetDto> lstDtos = new List<DetalleFacturaPatchGetDto>();
+            foreach(DetalleFactura detalle in lstDetalles)
+            {
+                DetalleFacturaPatchGetDto dto = new DetalleFacturaPatchGetDto()
+                {
+                    Id = detalle.Id,
+                    Cantidad = detalle.Cantidad,
+                    IdFactura = detalle.IdFactura,
+                    IdMedicamento = detalle.IdMedicamento,
+                    PrecioUnitario = detalle.PrecioUnitario
+                };
+                lstDtos.Add(dto);
+            };
+            return lstDtos;
+
         }
 
-        public DetalleFactura DetalleFacturatGetById(int id)
+        public DetalleFacturaPatchGetDto DetalleFacturatGetById(int id)
         {
-            return _Detalle_Factura_Repository.GetById(id);
+            DetalleFactura detalle = _Detalle_Factura_Repository.GetById(id);
+
+            DetalleFacturaPatchGetDto dto = new DetalleFacturaPatchGetDto()
+            {
+                Id = detalle.Id,
+                Cantidad = detalle.Cantidad,
+                IdFactura = detalle.IdFactura,
+                IdMedicamento = detalle.IdMedicamento,
+                PrecioUnitario = detalle.PrecioUnitario
+            };
+
+            return dto;
         }
 
-        public bool DetalleFacturaUpdate(DetalleFacturaPutDto dto)
+        public bool DetalleFacturaUpdate(DetalleFacturaPatchGetDto dto)
         {
             DetalleFactura detalleFactura = new DetalleFactura()
             {

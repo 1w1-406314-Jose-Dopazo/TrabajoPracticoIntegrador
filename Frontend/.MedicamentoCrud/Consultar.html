@@ -1,18 +1,9 @@
 <form>
 
     <button type="button" class="btn btn-primary" id="BtnGetMedicamentos" onclick="LoadTable('https:/'+'/localhost:7263/api/Medicamento')">Buscar</button>
-    <Table class="table mt-3">
-      <thead>
-        <tr>
-          <th style="display: none;" scope="col">id</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Descripcion</th>
-          <th scope="col">Estado</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"> 
-
+    <Table class="table table-bordered" id="TableContainer">
+      <tbody id="tbody" class="table table-bordered"> 
+      
 
       </tbody>
     </Table>

@@ -6,7 +6,7 @@
       <label for="IdDetalle">ID</label>
       <input type="number" class="form-control" id="ID" aria-describedby="IdDetalle" placeholder="Ingresar ID">
     </div>
-    <button class="btn btn-primary btn-form" id="btnEditarDetalle">Buscar</button>  
+    <button type="button" class="btn btn-primary btn-form" id="btnEditarDetalle" onclick="LoadDetalle(document.getElementById('ID').value)">Buscar</button>  
 
     <div class="form-group">
       <label for="IdFacturaFK">ID_Factura</label>
@@ -28,5 +28,5 @@
         <input type="number" class="form-control" id="txtPrecioU" aria-describedby="txtPrecioU" placeholder="Ingresar Precio Unitario">
       </div>
       
-        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <button type="button" class="btn btn-primary" onclick="EditEntity('https:/'+'/localhost:7263/api/DetalleFactura/Detalle_Factura',EditarDetalle())">Confirmar</button>
       </form>

@@ -1,6 +1,6 @@
 ﻿namespace Api_Farmacia.Controllers.DTO_s.Medicamento
 {
-    public class MedicamentoPutGetDto
+    public class MedicamentoPatchGetDto
     {
         public int Id { get; set; }
 

@@ -19,7 +19,7 @@ namespace Api_Farmacia.Services.Implementations
             _detalleFacturaRepository = dfr;
         }
 
-        public bool FacturaAddDetail(FacturaPutDto dtoFactura, DetalleFacturaPostDto dtoDetalle)
+        public bool FacturaAddDetail(FacturaPatchGetDto dtoFactura, DetalleFacturaPostDto dtoDetalle)
         {
             DetalleFactura detalle = new DetalleFactura()
             {
@@ -33,7 +33,7 @@ namespace Api_Farmacia.Services.Implementations
             {
                 Id = dtoFactura.Id,
                 IdCliente = dtoFactura.IdCliente,
-                Fecha = dtoFactura.Fecha,
+                Fecha = Convert.ToDateTime(dtoFactura.Fecha)
 
             };
             try
@@ -84,24 +84,49 @@ namespace Api_Farmacia.Services.Implementations
             }
         }
 
-        public List<Factura> FacturaGetAll()
+        public List<FacturaPatchGetDto> FacturaGetAll()
         {
-            return _Factura_Repository.GetAll();
+            List<Factura> lstFacturas = new List<Factura>();
+            lstFacturas =  _Factura_Repository.GetAll();
+            List<FacturaPatchGetDto> lstDtos = new List<FacturaPatchGetDto>();
+            foreach (Factura factura in lstFacturas)
+            {
+                FacturaPatchGetDto dto = new FacturaPatchGetDto()
+                {
+                    Id = factura.Id,
+                    IdCliente = factura.IdCliente,
+                    Fecha = DateOnly.Parse(factura.Fecha.ToShortDateString())
+
+
+
+                }; 
+                    lstDtos.Add(dto);
+            }
+            return lstDtos;
+
         }
 
-        public Factura FacturaGetById(int id)
+        public FacturaPatchGetDto FacturaGetById(int id)
         {
-            return _Factura_Repository.GetById(id);
+            Factura factura = _Factura_Repository.GetById(id);
+            FacturaPatchGetDto dto = new FacturaPatchGetDto()
+            {
+                Id = factura.Id, 
+                IdCliente = factura.IdCliente, 
+                Fecha = DateOnly.Parse(factura.Fecha.ToShortDateString())
+            };
+
+            return dto;
         }
 
-        public bool FacturaUpdate(FacturaPutDto dtoFactura)
+        public bool FacturaUpdate(FacturaPatchGetDto dtoFactura)
         {
             Factura factura = new Factura()
             {
                 Id = dtoFactura.Id,
                 IdCliente = dtoFactura.IdCliente,
-                Fecha = dtoFactura.Fecha,
-                
+                Fecha = dtoFactura.Fecha.ToDateTime(TimeOnly.Parse("12:00 AM"))
+
             };
             try
             {

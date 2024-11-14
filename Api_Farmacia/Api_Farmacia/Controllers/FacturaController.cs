@@ -56,7 +56,7 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpPatch("Factura")]
-        public IActionResult UpdateFacturas(FacturaPutDto dtoFactura)
+        public IActionResult UpdateFacturas(FacturaPatchGetDto dtoFactura)
         {
             return Ok(_service.FacturaUpdate(dtoFactura));
         }
