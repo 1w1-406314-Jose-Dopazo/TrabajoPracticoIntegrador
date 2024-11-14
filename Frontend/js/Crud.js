@@ -9,15 +9,10 @@ async function Get(url){
 
 async function LoadTable(url, containerId){
     const entities =  await Get(url)
-<<<<<<< HEAD
-    const $container = document.getElementById(containerId)
-    const table = await CreateTable(entities);
-=======
     const $container = document.getElementById('TableContainer')
     const table = await CreateTable(entities,url);
     table.className = "table table-bordered";
     $container.innerHTML = ''
->>>>>>> Branch-José
     $container.appendChild(table)
 }
 

@@ -63,14 +63,14 @@
                                 Medicamentos</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#ventas"
-                                onclick="alert('Deberia cargar la vista con Ventas')"><i class="bi bi-cart"></i>
-                                Ventas</button>
-                        </li>
-                        <li class="nav-item">
                             <button class="nav-link w-100" data-bs-toggle="tab" href="#facturas"
                                 onclick="alert('Deberia cargar la vista con Facturas')"><i class="bi bi-shop"></i>
                                 Facturas</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link w-100" data-bs-toggle="tab" href="#ventas"
+                                onclick="alert('Deberia cargar la vista con Ventas')"><i class="bi bi-cart"></i>
+                                Ventas</button>
                         </li>
                     </ul>
                 </div>
@@ -117,7 +117,7 @@
                                                         <label for="medicamentoNombre"
                                                             class="col-sm-3 col-form-label">Nombre</label>
                                                         <div class="col-sm-8">
-                                                            <input type="text" readonly class="form-control"
+                                                            <input type="text" class="form-control"
                                                                 id="medicamentoNombre" value="Paracetamol">
                                                         </div>
                                                     </div>
@@ -145,8 +145,63 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-warning btn-sm ms-2 shadow"
-                                    onclick="LoadMedicamentos()">Cargar<i class="bi bi-download"></i></button>
+                                <button type="button" class="btn btn-warning btn-sm ms-2 shadow" onclick="LoadMedicamentos()">
+                                    Cargar<i class="bi bi-download"></i>
+                                </button>
+                                <!-- El Boton editar activa el modal con form para cargar nuevo medicamento -->
+                                <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
+                                    data-bs-target="#editar-medicamento-modal">Editar <i
+                                        class="bi bi-pencil"></i></button>
+                                <!-- editar medicamento modal -->
+                                <div class="modal fade" id="editar-medicamento-modal"
+                                    aria-labelledby="editar-medicamento-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Editar Medicamento</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="mb-3 row">
+                                                        <label for="medicamentoId"
+                                                            class="col-sm-3 col-form-label">Id</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control"
+                                                                id="medicamentoId" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="medicamentoNombre"
+                                                            class="col-sm-3 col-form-label">Nombre</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control"
+                                                                id="medicamentoNombre" value="Paracetamol">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="medicamentoDescripcion"
+                                                            class="col-sm-3 col-form-label">Descripcion</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control"
+                                                                id="medicamentoDescripcion"
+                                                                value="Si te duele la cabeza tomate un paracetamol ;)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 form-check">
+                                                        <label class="form-check-label"
+                                                            for="exampleCheck1">Activo</label>
+                                                        <input type="checkbox" class="form-check-input"
+                                                            id="exampleCheck1" checked>
+                                                    </div>
+                                                        <button type="button" class="btn btn-primary"
+                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-dismiss="modal">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="table-responsive p-1" id="table-container">
@@ -169,21 +224,21 @@
                             </table>
                         </div>
                     </div>
-                    <!-- tab Ventas -->
-                    <div class="tab-pane container fade" id="ventas">
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <h1 class="h2">Ventas</h1>
-                            </div>
-                        </div>
-                    </div>
                     <!-- tab facturas -->
                     <div class="tab-pane container fade" id="facturas">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Facturas</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tab Ventas -->
+                    <div class="tab-pane container fade" id="ventas">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <h1 class="h2">Ventas</h1>
                             </div>
                         </div>
                     </div>
@@ -194,7 +249,6 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/vistas.js"></script>
     <script src="js/tablas.js"></script>
 </body>
 
