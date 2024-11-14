@@ -1,6 +1,6 @@
 ﻿namespace Api_Farmacia.Controllers.DTO_s.DetalleFactura
 {
-    public class DetalleFacturaPutDto
+    public class DetalleFacturaPatchGetDto
     {
 
         public int Id { get; set; }

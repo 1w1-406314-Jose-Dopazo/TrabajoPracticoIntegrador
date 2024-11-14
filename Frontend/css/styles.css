@@ -105,3 +105,6 @@ body {
     margin-left: 90%;
     
   }
+  .hidden{
+    display: none;
+  }

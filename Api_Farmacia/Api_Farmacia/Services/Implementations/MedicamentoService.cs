@@ -2,6 +2,7 @@
 using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace Api_Farmacia.Services.Implementations
 {
@@ -30,9 +31,24 @@ namespace Api_Farmacia.Services.Implementations
             return _medicamento_repository.Delete(id);
         }
 
-        public List<Medicamento> GetAll()
+        public List<MedicamentoPatchGetDto> GetAll()
         {
-            return _medicamento_repository.GetAll();
+
+            List<Medicamento> lstMedicamentos = new List<Medicamento>();
+            lstMedicamentos = _medicamento_repository.GetAll();
+            List<MedicamentoPatchGetDto> LstDtos = new List<MedicamentoPatchGetDto>();
+            foreach(Medicamento med in lstMedicamentos)
+            {
+                MedicamentoPatchGetDto dtoMedicamento = new MedicamentoPatchGetDto()
+                {
+                    Id=med.Id,
+                    Nombre = med.Nombre,
+                    Descripcion = med.Descripcion,
+                    Estado = med.Estado
+                };
+                LstDtos.Add(dtoMedicamento);
+            }
+            return LstDtos;
         }
 
         public Medicamento? GetById(int id)
@@ -45,7 +61,7 @@ namespace Api_Farmacia.Services.Implementations
             return _medicamento_repository.LogicDelete(id);
         }
 
-        public bool Update(MedicamentoPutGetDto dtoMedicamento)
+        public bool Update(MedicamentoPatchGetDto dtoMedicamento)
         {
             Medicamento medicamento = new Medicamento()
             {

@@ -22,7 +22,7 @@ namespace Api_Farmacia.Controllers
 
         // GET: api/<MedicamentoController>
         [HttpGet]
-        public ActionResult<List<MedicamentoPutGetDto>> Get()
+        public ActionResult<List<MedicamentoPatchGetDto>> Get()
         {
             try
             {
@@ -65,8 +65,8 @@ namespace Api_Farmacia.Controllers
         }
 
         // PUT api/<MedicamentoController>/5
-        [HttpPut("{id}")]
-        public ActionResult<Medicamento> Put(MedicamentoPutGetDto dtoMedicamento)
+        [HttpPatch]
+        public ActionResult<MedicamentoPatchGetDto> Patch(MedicamentoPatchGetDto dtoMedicamento)
         {
             
             try

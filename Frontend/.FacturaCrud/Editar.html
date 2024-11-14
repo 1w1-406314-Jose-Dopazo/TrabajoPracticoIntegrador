@@ -6,7 +6,7 @@
       <label for="IdFactura">ID</label>
       <input type="number" class="form-control" id="ID_Factura" aria-describedby="IdFactura" placeholder="Ingresar ID">
     </div>
-    <button class="btn btn-primary btn-form" id="btnEditarFactura">Buscar</button>  
+    <button type="button" class="btn btn-primary btn-form" id="btnEditarFactura" onclick="LoadFactura(document.getElementById('ID_Factura').value)">Buscar</button>  
 
     <div class="form-group">
         <label for="IdCliente">ID_Cliente</label>
@@ -16,5 +16,5 @@
         <label for="Fecha">Fecha</label>
         <input type="date" class="form-control" id="Fecha">
       </div>
-        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <button type="button" class="btn btn-primary" onclick="EditEntity('https:/'+'/localhost:7263/api/Factura/Factura',EditFactura())">Confirmar</button>
       </form>
