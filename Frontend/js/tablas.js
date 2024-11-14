@@ -1,14 +1,14 @@
 const localhost = "https://localhost:7263"
 
 async function GetEntities(url) {
-    const response = await fetch(url);
-    const entities = await response.json();
+    const response = await fetch(url)
+    const entities = await response.json()
     return entities;
   }
 
 //Funcion que carga la tabla de medicamentos, a replicar para las tablas que se quieran cargar
 async function LoadMedicamentos() {
-    const medicamentos = await GetEntities(localhost + '/api/Medicamento');
+    const medicamentos = await GetEntities('https://localhost:7263/api/Medicamento');
     const tBody = document.getElementById('tbody-medicamentos');
     tBody.innerHTML = ""
     medicamentos.forEach(medicamento => {

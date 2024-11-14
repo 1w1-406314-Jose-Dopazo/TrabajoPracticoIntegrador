@@ -19,12 +19,14 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://127.0.0.1:5500")  // Aquí defines el origen permitido
               .AllowAnyMethod()
               .AllowAnyHeader();
+        policy.WithOrigins("http://127.0.0.1:5501")  // Aquí defines el origen permitido
+             .AllowAnyMethod()
+             .AllowAnyHeader();
     });
 });
 
 builder.Services.AddDbContext<FarmaciaContext>(
-    //options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("LautiConnection")));
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();

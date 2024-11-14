@@ -118,7 +118,7 @@
                                                             class="col-sm-3 col-form-label">Nombre</label>
                                                         <div class="col-sm-8">
                                                             <input type="text" class="form-control"
-                                                                id="medicamentoNombre" value="Paracetamol">
+                                                                id="txtNombreNuevo">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -126,18 +126,17 @@
                                                             class="col-sm-3 col-form-label">Descripcion</label>
                                                         <div class="col-sm-8">
                                                             <input type="text" class="form-control"
-                                                                id="medicamentoDescripcion"
-                                                                value="Si te duele la cabeza tomate un paracetamol ;)">
+                                                                id="txtDescripcionNuevo">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 form-check">
                                                         <label class="form-check-label"
                                                             for="exampleCheck1">Activo</label>
                                                         <input type="checkbox" class="form-check-input"
-                                                            id="exampleCheck1" checked>
+                                                            id="chkNuevo">
                                                     </div>
-                                                        <button type="button" class="btn btn-primary"
-                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento(),'nuevo-medicamento-modal')">Guardar</button>
                                                         <button type="button" class="btn btn-danger"
                                                             data-bs-dismiss="modal">Cancelar</button>
                                                 </form>
@@ -145,13 +144,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-warning btn-sm ms-2 shadow" onclick="LoadMedicamentos()">
+                                <button type="button" class="btn btn-warning btn-sm ms-2 shadow" onclick="LoadTable('https:/'+'/localhost:7263/api/Medicamento','editar-medicamento-modal')">
                                     Cargar<i class="bi bi-download"></i>
                                 </button>
-                                <!-- El Boton editar activa el modal con form para cargar nuevo medicamento -->
-                                <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
-                                    data-bs-target="#editar-medicamento-modal">Editar <i
-                                        class="bi bi-pencil"></i></button>
+                                
                                 <!-- editar medicamento modal -->
                                 <div class="modal fade" id="editar-medicamento-modal"
                                     aria-labelledby="editar-medicamento-label" aria-hidden="true">
@@ -166,8 +162,8 @@
                                                         <label for="medicamentoId"
                                                             class="col-sm-3 col-form-label">Id</label>
                                                         <div class="col-sm-8">
-                                                            <input type="text" class="form-control"
-                                                                id="medicamentoId" value="">
+                                                            <input type="number" class="form-control"
+                                                                id="txtIdEditar">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -175,7 +171,7 @@
                                                             class="col-sm-3 col-form-label">Nombre</label>
                                                         <div class="col-sm-8">
                                                             <input type="text" class="form-control"
-                                                                id="medicamentoNombre" value="Paracetamol">
+                                                                id="txtNombreEditar">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -183,18 +179,17 @@
                                                             class="col-sm-3 col-form-label">Descripcion</label>
                                                         <div class="col-sm-8">
                                                             <input type="text" class="form-control"
-                                                                id="medicamentoDescripcion"
-                                                                value="Si te duele la cabeza tomate un paracetamol ;)">
+                                                                id="txtDescripcionEditar">
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 form-check">
                                                         <label class="form-check-label"
                                                             for="exampleCheck1">Activo</label>
                                                         <input type="checkbox" class="form-check-input"
-                                                            id="exampleCheck1" checked>
+                                                            id="chkEditar">
                                                     </div>
-                                                        <button type="button" class="btn btn-primary"
-                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                                        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal"
+                                                            onclick="EditEntity('https:/'+'/localhost:7263/api/Medicamento',EditMedicamento(),'editar-medicamento-modal',LoadTable('https:/'+'/localhost:7263/api/Medicamento','editar-medicamento-modal'))">Guardar</button>
                                                         <button type="button" class="btn btn-danger"
                                                             data-bs-dismiss="modal">Cancelar</button>
                                                 </form>
@@ -206,17 +201,7 @@
                         </div>
                         <div class="table-responsive p-1" id="table-container">
                             <table class="table table-dark table-sm">
-                                <thead class="text-center">
-                                    <tr>
-                                    <tr>
-                                        <th class="d-none">Id</th>
-                                        <th>Nombre</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                    </tr>
-                                </thead>
+                               
                                 <!-- aca se cargan los medicamentos con LoadMedicamentos()-->
                                 <tbody id="tbody-medicamentos">
 
@@ -249,7 +234,8 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/tablas.js"></script>
+   <!--  <script src="js/tablas.js"></script> -->
+     <script src="js/Crud.js"></script>
 </body>
 
 </html>
