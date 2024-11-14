@@ -112,19 +112,14 @@ async function CreateTable(entities,url,modalId) {
 }
 
 
-async function GetEntityParameters(url){
-  const entities =  await Get(url)
-  Parameters = Object.keys(entities[0])
- return Parameters
-}
 
 
 
-async function NewEntity(url,obj,modalId){
+async function SaveEntity(url,obj,methodStr,modalId){
   
   console.log(obj)
   const response = await fetch(url, {
-        method: 'POST',
+        method: methodStr,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj),
         credentials: 'same-origin'
@@ -135,21 +130,6 @@ async function NewEntity(url,obj,modalId){
     }
 }
 
-async function EditEntity(url,obj,modalId){
-  
-  console.log(obj)
-  const response = await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-        credentials: 'same-origin'
-        
-    })
-    if(response.ok){
-      setTimeout(() => LoadTable(url,modalId), 1000);
-    }
-    
-}
 
 async function DeletetEntity(url,url2,modalId){
   
@@ -276,9 +256,11 @@ async function LoadDetalle(id){
 function CreateFactura(){
   const idCliente = document.getElementById('ID_Cliente').value;
   const fecha = document.getElementById('Fecha').value;
+  let LstDetalle[detalles] = document.getElementById('Fecha').value;
   let factura = {};
   factura.idCliente=idCliente;
   factura.fecha=fecha;
+  factura.detalle = LstDetalle[detalles]
 
   return factura
 }
@@ -288,12 +270,24 @@ function EditFactura(){
   const id = document.getElementById('ID_Factura').value;
   const idCliente = document.getElementById('ID_Cliente').value;
   const fecha = document.getElementById('Fecha').value;
+  let LstDetalle[detalles] = document.getElementById('Fecha').value;
   let factura = {};
   factura.id=id;
   factura.idCliente = idCliente;
   factura.fecha = fecha;
+  factura.detalle = LstDetalle[detalles]
 
   return factura
+}
+
+function AddDetalle(id,detallea){
+  const factura = await Get(`https://localhost:7263/api/Factura/Factura/${id}`);
+  factura.LstDetalle[detalle].push(detallea)
+}
+
+function RemoveDetalle(id,idDetallea){
+  const factura = await Get(`https://localhost:7263/api/Factura/Factura/${id}`);
+  actura.LstDetalle[detalle].filter(await Get(`https://localhost:7263/api/DetalleFactura/Detalle_Factura/${detallea.id}`));
 }
 
 async function LoadFactura(id){

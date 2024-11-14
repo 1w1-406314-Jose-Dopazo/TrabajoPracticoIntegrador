@@ -136,7 +136,7 @@
                                                             id="chkNuevo">
                                                     </div>
                                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento(),'nuevo-medicamento-modal')">Guardar</button>
+                                                            onclick="SaveEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento(),'POST','nuevo-medicamento-modal')">Guardar</button>
                                                         <button type="button" class="btn btn-danger"
                                                             data-bs-dismiss="modal">Cancelar</button>
                                                 </form>
@@ -189,7 +189,7 @@
                                                             id="chkEditar">
                                                     </div>
                                                         <button type="button" class="btn btn-primary"  data-bs-dismiss="modal"
-                                                            onclick="EditEntity('https:/'+'/localhost:7263/api/Medicamento',EditMedicamento(),'editar-medicamento-modal',LoadTable('https:/'+'/localhost:7263/api/Medicamento','editar-medicamento-modal'))">Guardar</button>
+                                                            onclick="SaveEntity('https:/'+'/localhost:7263/api/Medicamento',EditMedicamento(),'PATCH','editar-medicamento-modal',LoadTable('https:/'+'/localhost:7263/api/Medicamento','editar-medicamento-modal'))">Guardar</button>
                                                         <button type="button" class="btn btn-danger"
                                                             data-bs-dismiss="modal">Cancelar</button>
                                                 </form>
