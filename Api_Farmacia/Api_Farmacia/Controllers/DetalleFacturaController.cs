@@ -1,6 +1,4 @@
 ﻿using Api_Farmacia.Controllers.DTO_s.DetalleFactura;
-using Api_Farmacia.Controllers.DTO_s.Medicamento;
-using Api_Farmacia.Models;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,33 +17,54 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpGet("Detalle_Factura")]
-        public ActionResult GetDetalles()
+        public ActionResult<List<DetalleFacturaPatchGetDto>> Get()
         {
-            return Ok(_service.DetalleFacturaGetAll());
+            try
+            {
+                return Ok(_service.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetDetalleById(int id)
+        public ActionResult<DetalleFacturaPatchGetDto> Get(int id)
         {
-            return Ok(_service.DetalleFacturatGetById(id));
+            try
+            {
+                return Ok(_service.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpDelete("Detalle_Factura/{id}")]
-        public IActionResult DeleteDetalle(int id)
+        public ActionResult Delete(int id)
         {
-            return Ok(_service.DetalleFacturaDelete(id));
-        }
-
-      
-
-
-        [HttpPost]
-        public ActionResult NewDetalle(DetalleFacturaPostDto dtoDetalle)
-        {
-
             try
             {
-                return Ok(_service.DetalleFacturaCreate(dtoDetalle));
+                if (_service.Delete(id))
+                {
+                    return Ok();
+                }
+                return BadRequest("El detalle no existe");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Post(DetalleFacturaPostDto detalleFacturaPostDto)
+        {
+            try
+            {
+                return Created(string.Empty, _service.Create(detalleFacturaPostDto));
             }
             catch (Exception ex)
             {
@@ -57,16 +76,16 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpPatch("Detalle_Factura")]
-        public ActionResult<DetalleFacturaPatchGetDto> UpdateDetalle(DetalleFacturaPatchGetDto dtoDetalle)
+        public ActionResult<DetalleFacturaPatchGetDto> UpdateDetalle(DetalleFacturaPatchGetDto detalleFacturaPatchGetDto)
         {
-
             try
             {
-                if (_service.DetalleFacturaUpdate(dtoDetalle))
+                DetalleFacturaPatchGetDto? detalleFacturaActualizado= _service.Update(detalleFacturaPatchGetDto);
+                if (detalleFacturaActualizado != null)
                 {
-                    return Created();
+                    return Created(string.Empty, detalleFacturaActualizado);
                 }
-                return NotFound($"El medicamento no existe");
+                return NotFound($"El detalle no existe");
             }
             catch (Exception ex)
             {

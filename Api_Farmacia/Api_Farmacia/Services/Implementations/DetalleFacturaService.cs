@@ -7,75 +7,68 @@ namespace Api_Farmacia.Services.Implementations
 {
     public class DetalleFacturaService : IDetalleFacturaService
     {
-        private IDetalleFacturaRepository _Detalle_Factura_Repository;
+        private IDetalleFacturaRepository _detalleFacturaRepository;
 
         public DetalleFacturaService(IDetalleFacturaRepository dfr)
         {
 
-            _Detalle_Factura_Repository = dfr;
+            _detalleFacturaRepository = dfr;
         }
 
-        public bool DetalleFacturaCreate(DetalleFacturaPostDto dto)
+        public DetalleFacturaPatchGetDto? Create(DetalleFacturaPostDto detalleFacturaPostDto)
         {
-                DetalleFactura detalle = new DetalleFactura()
-                {
-                    Cantidad = dto.Cantidad,
-                    IdFactura = dto.IdFactura,
-                    PrecioUnitario = dto.PrecioUnitario,
-                    IdMedicamento = dto.IdMedicamento
-                };
-            try
+            DetalleFactura? detalleFactura = new DetalleFactura()
             {
-                _Detalle_Factura_Repository.Create(detalle);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        public bool DetalleFacturaDelete(int id)
-        {
-            try
-            {
-                _Detalle_Factura_Repository.Delete(id);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        public List<DetalleFacturaPatchGetDto> DetalleFacturaGetAll()
-        {
-            List<DetalleFactura> lstDetalles = new List<DetalleFactura>();
-            lstDetalles = _Detalle_Factura_Repository.GetAll();
-            List<DetalleFacturaPatchGetDto> lstDtos = new List<DetalleFacturaPatchGetDto>();
-            foreach(DetalleFactura detalle in lstDetalles)
-            {
-                DetalleFacturaPatchGetDto dto = new DetalleFacturaPatchGetDto()
-                {
-                    Id = detalle.Id,
-                    Cantidad = detalle.Cantidad,
-                    IdFactura = detalle.IdFactura,
-                    IdMedicamento = detalle.IdMedicamento,
-                    PrecioUnitario = detalle.PrecioUnitario
-                };
-                lstDtos.Add(dto);
+                Cantidad = detalleFacturaPostDto.Cantidad,
+                IdFactura = detalleFacturaPostDto.IdFactura,
+                PrecioUnitario = detalleFacturaPostDto.PrecioUnitario,
+                IdMedicamento = detalleFacturaPostDto.IdMedicamento
             };
-            return lstDtos;
+            detalleFactura = _detalleFacturaRepository.Create(detalleFactura);
+            if (detalleFactura != null)
+            {
+                return new DetalleFacturaPatchGetDto()
+                {
+                    Id = detalleFactura.Id,
+                    Cantidad = detalleFactura.Cantidad,
+                    IdFactura = detalleFactura.IdFactura,
+                    IdMedicamento = detalleFactura.IdMedicamento,
+                    PrecioUnitario = detalleFactura.PrecioUnitario
+                };
+            }
+            return null;
+        }
+
+        public bool Delete(int id)
+        {
+            return _detalleFacturaRepository.Delete(id);
+        }
+
+        public List<DetalleFacturaPatchGetDto> GetAll()
+        {
+            List<DetalleFactura> detallesFacturas = _detalleFacturaRepository.GetAll();
+            List<DetalleFacturaPatchGetDto> detallesFacturasPatchGetDto = new List<DetalleFacturaPatchGetDto>();
+
+            foreach (DetalleFactura detalleFactura in detallesFacturas)
+            {
+                DetalleFacturaPatchGetDto detalleFacturaPatchGetDto = new DetalleFacturaPatchGetDto()
+                {
+                    Id = detalleFactura.Id,
+                    Cantidad = detalleFactura.Cantidad,
+                    IdFactura = detalleFactura.IdFactura,
+                    IdMedicamento = detalleFactura.IdMedicamento,
+                    PrecioUnitario = detalleFactura.PrecioUnitario
+                };
+                detallesFacturasPatchGetDto.Add(detalleFacturaPatchGetDto);
+            };
+            return detallesFacturasPatchGetDto;
 
         }
 
-        public DetalleFacturaPatchGetDto DetalleFacturatGetById(int id)
+        public DetalleFacturaPatchGetDto? GetById(int id)
         {
-            DetalleFactura detalle = _Detalle_Factura_Repository.GetById(id);
-
-            DetalleFacturaPatchGetDto dto = new DetalleFacturaPatchGetDto()
+            DetalleFactura? detalle = _detalleFacturaRepository.GetById(id);
+            return new DetalleFacturaPatchGetDto()
             {
                 Id = detalle.Id,
                 Cantidad = detalle.Cantidad,
@@ -83,29 +76,31 @@ namespace Api_Farmacia.Services.Implementations
                 IdMedicamento = detalle.IdMedicamento,
                 PrecioUnitario = detalle.PrecioUnitario
             };
-
-            return dto;
         }
 
-        public bool DetalleFacturaUpdate(DetalleFacturaPatchGetDto dto)
+        public DetalleFacturaPatchGetDto? Update(DetalleFacturaPatchGetDto detalleFacturaPatchGetDto)
         {
-            DetalleFactura detalleFactura = new DetalleFactura()
+            DetalleFactura? detalleFactura = new DetalleFactura()
             {
-                Id=dto.Id,
-                IdFactura=dto.IdFactura,
-                Cantidad=dto.Cantidad,
-                IdMedicamento=dto.IdMedicamento,
-                PrecioUnitario=dto.PrecioUnitario
+                Id = detalleFacturaPatchGetDto.Id,
+                IdFactura = detalleFacturaPatchGetDto.IdFactura,
+                Cantidad = detalleFacturaPatchGetDto.Cantidad,
+                IdMedicamento = detalleFacturaPatchGetDto.IdMedicamento,
+                PrecioUnitario = detalleFacturaPatchGetDto.PrecioUnitario
             };
-            try
+            detalleFactura = _detalleFacturaRepository.Update(detalleFactura);
+            if (detalleFactura != null)
             {
-                return _Detalle_Factura_Repository.Update(detalleFactura);
+                return new DetalleFacturaPatchGetDto()
+                {
+                    Id = detalleFactura.Id,
+                    IdMedicamento = detalleFactura.IdMedicamento,
+                    IdFactura = detalleFactura.IdFactura,
+                    Cantidad = detalleFactura.Cantidad,
+                    PrecioUnitario = detalleFactura.PrecioUnitario
+                };
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            return null;
         }
     }
 }

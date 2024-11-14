@@ -81,13 +81,13 @@ namespace Api_Farmacia.Repositories.Implementations
         /// </summary>
         /// <param name="medicamento">Medicamento a agregar</param>
         /// <returns>True si se agregó, false si no</returns>
-        public bool Create(Medicamento medicamento)
+        public Medicamento? Create(Medicamento medicamento)
         {
             try
             {
                 _context.Medicamentos.Add(medicamento);
                 _context.SaveChanges();
-                return true;
+                return medicamento;
             }
             catch (Exception)
             {
@@ -116,22 +116,21 @@ namespace Api_Farmacia.Repositories.Implementations
         /// Actualiza los valores de un medicamento si este existe.
         /// </summary>
         /// <param name="medicamento">Medicamento con los nuevos valores</param>
-        /// <returns>True si se actualizó, false si no</returns>
-        public bool Update(Medicamento medicamento)
+        /// <returns>Devuelve el medicamento actualizado</returns>
+        public Medicamento? Update(Medicamento medicamento)
         {
             try
             {
                 Medicamento? medicamentoDb = GetById(medicamento.Id); //Uso el metodo GetById en lugar de llamar al context.
-                //Medicamento? medicamentoDb = _context.Medicamentos.FirstOrDefault(m => m.Id == medicamento.Id); //FirstOrDefault no busca en la base de datos si lo encuentra ya en el context local.
                 if (medicamentoDb == null)
                 {
-                    return false;
+                    return null;
                 }
                 medicamentoDb.Nombre = medicamento.Nombre;
                 medicamentoDb.Descripcion = medicamento.Descripcion;
                 medicamentoDb.Estado = medicamento.Estado;
                 _context.SaveChanges();
-                return true;
+                return medicamentoDb;
             }
             catch (Exception)
             {
