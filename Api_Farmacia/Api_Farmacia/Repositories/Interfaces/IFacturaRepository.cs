@@ -6,13 +6,13 @@ namespace Api_Farmacia.Repositories.Interfaces
     {
         List<Factura> GetAll();
 
-        Factura GetById(int id);
-
-        bool Update(Factura factura);
-
         bool Delete(int id);
 
-        bool Create(Factura factura);
+        Factura? GetById(int id);
+
+        Factura? Update(Factura factura);
+
+        Factura? Create(Factura factura);
 
         bool AddDetail(Factura factura, DetalleFactura detalle);
     }

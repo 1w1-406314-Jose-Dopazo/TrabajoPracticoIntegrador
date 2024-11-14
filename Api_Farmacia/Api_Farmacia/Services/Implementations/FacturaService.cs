@@ -9,17 +9,17 @@ namespace Api_Farmacia.Services.Implementations
     public class FacturaService : IFacturaService
     {
 
-        private IFacturaRepository _Factura_Repository;
+        private IFacturaRepository _facturaRepository;
         private IDetalleFacturaRepository _detalleFacturaRepository;
 
-        public FacturaService(IFacturaRepository fr,IDetalleFacturaRepository dfr)
+        public FacturaService(IFacturaRepository facturaRepository, IDetalleFacturaRepository detalleFacturaRepository)
         {
 
-            _Factura_Repository = fr;
-            _detalleFacturaRepository = dfr;
+            _facturaRepository = facturaRepository;
+            _detalleFacturaRepository = detalleFacturaRepository;
         }
 
-        public bool FacturaAddDetail(FacturaPatchGetDto dtoFactura, DetalleFacturaPostDto dtoDetalle)
+        public bool FacturaAddDetail(FacturaPatchDto dtoFactura, DetalleFacturaPostDto dtoDetalle)
         {
             DetalleFactura detalle = new DetalleFactura()
             {
@@ -38,8 +38,8 @@ namespace Api_Farmacia.Services.Implementations
             };
             try
             {
-                Factura f = _Factura_Repository.GetById(factura.Id);
-                _Factura_Repository.AddDetail(f, detalle);
+                Factura f = _facturaRepository.GetById(factura.Id);
+                _facturaRepository.AddDetail(f, detalle);
                 return true;
             }
             catch (Exception ex)
@@ -49,95 +49,119 @@ namespace Api_Farmacia.Services.Implementations
             }
         }
 
-        public bool FacturaCreate(FacturaPostDto dtoFactura)
+        public FacturaGetDto? Create(FacturaPostDto facturaPostDto)
         {
-
             Factura factura = new Factura()
             {
-                IdCliente = dtoFactura.IdCliente,
-                Fecha = dtoFactura.Fecha
+                IdCliente = facturaPostDto.IdCliente,
+                Fecha = facturaPostDto.Fecha
             };
-            try
+            Factura? facturaCargada = _facturaRepository.Create(factura);
+            if (facturaCargada == null)
             {
-                
-                _Factura_Repository.Create(factura);
-                return true;
+                return null;
             }
-            catch (Exception ex)
+            foreach (DetalleFacturaPostDto detalleFacturaPostDto in facturaPostDto.DetallesFacturasDto)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                DetalleFactura detalleFactura = new DetalleFactura()
+                {
+                    IdMedicamento = detalleFacturaPostDto.IdMedicamento,
+                    IdFactura = facturaCargada.Id,
+                    Cantidad = detalleFacturaPostDto.Cantidad,
+                    PrecioUnitario = detalleFacturaPostDto.PrecioUnitario
+
+                };
+                facturaCargada.DetallesFacturas.Add(_detalleFacturaRepository.Create(detalleFactura));
+
             }
+            return new FacturaGetDto()
+            {
+                Id = facturaCargada.Id,
+                IdCliente = facturaCargada.IdCliente,
+                Fecha = facturaCargada.Fecha,
+            };
         }
 
-        public bool FacturaDelete(int id)
+        public bool Delete(int id)
         {
-            try
+            if (DeleteDetalles(id))
             {
-                _Factura_Repository.Delete(id);
-                return true;
+                return _facturaRepository.Delete(id);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            return false;
         }
 
-        public List<FacturaPatchGetDto> FacturaGetAll()
+        public List<FacturaGetDto> GetAll()
         {
-            List<Factura> lstFacturas = new List<Factura>();
-            lstFacturas =  _Factura_Repository.GetAll();
-            List<FacturaPatchGetDto> lstDtos = new List<FacturaPatchGetDto>();
-            foreach (Factura factura in lstFacturas)
+            List<Factura> facturas = _facturaRepository.GetAll();
+            List<FacturaGetDto> facturasGetDto = new List<FacturaGetDto>();
+
+            foreach (Factura factura in facturas)
             {
-                FacturaPatchGetDto dto = new FacturaPatchGetDto()
+                FacturaGetDto facturaGetDto = new FacturaGetDto()
                 {
                     Id = factura.Id,
                     IdCliente = factura.IdCliente,
-                    Fecha = DateOnly.Parse(factura.Fecha.ToShortDateString())
-
-
-
-                }; 
-                    lstDtos.Add(dto);
+                    Fecha = factura.Fecha
+                };
+                facturasGetDto.Add(facturaGetDto);
             }
-            return lstDtos;
+            return facturasGetDto;
 
         }
 
-        public FacturaPatchGetDto FacturaGetById(int id)
+        public FacturaGetDto? GetById(int id)
         {
-            Factura factura = _Factura_Repository.GetById(id);
-            FacturaPatchGetDto dto = new FacturaPatchGetDto()
+            Factura? factura = _facturaRepository.GetById(id);
+            return new FacturaGetDto()
             {
-                Id = factura.Id, 
-                IdCliente = factura.IdCliente, 
-                Fecha = DateOnly.Parse(factura.Fecha.ToShortDateString())
+                Id = factura.Id,
+                IdCliente = factura.IdCliente,
+                Fecha = factura.Fecha
             };
-
-            return dto;
         }
 
-        public bool FacturaUpdate(FacturaPatchGetDto dtoFactura)
+        public bool DeleteDetalles(int idFactura)
         {
-            Factura factura = new Factura()
-            {
-                Id = dtoFactura.Id,
-                IdCliente = dtoFactura.IdCliente,
-                Fecha = dtoFactura.Fecha.ToDateTime(TimeOnly.Parse("12:00 AM"))
+            return _detalleFacturaRepository.DeleteByIdFactura(idFactura);
+        }
 
+        public FacturaGetDto? Update(FacturaPatchDto facturaPatchDto)
+        {
+            Factura? factura = new Factura()
+            {
+                Id = facturaPatchDto.Id,
+                IdCliente = facturaPatchDto.IdCliente,
+                Fecha = facturaPatchDto.Fecha
             };
-            try
+
+            Factura? facturaActualizada = _facturaRepository.Update(factura);
+            if (facturaActualizada == null)
             {
-                _Factura_Repository.Update(factura);
-                return true;
+                throw new Exception("No se pudo actualizar la factura");
+
             }
-            catch (Exception ex)
+
+            DeleteDetalles(facturaPatchDto.Id);
+
+            foreach (DetalleFacturaPatchGetDto detalleFacturaPatchGetDto in facturaPatchDto.DetallesFacturasDto)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                DetalleFactura detalleFactura = new DetalleFactura()
+                {
+                    IdFactura = detalleFacturaPatchGetDto.Id,
+                    IdMedicamento = detalleFacturaPatchGetDto.IdMedicamento,
+                    Cantidad = detalleFacturaPatchGetDto.Cantidad,
+                    PrecioUnitario = detalleFacturaPatchGetDto.PrecioUnitario
+                };
+                _detalleFacturaRepository.Create(detalleFactura);
+                facturaActualizada.DetallesFacturas.Add(detalleFactura);
             }
+            return new FacturaGetDto()
+            {
+                Id = facturaActualizada.Id,
+                IdCliente = facturaActualizada.IdCliente,
+                Fecha = facturaActualizada.Fecha
+            };
         }
     }
 }

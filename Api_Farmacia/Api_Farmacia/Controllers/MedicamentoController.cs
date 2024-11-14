@@ -1,7 +1,4 @@
 ﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
-using Api_Farmacia.Models;
-using Api_Farmacia.Repositories.Interfaces;
-using Api_Farmacia.Services.Implementations;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +33,7 @@ namespace Api_Farmacia.Controllers
 
         // GET api/<MedicamentoController>/5
         [HttpGet("{id}")]
-        public ActionResult<Medicamento> Get(int id)
+        public ActionResult<MedicamentoPatchGetDto> Get(int id)
         {
             try
             {
@@ -51,12 +48,11 @@ namespace Api_Farmacia.Controllers
         // POST api/<MedicamentoController>
         [HttpPost]
         //TODO: PONERLO COMO FROMBODY, para pasarlo como json desde el front
-        public ActionResult Post(MedicamentoPostDto dtoMedicamento)
+        public ActionResult<MedicamentoPatchGetDto> Post(MedicamentoPostDto medicamentoPostDto)
         {
-            
             try
             {
-               return Ok( _service.Create(dtoMedicamento));
+               return Created(string.Empty ,_service.Create(medicamentoPostDto));
             }
             catch (Exception ex)
             {
@@ -66,14 +62,14 @@ namespace Api_Farmacia.Controllers
 
         // PUT api/<MedicamentoController>/5
         [HttpPatch]
-        public ActionResult<MedicamentoPatchGetDto> Patch(MedicamentoPatchGetDto dtoMedicamento)
+        public ActionResult<MedicamentoPatchGetDto> Patch(MedicamentoPatchGetDto medicamentoPatchGetDto)
         {
-            
             try
             {
-                if (_service.Update(dtoMedicamento))
+                MedicamentoPatchGetDto? medicamentoActualizado = _service.Update(medicamentoPatchGetDto);
+                if (medicamentoActualizado != null)
                 {
-                    return Created();
+                    return Created(string.Empty, medicamentoActualizado);
                 }
                 return NotFound($"El medicamento no existe");
             }

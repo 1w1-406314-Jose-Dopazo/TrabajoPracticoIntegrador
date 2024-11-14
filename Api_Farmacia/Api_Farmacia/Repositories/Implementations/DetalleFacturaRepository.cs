@@ -1,39 +1,27 @@
 ﻿using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
-using Api_Farmacia.Services.Implementations;
-using Api_Farmacia.Services.Interfaces;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
     public class DetalleFacturaRepository : IDetalleFacturaRepository
     {
         private FarmaciaContext _context;
-        private IMedicamentoService _mediicamentoService;
-        public DetalleFacturaRepository(FarmaciaContext context,IMedicamentoService medicamentoService)
+        public DetalleFacturaRepository(FarmaciaContext context)
         {
             _context = context;
-            _mediicamentoService = medicamentoService;
         }
-        public bool Create(DetalleFactura detalle)
+
+        public DetalleFactura? Create(DetalleFactura detalleFactura)
         {
-            if(_mediicamentoService.GetById(detalle.IdMedicamento) == null) 
-            {
-
-                return false;
-            }
-            
-
             try
             {
-                _context.DetallesFacturas.Add(detalle);
+                _context.DetallesFacturas.Add(detalleFactura);
                 _context.SaveChanges();
-                return true;
-
+                return detalleFactura;
             }
             catch (Exception)
             {
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
 
@@ -41,44 +29,97 @@ namespace Api_Farmacia.Repositories.Implementations
         {
             try
             {
-                _context.DetallesFacturas.Remove(GetById(id));
+                DetalleFactura? detalleFactura = GetById(id);
+                if (detalleFactura == null)
+                {
+                    return false;
+                }
+                _context.DetallesFacturas.Remove(detalleFactura);
                 _context.SaveChanges();
                 return true;
-
             }
             catch (Exception)
             {
-
-                _context.Dispose();
-                return false;
+                throw;
             }
         }
 
-        public List<DetalleFactura> GetAll()
-        {
-            return _context.DetallesFacturas.ToList();
-        }
-
-        public DetalleFactura GetById(int id)
-        {
-            List<DetalleFactura> listD = new List<DetalleFactura>();
-            listD = _context.DetallesFacturas.Where(d => d.Id == id).ToList();
-            return listD[0];
-
-        }
-
-        public bool Update(DetalleFactura detalleFactura)
+        public bool DeleteByIdFactura(int idFactura)
         {
             try
             {
-                _context.DetallesFacturas.Update(detalleFactura);
+                List<DetalleFactura> detallesFacturas = _context.DetallesFacturas.Where(d => d.IdFactura == idFactura).ToList();
+                if (detallesFacturas.Count < 1)
+                {
+                    return false;
+                }
+                foreach (DetalleFactura detalleFactura in detallesFacturas)
+                {
+                    _context.DetallesFacturas.Remove(detalleFactura);
+                }
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
-                _context.Dispose();
-                return false;
+                throw;
+            }
+        }
+
+        public List<DetalleFactura>? GetAll()
+        {
+            try
+            {
+                return _context.DetallesFacturas.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public DetalleFactura? GetById(int id)
+        {
+            try
+            {
+                return _context.DetallesFacturas.Find(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<DetalleFactura>? GetByFacturaId(int idFactura)
+        {
+            try
+            {
+                return _context.DetallesFacturas.Where(e => e.IdFactura == idFactura).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public DetalleFactura? Update(DetalleFactura detalleFactura)
+        {
+            try
+            {
+                DetalleFactura? detalleFacturaDb = GetById(detalleFactura.Id); //Uso el metodo GetById en lugar de llamar al context.
+                if (detalleFacturaDb == null)
+                {
+                    return null;
+                }
+                detalleFacturaDb.IdMedicamento = detalleFactura.IdMedicamento;
+                detalleFacturaDb.IdFactura = detalleFactura.IdFactura;
+                detalleFacturaDb.Cantidad = detalleFactura.Cantidad;
+                detalleFacturaDb.PrecioUnitario = detalleFactura.PrecioUnitario;
+                _context.SaveChanges();
+                return detalleFacturaDb;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

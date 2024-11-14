@@ -2,76 +2,103 @@
 using Api_Farmacia.Models;
 using Api_Farmacia.Repositories.Interfaces;
 using Api_Farmacia.Services.Interfaces;
-using System.Collections.Generic;
 
 namespace Api_Farmacia.Services.Implementations
 {
     public class MedicamentoService : IMedicamentoService
     {
-        private IMedicamentoRepository _medicamento_repository;
+        private IMedicamentoRepository _medicamentoRepository;
 
         public MedicamentoService(IMedicamentoRepository repository)
         {
-            _medicamento_repository = repository;
+            _medicamentoRepository = repository;
         }
 
-        public bool Create(MedicamentoPostDto dtoMedicamento)
+        public MedicamentoPatchGetDto? Create(MedicamentoPostDto dtoMedicamento)
         {
-            Medicamento medicamento = new Medicamento()
+            Medicamento? medicamento = new Medicamento()
             {
-                Estado=dtoMedicamento.Estado,
-                Nombre=dtoMedicamento.Nombre,
-                Descripcion=dtoMedicamento.Descripcion
+                Estado = dtoMedicamento.Estado,
+                Nombre = dtoMedicamento.Nombre,
+                Descripcion = dtoMedicamento.Descripcion
             };
-            return _medicamento_repository.Create(medicamento);
+            medicamento = _medicamentoRepository.Create(medicamento);
+            if (medicamento != null)
+            {
+                return new MedicamentoPatchGetDto()
+                {
+                    Id = medicamento.Id,
+                    Nombre = medicamento.Nombre,
+                    Descripcion = medicamento.Descripcion,
+                    Estado = medicamento.Estado
+                };
+            }
+            return null;
         }
 
         public bool Delete(int id)
         {
-            return _medicamento_repository.Delete(id);
+            return _medicamentoRepository.Delete(id);
         }
 
         public List<MedicamentoPatchGetDto> GetAll()
         {
+            List<Medicamento> medicamentos = _medicamentoRepository.GetAll();
+            List<MedicamentoPatchGetDto> medicamentosPatchGetDto = new List<MedicamentoPatchGetDto>();
 
-            List<Medicamento> lstMedicamentos = new List<Medicamento>();
-            lstMedicamentos = _medicamento_repository.GetAll();
-            List<MedicamentoPatchGetDto> LstDtos = new List<MedicamentoPatchGetDto>();
-            foreach(Medicamento med in lstMedicamentos)
+            foreach (Medicamento medicamento in medicamentos)
             {
-                MedicamentoPatchGetDto dtoMedicamento = new MedicamentoPatchGetDto()
+                MedicamentoPatchGetDto medicamentoDto = new MedicamentoPatchGetDto()
                 {
-                    Id=med.Id,
-                    Nombre = med.Nombre,
-                    Descripcion = med.Descripcion,
-                    Estado = med.Estado
+                    Id = medicamento.Id,
+                    Nombre = medicamento.Nombre,
+                    Descripcion = medicamento.Descripcion,
+                    Estado = medicamento.Estado
                 };
-                LstDtos.Add(dtoMedicamento);
+                medicamentosPatchGetDto.Add(medicamentoDto);
             }
-            return LstDtos;
+            return medicamentosPatchGetDto;
         }
 
-        public Medicamento? GetById(int id)
+        public MedicamentoPatchGetDto? GetById(int id)
         {
-            return _medicamento_repository.GetById(id);
+            Medicamento? medicamento = _medicamentoRepository.GetById(id);
+            return new MedicamentoPatchGetDto()
+            {
+                Id = medicamento.Id,
+                Nombre = medicamento.Nombre,
+                Descripcion = medicamento.Descripcion,
+                Estado = medicamento.Estado
+            };
         }
 
         public bool LogicDelete(int id)
         {
-            return _medicamento_repository.LogicDelete(id);
+            return _medicamentoRepository.LogicDelete(id);
         }
 
-        public bool Update(MedicamentoPatchGetDto dtoMedicamento)
+        public MedicamentoPatchGetDto? Update(MedicamentoPatchGetDto dtoMedicamento)
         {
-            Medicamento medicamento = new Medicamento()
+            Medicamento? medicamento = new Medicamento()
             {
                 Id = dtoMedicamento.Id,
-                Estado= dtoMedicamento.Estado,
-                Nombre= dtoMedicamento.Nombre,
+                Estado = dtoMedicamento.Estado,
+                Nombre = dtoMedicamento.Nombre,
                 Descripcion = dtoMedicamento.Descripcion
 
             };
-            return _medicamento_repository.Update(medicamento);
+            medicamento = _medicamentoRepository.Update(medicamento);
+            if (medicamento != null)
+            {
+                return new MedicamentoPatchGetDto()
+                {
+                    Id = medicamento.Id,
+                    Nombre = medicamento.Nombre,
+                    Descripcion = medicamento.Descripcion,
+                    Estado = medicamento.Estado
+                };
+            }
+            return null;
         }
     }
 }
