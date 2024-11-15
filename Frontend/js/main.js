@@ -48,6 +48,42 @@ async function DeleteEntityById(url, id) {
   return await response.json();
 }
 
+function LimpiarDetalles(){
+    document.getElementById("tbody-detallesFactura").innerHTML = ""
+}
+
+function AgregarDetalle(){
+    const medicamento = document.getElementById("comboMedicamentos")
+    const medicamentoId = medicamento.value
+    const medicamentoNombre = medicamento.options[medicamento.selectedIndex].text;
+    const cantidad = document.getElementById("nuevo-detalleCantidad").value
+    const precio = document.getElementById("nuevo-detallePrecioUnitario").value
+    console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
+    
+    if (cantidad > 0) {
+        const tbody = document.getElementById("tbody-detallesFactura")
+        const row = document.createElement("tr")
+        row.className = "text-center"
+        row.innerHTML = `
+                        <td>${medicamentoNombre}</td>
+                        <td>${cantidad}</td>
+                        <td>${precio}</td>
+                        <td>
+                            <button class="btn btn-outline-danger delete-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+        `;
+        tbody.appendChild(row)
+        row.querySelector(".delete-btn").addEventListener('click', () => {
+            row.remove()
+        })
+    }
+
+        
+
+}
+
 function LoadMedicamentos() {
   fetch("https://localhost:7263/api/Medicamento")
     .then((response) => response.json())

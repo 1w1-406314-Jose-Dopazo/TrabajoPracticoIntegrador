@@ -207,7 +207,7 @@
                         </div>
                     </div>
                     <!-- tab facturas -->
-                    <div class="tab-pane container fade active" id="facturas">
+                    <div class="tab-pane container active" id="facturas">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
@@ -275,7 +275,7 @@
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
                                                             <input type="number" class="form-control"
-                                                                id="nueva-detallePrecioUnitario" placeholder="precio"
+                                                                id="nuevo-detallePrecioUnitario" placeholder="precio"
                                                                 value="100">
                                                             <label for="nuevo-detallePrecioUnitario">precio</label>
                                                         </div>
@@ -283,8 +283,7 @@
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
                                                             <button type="submit" class="btn btn-primary mx-auto my-2"
-                                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Agregar
-                                                                Medicamento</button>
+                                                                onclick="AgregarDetalle()">Agregar Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -293,23 +292,21 @@
                                                 <table class="table table-dark table-sm" id="table-detallesFactura">
                                                     <thead class="text-center">
                                                         <tr>
-                                                            <th class="d-none ">Id</th>
-                                                            <th>Nombre</th>
-                                                            <th>Descripcion</th>
-                                                            <th>Estado</th>
+                                                            <th>Medicamento</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio Unitario</th>
                                                             <th>Opciones</th>
                                                         </tr>
                                                     </thead>
                                                     <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
                                                     <tbody id="tbody-detallesFactura">
-
+                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div class="m-2">
                                                 <button type="submit" class="btn btn-primary">Guardar</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="LimpiarDetalles()">Cancelar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -324,14 +321,21 @@
                                             <h1 class="modal-title fs-5">Editar Factura</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- editar-facturaNombre/facturaDescripcion/facturaEstado -->
+                                            <!-- edeitar-facturaNombre/facturaDescripcion/facturaEstado -->
                                             <form class="form-floating">
                                                 <div class="row">
-                                                    <div class="col-12">
+                                                    <div class="col-8">
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control"
-                                                                id="ediitar-facturaFecha" placeholder="Fecha" disabled>
+                                                                id="editar-facturaFecha" placeholder="Fecha" disabled>
                                                             <label for="editar-facturaFecha">Fecha</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control"
+                                                                id="editar-facturaId" placeholder="Id" disabled>
+                                                            <label for="editar-facturaId">Id</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
@@ -356,7 +360,6 @@
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <!-- cantidad de medicamentos -->
                                                             <input type="number" class="form-control"
                                                                 id="nuevo-detalleCantidad" placeholder="cantidad"
                                                                 value="10">
@@ -365,45 +368,40 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <!-- precio unitario del medicamento -->
                                                             <input type="number" class="form-control"
-                                                                id="nueva-detallePrecioUnitario" placeholder="precio"
+                                                                id="nuevo-detallePrecioUnitario" placeholder="precio"
                                                                 value="100">
                                                             <label for="nuevo-detallePrecioUnitario">precio</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
-                                                            <button type="button" class="btn btn-primary mx-auto my-2"
-                                                                onclick="AgregarDetalle()">Agregar
-                                                                Medicamento</button>
+                                                            <button type="submit" class="btn btn-primary mx-auto my-2"
+                                                                onclick="AgregarDetalle()">Agregar Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="table-responsive p-1" id="table-container">
-                                                    <table class="table table-dark table-sm" id="table-detallesFactura">
-                                                        <thead class="text-center">
-                                                            <tr>
-                                                                <th>Medicamento</th>
-                                                                <th>Cantidad</th>
-                                                                <th>Precio Unitario</th>
-                                                                <th>Opciones</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
-                                                        <tbody id="tbody-detallesFactura">
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="submit" class="btn btn-primary"
-                                                        onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                </div>
                                             </form>
+                                            <div class="table-responsive p-1" id="table-container">
+                                                <table class="table table-dark table-sm" id="table-detallesFactura">
+                                                    <thead class="text-center">
+                                                        <tr>
+                                                            <th>Medicamento</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio Unitario</th>
+                                                            <th>Opciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
+                                                    <tbody id="tbody-detallesFactura">
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="m-2">
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="LimpiarDetalles()">Cancelar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
