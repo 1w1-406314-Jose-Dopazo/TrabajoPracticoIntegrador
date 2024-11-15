@@ -234,6 +234,42 @@ async function LoadFacturas() {
       };
     }
 
+  
+    function LoadDetallesFactura() {
+      fetch("https://localhost:7263/api/Factura")
+        .then((response) => response.json())
+        .then((data) => {
+          const tbody = document.getElementById("tbody-detallesFacturaEditar");
+          tbody.innerHTML = ""; // Limpiar la tabla
+          data.forEach((factura) => {
+            const cliente = fetch(
+              "https://localhost:7263/api/Cliente/" + factura.idCliente
+            )
+              .then((response) => response.json())
+              .then(
+                (clienteJson) => clienteJson.nombre + " " + clienteJson.apellido
+              );
+            console.log(cliente);
+            const row = `
+                      <tr>
+                        <td>${cliente}</td>
+                        <td>${factura.fecha}</td>
+                        <td>
+                          <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                        data-bs-target="#editar-medicamento-modal">
+                            <i class="bi bi-pencil"></i>
+                          </button>
+                          <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                  `;
+            tbody.innerHTML += row;
+          });
+        })
+        .catch((error) => console.error("Error al cargar medicamentos:", error));
+    }
 
 
 function LoadClientes() {
