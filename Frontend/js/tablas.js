@@ -1,134 +1,138 @@
-const localhost = "https://localhost:7263"
+const localhost = "https://localhost:7263";
 
-async function GetEntities(url) {
-    const response = await fetch(url);
-    const entities = await response.json();
-    return entities;
-  }
+async function DeleteEntityById(url, id) {
+  const response = await fetch(url + id);
+  return await response.json();
+}
 
-//Funcion que carga la tabla de medicamentos, a replicar para las tablas que se quieran cargar
-async function LoadMedicamentos() {
-    const medicamentos = await GetEntities(localhost + '/api/Medicamento');
-    const tBody = document.getElementById('tbody-medicamentos');
-    tBody.innerHTML = ""
-    medicamentos.forEach(medicamento => {
-        const tRow = document.createElement("tr");
-
-        // medicamento.id
-        const tdId = document.createElement("td")
-        tdId.innerText = medicamento.id;
-        tdId.className = "d-none";
-        tRow.appendChild(tdId);
-
-        // medicamento.nombre
-        const tdNombre = document.createElement("td")
-        tdNombre.innerText = medicamento.nombre;
-        tRow.appendChild(tdNombre);
-
-        // medicamento.descripcion
-        const tdDescripcion = document.createElement("td")
-        tdDescripcion.innerText = medicamento.descripcion;
-        tRow.appendChild(tdDescripcion);
-
-        // medicamento.estado
-        const tdEstado = document.createElement("td")
-        tdEstado.innerText = medicamento.estado ? "Activo" : "Inactivo"
-        tRow.appendChild(tdEstado);
-
-        // botones
-        const tdBotones = document.createElement("td");
-        tdBotones.className = "text-center";
-
-        // grupo de botones
-        const btnGroup = document.createElement("div")
-        btnGroup.className = "btn-group me-2"
-
-        // boton de eliminar
-        if (medicamento.estado) {
-            const btnDelete = document.createElement("button")
-            btnDelete.className = 'btn btn-outline-danger';
-            btnDelete.type = "button"
-            const iconDelete = document.createElement("i")
-            iconDelete.className = 'bi bi-trash'
-            btnDelete.appendChild(iconDelete)
-            btnGroup.appendChild(btnDelete)
-        }
-
-        // boton de actualizar
-        const btnUpdate = document.createElement("button")
-        btnUpdate.className = 'btn btn-outline-warning';
-        btnUpdate.type = "button"
-        const iconUpdate = document.createElement("i")
-        iconUpdate.className = 'bi bi-pencil-square'
-        btnUpdate.appendChild(iconUpdate)
-        btnGroup.appendChild(btnUpdate)
-        tdBotones.appendChild(btnGroup)
-        tRow.appendChild(tdBotones);
-        tBody.appendChild(tRow); 
-    });
+// funcion que carga la tabla de medicamentos
+function LoadMedicamentos() {
+  fetch(localhost + "/api/Medicamento")
+    .then((response) => response.json())
+    .then((data) => {
+      const tbody = document.getElementById("tbody-medicamentos");
+      tbody.innerHTML = ""; // Limpiar la tabla
+      data.forEach((med) => {
+        const row = `
+                  <tr>
+                    <td>${med.nombre}</td>
+                    <td>${med.descripcion}</td>
+                    <td>${med.activo ? "Activo" : "Inactivo"}</td>
+                    <td>
+                      <div class="btn-group me-2">
+                        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editar-factura-modal">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button onclick="deleteMedicamento(${med.id})" class="btn btn-outline-danger">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+              `;
+        tbody.innerHTML += row;
+      });
+    })
+    .catch((error) => console.error("Error al cargar medicamentos:", error));
 }
 
 //Funcion que carga la tabla de facturas
-async function LoadFacturas() {
-    const facturas = await GetEntities( localhost + '/api/Factura');
-    const tBody = document.getElementById('tbody-facturas');
-    tBody.innerHTML = ""
-    facturas.forEach(factura => {
-        const tRow = document.createElement("tr");
+function LoadFacturas() {
+  fetch(localhost + "/api/Factura")
+    .then((response) => response.json())
+    .then((data) => {
+      const tbody = document.getElementById("tbody-facturas");
+      tbody.innerHTML = ""; // Limpiar la tabla
+      data.forEach((factura) => {
+        const cliente = fetch(localhost + "api/Cliente/" + factura.idCliente).
+        then((response) => response.json()).
+        then((clienteJson) => clienteJson.nombre + " " + clienteJson.apellido)
+        console.log(cliente)
+        const row = `
+                  <tr>
+                    <td>${cliente}</td>
+                    <td>${factura.fecha}</td>
+                    <td>
+                      <button type="button" onclick="metodo para cargar editar-factura-modal con datos de esta factura" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editar-factura-modal">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                      <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+              `;
+        tbody.innerHTML += row;
+      });
+    })
+    .catch((error) => console.error("Error al cargar medicamentos:", error));
+}
 
-        // factura.id
-        const tdId = document.createElement("td")
-        tdId.innerText = factura.id;
-        tdId.className = "d-none";
-        tRow.appendChild(tdId);
 
-        // nombre del cliente
-        const tdCliente = document.createElement("td")
-        // TODO: agregar en este campo el nombre del cliente
-        tdCliente.innerText = "NOMBREDELCLIENTE";
-        tRow.appendChild(tdCliente);
+function LoadClientes() {
+  fetch(localhost + "/api/Factura")
+    .then((response) => response.json())
+    .then((data) => {
+      const tbody = document.getElementById("tbody-facturas");
+      tbody.innerHTML = ""; // Limpiar la tabla
+      data.forEach((factura) => {
+        const cliente = fetch(localhost + "api/Cliente/" + factura.idCliente).
+        then((response) => response.json()).
+        then((clienteJson) => clienteJson.nombre + " " + clienteJson.apellido)
+        console.log(cliente)
+        const row = `
+                  <tr>
+                    <td>${cliente}</td>
+                    <td>${factura.fecha}</td>
+                    <td>
+                      <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editar-medicamento-modal">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+              `;
+        tbody.innerHTML += row;
+      });
+    })
+    .catch((error) => console.error("Error al cargar medicamentos:", error));
+}
 
-        // factura.fecha
-        const tdFecha = document.createElement("td")
-        tdFecha.innerText = factura.fecha;
-        tRow.appendChild(tdDescripcion);
-
-        // botones
-        const tdBotones = document.createElement("td");
-        tdBotones.className = "text-center";
-
-        // grupo de botones
-        const btnGroup = document.createElement("div")
-        btnGroup.className = "btn-group me-2"
-
-        // boton de eliminar
-        if (medicamento.estado) {
-            const btnDelete = document.createElement("button")
-            btnDelete.className = 'btn btn-outline-danger';
-            btnDelete.type = "button"
-            btnDelete.addEventListener('click', () => {
-                console.log(medicamento.nombre)
-                if (confirm("Está por eliminar un medicamento, confirmar?")) {
-                    // metodo para eliminar medicamento por id
-                    LoadMedicamentos();
-                }
-            });
-            const iconDelete = document.createElement("i")
-            iconDelete.className = 'bi bi-trash'
-            btnDelete.appendChild(iconDelete)
-            btnGroup.appendChild(btnDelete)
-        }
-
-        // boton de actualizar
-        const btnUpdate = document.createElement("button")
-        btnUpdate.className = 'btn btn-outline-warning';
-        btnUpdate.type = "button"
-        const iconUpdate = document.createElement("i")
-        iconUpdate.className = 'bi bi-pencil-square'
-        btnUpdate.appendChild(iconUpdate)
-        btnGroup.appendChild(btnUpdate)
-        tdBotones.appendChild(btnGroup)
-        tRow.appendChild(tdBotones);
-        tBody.appendChild(tRow); 
-    });
+function LoadDetallesFactura() {
+  fetch(localhost + "/api/Factura")
+    .then((response) => response.json())
+    .then((data) => {
+      const tbody = document.getElementById("tbody-facturas");
+      tbody.innerHTML = ""; // Limpiar la tabla
+      data.forEach((factura) => {
+        const cliente = fetch(localhost + "api/Cliente/" + factura.idCliente).
+        then((response) => response.json()).
+        then((clienteJson) => clienteJson.nombre + " " + clienteJson.apellido)
+        console.log(cliente)
+        const row = `
+                  <tr>
+                    <td>${cliente}</td>
+                    <td>${factura.fecha}</td>
+                    <td>
+                      <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                    data-bs-target="#editar-medicamento-modal">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+              `;
+        tbody.innerHTML += row;
+      });
+    })
+    .catch((error) => console.error("Error al cargar medicamentos:", error));
 }

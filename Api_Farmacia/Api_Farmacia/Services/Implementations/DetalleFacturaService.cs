@@ -65,6 +65,27 @@ namespace Api_Farmacia.Services.Implementations
 
         }
 
+        public List<DetalleFacturaPatchGetDto> GetByIdFactura(int idFactura)
+        {
+            List<DetalleFactura> lstDetalle = _detalleFacturaRepository.GetByIdFactura(idFactura);
+            List<DetalleFacturaPatchGetDto> lstDtos = new List<DetalleFacturaPatchGetDto>();
+
+            foreach (DetalleFactura det in lstDetalle)
+            {
+                DetalleFacturaPatchGetDto dto = new DetalleFacturaPatchGetDto()
+                {
+                    Id = det.Id,
+                    Cantidad = det.Cantidad,
+                    IdFactura = det.IdFactura,
+                    IdMedicamento = det.IdMedicamento,
+                    PrecioUnitario = det.PrecioUnitario
+                };
+                lstDtos.Add(dto);
+
+            }
+            return lstDtos;
+        }
+
         public DetalleFacturaPatchGetDto? GetById(int id)
         {
             DetalleFactura? detalle = _detalleFacturaRepository.GetById(id);
