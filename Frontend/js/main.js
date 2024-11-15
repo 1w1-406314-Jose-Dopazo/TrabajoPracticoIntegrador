@@ -1,7 +1,8 @@
 // const localhost = "https://localhost:7263/api/";
 //#region forms
-
+let lstClientes = [];
 async function LoadComboClientes(idComboC){
+  lstClientes = []
   await fetch("https://localhost:7263/api/cliente")
   .then(respones => respones.json())
   .then(clientes => {
@@ -12,14 +13,19 @@ async function LoadComboClientes(idComboC){
       option.value = cliente.id
       option.text = cliente.nombre + " " + cliente.apellido
       selectCliente.appendChild(option)
+      lstClientes.push(cliente)
     });
     
   })
- 
-
+  
+  console.log(lstClientes)
+  
 }
 
+let lstMedicamentos = [];
 function LoadComboMedicamentos(idComboM) {
+  
+  lstMedicamentos = []
 fetch("https://localhost:7263/api/medicamento")
   .then((respones) => respones.json())
   .then((medicamentos) => {
@@ -31,20 +37,25 @@ fetch("https://localhost:7263/api/medicamento")
         option.value = medicamento.id;
         option.text = medicamento.nombre;
         selectCliente.appendChild(option);
+        lstMedicamentos.push(medicamento)
+        
       }
     });
   });
+  console.log(lstMedicamentos)
 }
 function LoadModalEditarFactura(){
+  
   LoadComboClientes("comboClientesEditar")
   LoadComboMedicamentos("comboMedicamentosEditar")
-  document.getElementById("editar-facturaFecha").value = new Date().toLocaleDateString('es-ES')
+  document.getElementById("editar-facturaFecha").value = new Date().toISOString()
 }
 
 function LoadModalNuevaFactura(){
+  lstDetallesLocal =[]
   LoadComboClientes("comboClientes")
   LoadComboMedicamentos("comboMedicamentos")
-  document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString('es-ES')
+  document.getElementById("nueva-facturaFecha").value = new Date().toISOString()
 }
 
 //#endregion
@@ -116,6 +127,7 @@ function LimpiarDetalles(){
     document.getElementById("tbody-detallesFactura").innerHTML = ""
 }
 
+let lstDetallesLocal =[];
 function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
     idTbody=tbody
     const medicamento = document.getElementById(idComboM)
@@ -126,6 +138,13 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
     console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
     
     if (cantidad > 0) {
+
+      let detalle ={};
+      detalle.idMedicamento = medicamentoId
+      detalle.cantidad = cantidad
+      detalle.precioUnitario = precio
+      lstDetallesLocal.push(detalle)
+
         const tbody = document.getElementById(idTbody)
         const row = document.createElement("tr")
         row.className = "text-center"
@@ -145,7 +164,6 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
         })
     }
 
-        
 
 }
 
@@ -154,6 +172,7 @@ async function LoadFacturas() {
   const response = await fetch("https://localhost:7263/api/Factura");
   const facturas = await response.json();
       const tbody = document.getElementById("tbody-facturas");
+      const idInput = document.getElementById('editar-facturaId')
       tbody.innerHTML = ""; // Limpiar la tabla
 
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
@@ -185,8 +204,9 @@ async function LoadFacturas() {
 
         // Agregar el evento para el botón de editar
         row.querySelector(".edit-btn").addEventListener("click", function(){
-            LoadModalEditarFactura()
-            modalEditarFactura.show()
+          LoadModalEditarFactura()
+          idInput.value = factura.id
+          modalEditarFactura.show()
             onclick = "LoadComboClientes()"
             onclick = "LoadComboMedicamentos()"
             document.getElementById("comboClientes").selected = factura.cliente
@@ -350,10 +370,26 @@ console.log()
 
 //#region Factura
 async function UpdateFactura(factura) {
+
+  
+  let facturaUPD={};
+  facturaUPD.id = document.getElementById('editar-facturaId').value
+  const cboCliente = document.getElementById('comboClientesEditar')
+  facturaUPD.idCliente =  lstClientes[cboCliente.selectedIndex].id
+  
+  fecha = document.getElementById("editar-facturaFecha").value = new Date().toISOString()
+
+  
+  facturaUPD.detallesFacturasDto = lstDetallesLocal
+  
+  
+  facturaUPD.fecha = fecha
+  console.log(facturaUPD)
+  
   const response = await fetch('https://localhost:7263/api/Factura', {
   method: 'PATCH',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
+  body: JSON.stringify(facturaUPD),
   credentials: 'same-origin'
   
 })
@@ -361,6 +397,8 @@ if(response.ok){
 alert('factura actualizada correctamente')
 }
 }
+
+
 async function DeleteFactura(id){
   const response = await fetch(`https://localhost:7263/api/Factura/${id}`, {
   method: 'DELETE',
@@ -375,12 +413,18 @@ alert('factura Eliminada correctamente')
 }
 
  async function CreateFactura(){
+
   let factura={};
-  const cbo = document.getElementById('comboClientes')
-  const selectedInd= cbo.selectedIndex
-  factura.idCliente 
-  factura.fecha=document.getElementById('nueva-facturaFecha').value
-  console.log(cbo[selectedInd])
+  const cboCliente = document.getElementById('comboClientes')
+  factura.idCliente =  lstClientes[cboCliente.selectedIndex].id
+  factura.detallesFacturasDto = lstDetallesLocal
+  const fecha = document.getElementById('nueva-facturaFecha').value
+  const fechaParse =new Date(fecha)
+  console.log(fecha)
+  factura.fecha = fechaParse.toISOString()
+
+
+
   const response = await fetch('https://localhost:7263/api/Factura', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
