@@ -117,12 +117,8 @@
                                             <!-- nuevo-medicamentoNombre/medicamentoDescripcion/medicamentoEstado -->
                                             <form class="form-floating">
                                                 <div class="form-floating mb-3">
-<<<<<<< HEAD
-                                                    <input type="text" class="form-control" id="nuevo-medicamentoNombre" placeholder="Nombre">
-=======
                                                     <input type="text" class="form-control" id="nuevo-medicamentoNombre"
                                                         placeholder="Nombre" value="Ibuprofeno">
->>>>>>> Branch-Lautaro
                                                     <label for="nuevo-medicamentoNombre">Nombre</label>
                                                 </div>
                     
@@ -132,29 +128,15 @@
                                                     <label for="nuevo-medicamentoDescripcion">Descripcion del
                                                         medicamento</label>
                                                 </div>
-<<<<<<< HEAD
-                                                
-                                                </div>
-                                                <div class="m-3 form-check">
-                                                    <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="nuevo-medicamentoEstado" >
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="button" class="btn btn-primary" onclick="CreateMedicamento()">Guardar</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                                </div>                                                
-                                            </form>
-=======
                     
->>>>>>> Branch-Lautaro
                                         </div>
                                         <div class="m-3 form-check">
                                             <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
                                             <input type="checkbox" class="form-check-input" id="nuevo-medicamentoEstado" checked>
                                         </div>
                                         <div class="m-2">
-                                            <button type="submit" class="btn btn-primary"
-                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="CreateMedicamento()">Guardar</button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                         </form>
@@ -173,12 +155,8 @@
                                             <!-- editar-medicamentoNombre/medicamentoDescripcion/medicamentoEstado -->
                                             <form class="form-floating">
                                                 <div class="form-floating mb-3">
-<<<<<<< HEAD
-                                                    <input type="text" class="form-control in" id="editar-medicamentoId" placeholder="Id" disabled>
-=======
                                                     <input type="text" class="form-control in" id="editar-medicamentoId" placeholder="Id"
                                                         value="" disabled>
->>>>>>> Branch-Lautaro
                                                     <label for="editar-medicamentoId">Id</label>
                                                 </div>
                     
@@ -195,31 +173,17 @@
                                                         medicamento</label>
                                                 </div>
                                                 <!--  ESTE DIV DE ABAJO SE RESPETA EN LA VISTA DE MEDICAMENTOS!!!-->
-<<<<<<< HEAD
-                                                </div>
-                                                <div class="m-3 form-check">
-                                                    <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="editar-medicamentoEstado"
-                                                        checked>
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="button" class="btn btn-primary" onclick="UpdateMedicamento(),LoadMedicamentos()">Guardar</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                        </form>
-                                    </div>
-=======
                                         </div>
                                         <div class="m-3 form-check">
                                             <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
-                                            <input type="checkbox" class="form-check-input" id="nuevo-medicamentoEstado" checked>
+                                            <input type="checkbox" class="form-check-input" id="editar-medicamentoEstado">
                                         </div>
                                         <div class="m-2">
-                                            <button type="submit" class="btn btn-primary"
-                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="UpdateMedicamento()">Guardar</button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                             </form>
                                         </div>
->>>>>>> Branch-Lautaro
                                     </div>
                                 </div>
                             </div>
@@ -497,24 +461,6 @@
                                                         <label for="floatingInputValue">Nombre</label>
                                                     </div>
 
-<<<<<<< HEAD
-                                                <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Descripcion del medicamento" id="medicamentoDescripcion" style="height: 100px"></textarea>
-                                                    <label for="floatingTextarea2">Comments</label>
-                                                </div>
-                                                
-                                                </div>
-                                                <div class="m-3 form-check">
-                                                    <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="medicamentoEstado"
-                                                        checked>
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="button" class="btn btn-primary" onclick="CreateMedicamento()">Guardar</button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                </div>                                                
-=======
                                                     <div class="form-floating">
                                                         <textarea class="form-control"
                                                             placeholder="Descripcion del medicamento"
@@ -535,7 +481,6 @@
                                                 <button type="button" class="btn btn-danger"
                                                     data-bs-dismiss="modal">Cancelar</button>
                                             </div>
->>>>>>> Branch-Lautaro
                                             </form>
                                         </div>
                                     </div>
@@ -642,24 +587,6 @@
                                                         <label for="floatingInputValue">Nombre</label>
                                                     </div>
 
-<<<<<<< HEAD
-                                                <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Descripcion del medicamento" id="medicamentoDescripcion" style="height: 100px"></textarea>
-                                                    <label for="floatingTextarea2">Comments</label>
-                                                </div>
-                                                
-                                                </div>
-                                                <div class="m-3 form-check">
-                                                    <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="medicamentoEstado"
-                                                        checked>
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="button" class="btn btn-primary" onclick="CreateMedicamento(medicamento)">Guardar</button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                </div>                                                
-=======
                                                     <div class="form-floating">
                                                         <textarea class="form-control"
                                                             placeholder="Descripcion del medicamento"
@@ -680,7 +607,6 @@
                                                 <button type="button" class="btn btn-danger"
                                                     data-bs-dismiss="modal">Cancelar</button>
                                             </div>
->>>>>>> Branch-Lautaro
                                             </form>
                                         </div>
                                     </div>
