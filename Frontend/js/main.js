@@ -104,6 +104,7 @@ fetch("https://localhost:7263/api/Medicamento")
   .catch((error) => console.error("Error al cargar medicamentos:", error));
 }
 
+<<<<<<< HEAD
 
 //Funcion que carga la tabla de facturas
 async function LoadFacturas() {
@@ -111,6 +112,49 @@ async function LoadFacturas() {
   const response = await fetch("https://localhost:7263/api/Factura");
   const facturas = await response.json();
       const tbody = document.getElementById("tbody-facturas");
+=======
+function LimpiarDetalles(){
+    document.getElementById("tbody-detallesFactura").innerHTML = ""
+}
+
+function AgregarDetalle(){
+    const medicamento = document.getElementById("comboMedicamentos")
+    const medicamentoId = medicamento.value
+    const medicamentoNombre = medicamento.options[medicamento.selectedIndex].text;
+    const cantidad = document.getElementById("nuevo-detalleCantidad").value
+    const precio = document.getElementById("nuevo-detallePrecioUnitario").value
+    console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
+    
+    if (cantidad > 0) {
+        const tbody = document.getElementById("tbody-detallesFactura")
+        const row = document.createElement("tr")
+        row.className = "text-center"
+        row.innerHTML = `
+                        <td>${medicamentoNombre}</td>
+                        <td>${cantidad}</td>
+                        <td>${precio}</td>
+                        <td>
+                            <button class="btn btn-outline-danger delete-btn">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+        `;
+        tbody.appendChild(row)
+        row.querySelector(".delete-btn").addEventListener('click', () => {
+            row.remove()
+        })
+    }
+
+        
+
+}
+
+function LoadMedicamentos() {
+  fetch("https://localhost:7263/api/Medicamento")
+    .then((response) => response.json())
+    .then((medicamentos) => {
+      const tbody = document.getElementById("tbody-medicamentos");
+>>>>>>> Branch-Lautaro
       tbody.innerHTML = ""; // Limpiar la tabla
 
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
