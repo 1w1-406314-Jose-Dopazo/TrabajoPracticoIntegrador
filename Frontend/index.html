@@ -282,8 +282,8 @@
                                                     </div>
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
-                                                            <button type="submit" class="btn btn-primary mx-auto my-2"
-                                                                onclick="AgregarDetalle()">Agregar Medicamento</button>
+                                                            <button type="button" class="btn btn-primary mx-auto my-2"
+                                                                onclick="AgregarDetalle('comboMedicamentos','nuevo-detalleCantidad','nuevo-detallePrecioUnitario','tbody-detallesFactura')">Agregar Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -305,7 +305,7 @@
                                                 </table>
                                             </div>
                                             <div class="m-2">
-                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                <button type="button" class="btn btn-primary" onclick="CreateFactura()">Guardar</button>
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="LimpiarDetalles()">Cancelar</button>
                                             </div>
                                         </div>
@@ -321,7 +321,7 @@
                                             <h1 class="modal-title fs-5">Editar Factura</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- edeitar-facturaNombre/facturaDescripcion/facturaEstado -->
+                                            <!-- editar-facturaNombre/facturaDescripcion/facturaEstado -->
                                             <form class="form-floating">
                                                 <div class="row">
                                                     <div class="col-8">
@@ -341,43 +341,43 @@
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de cliente -->
-                                                            <select class="form-select" id="comboClientes"
+                                                            <select class="form-select" id="comboClientesEditar"
                                                                 aria-label="Floating label select example">
                                                                 <!-- se cargan los clientes con la funcion LoadComboClientes() cuando se abre el modal-->
                                                             </select>
-                                                            <label for="comboClientes">Cliente</label>
+                                                            <label for="comboClientesEditar">Cliente</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-8">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de medicamento -->
-                                                            <select class="form-select" id="comboMedicamentos"
+                                                            <select class="form-select" id="comboMedicamentosEditar"
                                                                 aria-label="Floating label select example">
                                                                 <!-- se cargan los medicamentos con la funcion LoadComboMedicamentos() cuando se abre el modal-->
                                                             </select>
-                                                            <label for="comboMedicamentos">Medicamento</label>
+                                                            <label for="comboMedicamentosEditar">Medicamento</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
                                                             <input type="number" class="form-control"
-                                                                id="nuevo-detalleCantidad" placeholder="cantidad"
+                                                                id="editar-detalleCantidad" placeholder="cantidad"
                                                                 value="10">
-                                                            <label for="nuevo-detalleCantidad">Cantidad</label>
+                                                            <label for="editar-detalleCantidad">Cantidad</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
                                                             <input type="number" class="form-control"
-                                                                id="nuevo-detallePrecioUnitario" placeholder="precio"
+                                                                id="editar-detallePrecioUnitario" placeholder="precio"
                                                                 value="100">
-                                                            <label for="nuevo-detallePrecioUnitario">precio</label>
+                                                            <label for="editar-detallePrecioUnitario">precio</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
-                                                            <button type="submit" class="btn btn-primary mx-auto my-2"
-                                                                onclick="AgregarDetalle()">Agregar Medicamento</button>
+                                                            <button type="button" class="btn btn-primary mx-auto my-2"
+                                                                onclick="AgregarDetalle('comboMedicamentosEditar','editar-detalleCantidad','editar-detallePrecioUnitario','tbody-detallesFacturaEditar')">Agregar Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -393,13 +393,13 @@
                                                         </tr>
                                                     </thead>
                                                     <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
-                                                    <tbody id="tbody-detallesFactura">
+                                                    <tbody id="tbody-detallesFacturaEditar">
                                                         
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div class="m-2">
-                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                <button type="button" class="btn btn-primary">Guardar</button>
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="LimpiarDetalles()">Cancelar</button>
                                             </div>
                                         </div>

@@ -1,26 +1,29 @@
 // const localhost = "https://localhost:7263/api/";
 //#region forms
 
-function LoadComboClientes(){
-  fetch("https://localhost:7263/api/cliente")
+async function LoadComboClientes(idComboC){
+  await fetch("https://localhost:7263/api/cliente")
   .then(respones => respones.json())
   .then(clientes => {
-      const selectCliente = document.getElementById("comboClientes")
-      selectCliente.innerHTML = ""
-      clientes.forEach(cliente => {
-          const option = document.createElement("option")
-          option.value = cliente.id
-          option.text = cliente.nombre + " " + cliente.apellido
-          selectCliente.appendChild(option)
-      });
+    const selectCliente = document.getElementById(idComboC)
+    selectCliente.innerHTML = ""
+    clientes.forEach(cliente => {
+      const option = document.createElement("option")
+      option.value = cliente.id
+      option.text = cliente.nombre + " " + cliente.apellido
+      selectCliente.appendChild(option)
+    });
+    
   })
+ 
+
 }
 
-function LoadComboMedicamentos() {
+function LoadComboMedicamentos(idComboM) {
 fetch("https://localhost:7263/api/medicamento")
   .then((respones) => respones.json())
   .then((medicamentos) => {
-    const selectCliente = document.getElementById("comboMedicamentos");
+    const selectCliente = document.getElementById(idComboM);
     selectCliente.innerHTML = "";
     medicamentos.forEach((medicamento) => {
       if (medicamento.estado) {
@@ -32,10 +35,15 @@ fetch("https://localhost:7263/api/medicamento")
     });
   });
 }
+function LoadModalEditarFactura(){
+  LoadComboClientes("comboClientesEditar")
+  LoadComboMedicamentos("comboMedicamentosEditar")
+  document.getElementById("editar-facturaFecha").value = new Date().toLocaleDateString('es-ES')
+}
 
 function LoadModalNuevaFactura(){
-  LoadComboClientes()
-  LoadComboMedicamentos()
+  LoadComboClientes("comboClientes")
+  LoadComboMedicamentos("comboMedicamentos")
   document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString('es-ES')
 }
 
@@ -104,29 +112,21 @@ fetch("https://localhost:7263/api/Medicamento")
   .catch((error) => console.error("Error al cargar medicamentos:", error));
 }
 
-<<<<<<< HEAD
-
-//Funcion que carga la tabla de facturas
-async function LoadFacturas() {
-  await fetch("https://localhost:7263/api/Factura")
-  const response = await fetch("https://localhost:7263/api/Factura");
-  const facturas = await response.json();
-      const tbody = document.getElementById("tbody-facturas");
-=======
 function LimpiarDetalles(){
     document.getElementById("tbody-detallesFactura").innerHTML = ""
 }
 
-function AgregarDetalle(){
-    const medicamento = document.getElementById("comboMedicamentos")
+function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
+    idTbody=tbody
+    const medicamento = document.getElementById(idComboM)
     const medicamentoId = medicamento.value
     const medicamentoNombre = medicamento.options[medicamento.selectedIndex].text;
-    const cantidad = document.getElementById("nuevo-detalleCantidad").value
-    const precio = document.getElementById("nuevo-detallePrecioUnitario").value
+    const cantidad = document.getElementById(idDetCant).value
+    const precio = document.getElementById(idDetPre).value
     console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
     
     if (cantidad > 0) {
-        const tbody = document.getElementById("tbody-detallesFactura")
+        const tbody = document.getElementById(idTbody)
         const row = document.createElement("tr")
         row.className = "text-center"
         row.innerHTML = `
@@ -149,12 +149,11 @@ function AgregarDetalle(){
 
 }
 
-function LoadMedicamentos() {
-  fetch("https://localhost:7263/api/Medicamento")
-    .then((response) => response.json())
-    .then((medicamentos) => {
-      const tbody = document.getElementById("tbody-medicamentos");
->>>>>>> Branch-Lautaro
+async function LoadFacturas() {
+  await fetch("https://localhost:7263/api/Factura")
+  const response = await fetch("https://localhost:7263/api/Factura");
+  const facturas = await response.json();
+      const tbody = document.getElementById("tbody-facturas");
       tbody.innerHTML = ""; // Limpiar la tabla
 
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
@@ -186,6 +185,7 @@ function LoadMedicamentos() {
 
         // Agregar el evento para el botón de editar
         row.querySelector(".edit-btn").addEventListener("click", function(){
+            LoadModalEditarFactura()
             modalEditarFactura.show()
             onclick = "LoadComboClientes()"
             onclick = "LoadComboMedicamentos()"
@@ -312,6 +312,7 @@ console.log(med)
 
 // O delete entidad, como lo veas mejor
 async function DeleteMedicamento(id){
+
   if (confirm("Eliminar medicamento con id "+ id+ "?")) {
       const response = await fetch(`https://localhost:7263/api/Medicamento/${id}`, {
           method: 'DELETE',
@@ -331,7 +332,7 @@ let med ={};
 med.nombre=document.getElementById('nuevo-medicamentoNombre').value
 med.descripcion=document.getElementById('nuevo-medicamentoDescripcion').value
 med.estado=document.getElementById('nuevo-medicamentoEstado').checked
-console.log(med)
+console.log()
   const response = await fetch('https://localhost:7263/api/Medicamento', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -373,11 +374,17 @@ alert('factura Eliminada correctamente')
 }
 }
 
-async function CreateFactura(factura){
-const response = await fetch('https://localhost:7263/api/Factura', {
+ async function CreateFactura(){
+  let factura={};
+  const cbo = document.getElementById('comboClientes')
+  const selectedInd= cbo.selectedIndex
+  factura.idCliente 
+  factura.fecha=document.getElementById('nueva-facturaFecha').value
+  console.log(cbo[selectedInd])
+  const response = await fetch('https://localhost:7263/api/Factura', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
+  body: JSON.stringify(factura),
   credentials: 'same-origin'
   
 })
@@ -386,9 +393,13 @@ alert('factura Creada correctamente')
 }
 
 }
+
 //#endregion Factura
 
 //#region Clientes
+
+
+
 async function UpdateCliente(factura) {
   const response = await fetch('https://localhost:7263/api/Cliente', {
   method: 'PATCH',
