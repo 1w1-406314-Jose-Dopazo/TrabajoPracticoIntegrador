@@ -177,7 +177,7 @@ async function LoadFacturas() {
       tbody.innerHTML = ""; // Limpiar la tabla
 
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
-      // const modalInfoFactura = new bootstrap.Modal(document.getElementById('info-factura-modal'))
+      const modalInfoFactura = new bootstrap.Modal(document.getElementById('info-factura-modal'))
 
       for (const factura of facturas) {
         const row = document.createElement("tr");
@@ -207,6 +207,7 @@ async function LoadFacturas() {
         row.querySelector(".edit-btn").addEventListener("click", function(){
           LoadModalEditarFactura()
           idInput.value = factura.id
+          LoadDetallesFactura(factura.id)
           modalEditarFactura.show()
             onclick = "LoadComboClientes()"
             onclick = "LoadComboMedicamentos()"
@@ -216,10 +217,10 @@ async function LoadFacturas() {
         });
 
         // Agregar el evento para el boton de informacion de factura
-        row.querySelector(".edit-btn").addEventListener("click", function(){
-          modalEditarFactura.show()
-          document.getElementById("comboClientes").selected = factura.cliente
-        console.log("Botón de editar presionado para:", factura);
+        row.querySelector(".info-btn").addEventListener("click", function(){
+          modalInfoFactura.show()
+          LoadDetallesFacturaInfo(factura.id)
+        console.log("Botón de info presionado para:", factura);
         // Mostrar modal
       });
         
@@ -234,77 +235,82 @@ async function LoadFacturas() {
       };
     }
 
-  
-    function LoadDetallesFactura() {
-      fetch("https://localhost:7263/api/Factura")
+    async function LoadDetallesFacturaInfo(id) {
+      await fetch("https://localhost:7263/api/DetalleFactura/GetByFactura?id=" + id)
         .then((response) => response.json())
-        .then((data) => {
-          const tbody = document.getElementById("tbody-detallesFacturaEditar");
+        .then(async (detallesFactura) => {
+          const tbody = document.getElementById("tbody-detallesFacturaInfo");
           tbody.innerHTML = ""; // Limpiar la tabla
-          data.forEach((factura) => {
-            const cliente = fetch(
-              "https://localhost:7263/api/Cliente/" + factura.idCliente
-            )
-              .then((response) => response.json())
-              .then(
-                (clienteJson) => clienteJson.nombre + " " + clienteJson.apellido
-              );
-            console.log(cliente);
-            const row = `
-                      <tr>
-                        <td>${cliente}</td>
-                        <td>${factura.fecha}</td>
-                        <td>
-                          <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                        data-bs-target="#editar-medicamento-modal">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                  `;
-            tbody.innerHTML += row;
-          });
+    
+          for (const detalleFactura of detallesFactura) {
+            const row = document.createElement("tr");
+            row.className = "text-center";
+
+            const medicamento = await fetch(
+              `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
+            ).then((response) => response.json());
+
+            row.innerHTML = `
+                    <tr>
+                      <td class="d-none">${medicamento.id}</td>
+                      <td>${medicamento.nombre}</td>
+                      <td>${detalleFactura.cantidad}</td>
+                      <td>${detalleFactura.precioUnitario}</td>
+                    <tr>
+                      `;
+            tbody.appendChild(row);
+          }
         })
         .catch((error) => console.error("Error al cargar medicamentos:", error));
     }
 
+    async function LoadDetallesFactura(id) {
+      await fetch("https://localhost:7263/api/DetalleFactura/GetByFactura?id=" + id)
+        .then((response) => response.json())
+        .then(async (detallesFactura) => {
+          const tbody = document.getElementById("tbody-detallesFacturaEditar");
+          tbody.innerHTML = ""; // Limpiar la tabla
+    
+          for (const detalleFactura of detallesFactura) {
+            const row = document.createElement("tr");
+            row.className = "text-center";
+            lstDetallesLocal.push({
+              "cantidad":  detalleFactura.cantidad,
+              "precioUnitario":  detalleFactura.precioUnitario,
+              "idMedicamento": detalleFactura.idMedicamento 
+            })
+            const medicamento = await fetch(
+              `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
+            ).then((response) => response.json());
+
+            row.innerHTML = `
+                    <tr>
+                      <td class="d-none">${medicamento.id}</td>
+                      <td>${medicamento.nombre}</td>
+                      <td>${detalleFactura.cantidad}</td>
+                      <td>${detalleFactura.precioUnitario}</td>
+                      <td class="text-center">
+                        <div class="btn-group me-2">
+                          <button class="btn btn-outline-danger delete-btn">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                      </tr>
+                      `;
+            tbody.appendChild(row);
+            // Agregar el evento para el botón de eliminar
+            row.querySelector(".delete-btn").addEventListener("click", () => {
+              row.remove();
+            });
+          }
+        })
+        .catch((error) => console.error("Error al cargar medicamentos:", error));
+    }
+    
+
 
 function LoadClientes() {
-fetch("https://localhost:7263/api/Factura")
-  .then((response) => response.json())
-  .then((data) => {
-    const tbody = document.getElementById("tbody-facturas");
-    tbody.innerHTML = ""; // Limpiar la tabla
-    data.forEach((factura) => {
-      const cliente = fetch("https://localhost:7263/api/Cliente/" + factura.idCliente).
-      then((response) => response.json()).
-      then((clienteJson) => clienteJson.nombre + " " + clienteJson.apellido)
-      console.log(cliente)
-      const row = `
-                <tr>
-                  <td>${cliente}</td>
-                  <td>${factura.fecha}</td>
-                  <td>
-                    <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                  data-bs-target="#editar-medicamento-modal">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-            `;
-      tbody.innerHTML += row;
-    });
-  })
-  .catch((error) => console.error("Error al cargar medicamentos:", error));
-}
-
-function LoadDetallesFactura() {
 fetch("https://localhost:7263/api/Factura")
   .then((response) => response.json())
   .then((data) => {
@@ -407,32 +413,32 @@ console.log()
 
 //#region Factura
 async function UpdateFactura(factura) {
+  // facturaUPD.id = document.getElementById('editar-facturaId').value
+  // const cboCliente = document.getElementById('comboClientesEditar')
+  // facturaUPD.idCliente =  lstClientes[cboCliente.selectedIndex].id
+  // fecha = document.getElementById("editar-facturaFecha").value = new Date().toISOString()
+  // facturaUPD.fecha = fecha
+  // facturaUPD.detallesFacturasDto = lstDetallesLocal
+  
 
-  
-  let facturaUPD={};
-  facturaUPD.id = document.getElementById('editar-facturaId').value
-  const cboCliente = document.getElementById('comboClientesEditar')
-  facturaUPD.idCliente =  lstClientes[cboCliente.selectedIndex].id
-  
-  fecha = document.getElementById("editar-facturaFecha").value = new Date().toISOString()
 
-  
-  facturaUPD.detallesFacturasDto = lstDetallesLocal
-  
-  
-  facturaUPD.fecha = fecha
-  console.log(facturaUPD)
-  
-  const response = await fetch('https://localhost:7263/api/Factura', {
-  method: 'PATCH',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(facturaUPD),
-  credentials: 'same-origin'
-  
-})
-if(response.ok){
-alert('factura actualizada correctamente')
-}
+  let facturaUPD = {
+    id: document.getElementById("editar-facturaId").value,
+    idCliente: document.getElementById("comboClientesEditar").value,
+    fecha: (document.getElementById("editar-facturaFecha").value = new Date().toISOString()),
+    detallesFacturasDto: lstDetallesLocal,
+  };
+  console.log(facturaUPD);
+
+  const response = await fetch("https://localhost:7263/api/Factura", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(facturaUPD),
+    credentials: "same-origin",
+  });
+  if (response.ok) {
+    alert("factura actualizada correctamente");
+  }
 }
 
 
@@ -449,31 +455,27 @@ alert('factura Eliminada correctamente')
 }
 }
 
- async function CreateFactura(){
+ async function CreateFactura() {
+   let factura = {};
+   const cboCliente = document.getElementById("comboClientes");
+   factura.idCliente = lstClientes[cboCliente.selectedIndex].id;
+   const fecha = document.getElementById("nueva-facturaFecha").value;
+   const fechaParse = new Date(fecha);
+   factura.fecha = fechaParse.toISOString();
+   factura.detallesFacturasDto = lstDetallesLocal;
+   console.log(factura);
 
-  let factura={};
-  const cboCliente = document.getElementById('comboClientes')
-  factura.idCliente =  lstClientes[cboCliente.selectedIndex].id
-  const fecha = document.getElementById('nueva-facturaFecha').value
-  const fechaParse =new Date(fecha)
-  console.log(fecha)
-  factura.fecha = fechaParse.toISOString()
-  factura.detallesFacturasDto = lstDetallesLocal
-console.log(factura)
-
-
-  const response = await fetch('https://localhost:7263/api/Factura', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(factura),
-  credentials: 'same-origin'
-  
-})
-if(response.ok){
-alert('factura Creada correctamente')
-}
-
-}
+   const response = await fetch("https://localhost:7263/api/Factura", {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify(factura),
+     credentials: "same-origin",
+   });
+   if (response.ok) {
+     alert("factura Creada correctamente");
+     document.getElementById("tbody-detallesFactura").innerHTML = ""
+   }
+ }
 
 //#endregion Factura
 
