@@ -89,24 +89,25 @@
                     </div>
                     <!-- tab Medicamentos -->
                     <div class="tab-pane container fade" id="medicamentos">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Medicamentos</h1>
                                 <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
-                                 <div class="btn-group m-2">
-                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                     data-bs-target="#nuevo-medicamento-modal">
-                                     Nuevo <i class="bi bi-upload"></i>
+                                <div class="btn-group m-2">
+                                    <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
+                                        data-bs-target="#nuevo-medicamento-modal">
+                                        Nuevo <i class="bi bi-upload"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow"
-                                    onclick="LoadMedicamentos()">
-                                    Cargar<i class="bi bi-download"></i>
-                                </button>
+                                    <button type="button" class="btn btn-warning btn-sm shadow" onclick="LoadMedicamentos()">
+                                        Cargar<i class="bi bi-download"></i>
+                                    </button>
+                                </div>
                             </div>
                             <!-- nuevo medicamento modal -->
-                            <div class="modal fade" id="nuevo-medicamento-modal"
-                                aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
+                            <div class="modal fade" id="nuevo-medicamento-modal" aria-labelledby="nuevo-medicamento-label"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -116,14 +117,22 @@
                                             <!-- nuevo-medicamentoNombre/medicamentoDescripcion/medicamentoEstado -->
                                             <form class="form-floating">
                                                 <div class="form-floating mb-3">
+<<<<<<< HEAD
                                                     <input type="text" class="form-control" id="nuevo-medicamentoNombre" placeholder="Nombre">
+=======
+                                                    <input type="text" class="form-control" id="nuevo-medicamentoNombre"
+                                                        placeholder="Nombre" value="Ibuprofeno">
+>>>>>>> Branch-Lautaro
                                                     <label for="nuevo-medicamentoNombre">Nombre</label>
                                                 </div>
-
+                    
                                                 <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Descripcion del medicamento" id="nuevo-medicamentoDescripcion" style="height: 100px"></textarea>
-                                                    <label for="nuevo-medicamentoDescripcion">Descripcion del medicamento</label>
+                                                    <textarea class="form-control" placeholder="Descripcion del medicamento"
+                                                        id="nuevo-medicamentoDescripcion" style="height: 100px"></textarea>
+                                                    <label for="nuevo-medicamentoDescripcion">Descripcion del
+                                                        medicamento</label>
                                                 </div>
+<<<<<<< HEAD
                                                 
                                                 </div>
                                                 <div class="m-3 form-check">
@@ -135,13 +144,26 @@
                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                                 </div>                                                
                                             </form>
+=======
+                    
+>>>>>>> Branch-Lautaro
                                         </div>
+                                        <div class="m-3 form-check">
+                                            <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
+                                            <input type="checkbox" class="form-check-input" id="nuevo-medicamentoEstado" checked>
+                                        </div>
+                                        <div class="m-2">
+                                            <button type="submit" class="btn btn-primary"
+                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <!-- editar medicamento modal -->
-                            <div class="modal fade" id="editar-medicamento-modal"
-                                aria-labelledby="editar-medicamento-label" aria-hidden="true">
+                            <div class="modal fade" id="editar-medicamento-modal" aria-labelledby="editar-medicamento-label"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -151,20 +173,29 @@
                                             <!-- editar-medicamentoNombre/medicamentoDescripcion/medicamentoEstado -->
                                             <form class="form-floating">
                                                 <div class="form-floating mb-3">
+<<<<<<< HEAD
                                                     <input type="text" class="form-control in" id="editar-medicamentoId" placeholder="Id" disabled>
+=======
+                                                    <input type="text" class="form-control in" id="editar-medicamentoId" placeholder="Id"
+                                                        value="" disabled>
+>>>>>>> Branch-Lautaro
                                                     <label for="editar-medicamentoId">Id</label>
                                                 </div>
-
+                    
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="editar-medicamentoNombre" placeholder="Nombre" value="Ibuprofeno">
+                                                    <input type="text" class="form-control" id="editar-medicamentoNombre"
+                                                        placeholder="Nombre" value="Ibuprofeno">
                                                     <label for="editar-medicamentoNombre">Nombre</label>
                                                 </div>
-
+                    
                                                 <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Descripcion del medicamento" id="editar-medicamentoDescripcion" style="height: 100px"></textarea>
-                                                    <label for="editar-medicamentoDescripcion">Descripcion del medicamento</label>
+                                                    <textarea class="form-control" placeholder="Descripcion del medicamento"
+                                                        id="editar-medicamentoDescripcion" style="height: 100px"></textarea>
+                                                    <label for="editar-medicamentoDescripcion">Descripcion del
+                                                        medicamento</label>
                                                 </div>
                                                 <!--  ESTE DIV DE ABAJO SE RESPETA EN LA VISTA DE MEDICAMENTOS!!!-->
+<<<<<<< HEAD
                                                 </div>
                                                 <div class="m-3 form-check">
                                                     <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
@@ -176,6 +207,19 @@
                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                         </form>
                                     </div>
+=======
+                                        </div>
+                                        <div class="m-3 form-check">
+                                            <label class="form-check-label" for="nuevo-medicamentoEstado">Activo</label>
+                                            <input type="checkbox" class="form-check-input" id="nuevo-medicamentoEstado" checked>
+                                        </div>
+                                        <div class="m-2">
+                                            <button type="submit" class="btn btn-primary"
+                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
+>>>>>>> Branch-Lautaro
                                     </div>
                                 </div>
                             </div>
@@ -199,8 +243,9 @@
                         </div>
                     </div>
                     <!-- tab facturas -->
-                    <div class="tab-pane container active" id="facturas">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="tab-pane container fade active" id="facturas">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Facturas</h1>
@@ -210,18 +255,15 @@
                                         data-bs-target="#nueva-factura-modal" onclick="LoadModalNuevaFactura()">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow" onclick="LoadFacturas()">
+                                    <button type="button" class="btn btn-warning btn-sm shadow"
+                                        onclick="LoadFacturas()">
                                         Cargar<i class="bi bi-download"></i>
-                                    </button>
-                                    <!-- El Boton editar activa el editar-factura-modal -->
-                                    <button type="button" class="btn btn-sm shadow btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editar-factura-modal">
-                                        Editar<i class="bi bi-pencil"></i>
                                     </button>
                                 </div>
                             </div>
                             <!-- nueva factura modal -->
-                            <div class="modal fade" id="nueva-factura-modal"
-                                aria-labelledby="nueva-factura-label" aria-hidden="true">
+                            <div class="modal fade" id="nueva-factura-modal" aria-labelledby="nueva-factura-label"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -233,14 +275,16 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="nueva-facturaFecha" placeholder="Fecha" disabled>
+                                                            <input type="text" class="form-control"
+                                                                id="nueva-facturaFecha" placeholder="Fecha" disabled>
                                                             <label for="nueva-facturaFecha">Fecha</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de cliente -->
-                                                            <select class="form-select" id="comboClientes" aria-label="Floating label select example">
+                                                            <select class="form-select" id="comboClientes"
+                                                                aria-label="Floating label select example">
                                                                 <!-- se cargan los clientes con la funcion LoadComboClientes() cuando se abre el modal-->
                                                             </select>
                                                             <label for="comboClientes">Cliente</label>
@@ -249,7 +293,8 @@
                                                     <div class="col-8">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de medicamento -->
-                                                            <select class="form-select" id="comboMedicamentos" aria-label="Floating label select example">
+                                                            <select class="form-select" id="comboMedicamentos"
+                                                                aria-label="Floating label select example">
                                                                 <!-- se cargan los medicamentos con la funcion LoadComboMedicamentos() cuando se abre el modal-->
                                                             </select>
                                                             <label for="comboMedicamentos">Medicamento</label>
@@ -257,14 +302,16 @@
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="nuevo-detalleCantidad" placeholder="cantidad"
+                                                            <input type="number" class="form-control"
+                                                                id="nuevo-detalleCantidad" placeholder="cantidad"
                                                                 value="10">
                                                             <label for="nuevo-detalleCantidad">Cantidad</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="nueva-detallePrecioUnitario" placeholder="precio"
+                                                            <input type="number" class="form-control"
+                                                                id="nueva-detallePrecioUnitario" placeholder="precio"
                                                                 value="100">
                                                             <label for="nuevo-detallePrecioUnitario">precio</label>
                                                         </div>
@@ -272,42 +319,41 @@
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
                                                             <button type="submit" class="btn btn-primary mx-auto my-2"
-                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Agregar Medicamento</button>
-                                                        </div>
+                                                                onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Agregar
+                                                                Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
-                                                <div class="table-responsive p-1" id="table-container">
-                                                    <table class="table table-dark table-sm" id="table-detallesFactura">
-                                                        <thead class="text-center">
-                                                            <tr>
-                                                                <th class="d-none ">Id</th>
-                                                                <th>Nombre</th>
-                                                                <th>Descripcion</th>
-                                                                <th>Estado</th>
-                                                                <th>Opciones</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
-                                                        <tbody id="tbody-detallesFactura">
-        
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="m-2">
-                                                    <button type="submit" class="btn btn-primary"
-                                                        onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                                </div>
                                             </form>
+                                            <div class="table-responsive p-1" id="table-container">
+                                                <table class="table table-dark table-sm" id="table-detallesFactura">
+                                                    <thead class="text-center">
+                                                        <tr>
+                                                            <th class="d-none ">Id</th>
+                                                            <th>Nombre</th>
+                                                            <th>Descripcion</th>
+                                                            <th>Estado</th>
+                                                            <th>Opciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
+                                                    <tbody id="tbody-detallesFactura">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="m-2">
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- editar factura modal -->
-                            <div class="modal fade" id="editar-factura-modal"
-                                aria-labelledby="editar-factura-label" aria-hidden="true">
+                            <div class="modal fade" id="editar-factura-modal" aria-labelledby="editar-factura-label"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -319,14 +365,16 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="ediitar-facturaFecha" placeholder="Fecha" disabled>
+                                                            <input type="text" class="form-control"
+                                                                id="ediitar-facturaFecha" placeholder="Fecha" disabled>
                                                             <label for="editar-facturaFecha">Fecha</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de cliente -->
-                                                            <select class="form-select" id="comboClientes" aria-label="Floating label select example">
+                                                            <select class="form-select" id="comboClientes"
+                                                                aria-label="Floating label select example">
                                                                 <!-- se cargan los clientes con la funcion LoadComboClientes() cuando se abre el modal-->
                                                             </select>
                                                             <label for="comboClientes">Cliente</label>
@@ -335,7 +383,8 @@
                                                     <div class="col-8">
                                                         <div class="form-floating mb-3">
                                                             <!-- Seleccion de medicamento -->
-                                                            <select class="form-select" id="comboMedicamentos" aria-label="Floating label select example">
+                                                            <select class="form-select" id="comboMedicamentos"
+                                                                aria-label="Floating label select example">
                                                                 <!-- se cargan los medicamentos con la funcion LoadComboMedicamentos() cuando se abre el modal-->
                                                             </select>
                                                             <label for="comboMedicamentos">Medicamento</label>
@@ -343,56 +392,59 @@
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="nuevo-detalleCantidad" placeholder="cantidad"
+                                                            <!-- cantidad de medicamentos -->
+                                                            <input type="number" class="form-control"
+                                                                id="nuevo-detalleCantidad" placeholder="cantidad"
                                                                 value="10">
-                                                            <label for="nuevo-facturaCantidad">Cantidad</label>
+                                                            <label for="nuevo-detalleCantidad">Cantidad</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="nueva-detallePrecioUnitario" placeholder="precio"
+                                                            <!-- precio unitario del medicamento -->
+                                                            <input type="number" class="form-control"
+                                                                id="nueva-detallePrecioUnitario" placeholder="precio"
                                                                 value="100">
                                                             <label for="nuevo-detallePrecioUnitario">precio</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 text-center">
                                                         <div class="form-floating mb-3">
-                                                            <button type="submit" class="btn btn-primary mx-auto my-2"
-                                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Agregar Medicamento</button>
-                                                        </div>
+                                                            <button type="button" class="btn btn-primary mx-auto my-2"
+                                                                onclick="AgregarDetalle()">Agregar
+                                                                Medicamento</button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
+
                                                 <div class="table-responsive p-1" id="table-container">
                                                     <table class="table table-dark table-sm" id="table-detallesFactura">
                                                         <thead class="text-center">
                                                             <tr>
-                                                                <th class="d-none ">Id</th>
-                                                                <th>Nombre</th>
-                                                                <th>Descripcion</th>
-                                                                <th>Estado</th>
+                                                                <th>Medicamento</th>
+                                                                <th>Cantidad</th>
+                                                                <th>Precio Unitario</th>
                                                                 <th>Opciones</th>
                                                             </tr>
                                                         </thead>
                                                         <!-- aca se cargan los medicamentos con LoadDetallesFactura(id)-->
                                                         <tbody id="tbody-detallesFactura">
-        
+
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <div class="m-2">
                                                     <button type="submit" class="btn btn-primary"
                                                         onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">Cancelar</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
+
                         </div>
                         <div class="table-responsive p-1" id="table-container">
                             <table class="table table-dark table-sm">
@@ -406,43 +458,46 @@
                                 </thead>
                                 <!-- aca se cargan los medicamentos con Facturas()-->
                                 <tbody id="tbody-facturas">
-                                    
+    
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <!-- tab Clientes -->
                     <div class="tab-pane container fade" id="medicamentos">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Medicamentos (Clientes)</h1>
                                 <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
-                                 <div class="btn-group m-2">
-                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                     data-bs-target="#nuevo-medicamento-modal">
-                                     Nuevo <i class="bi bi-upload"></i>
+                                <div class="btn-group m-2">
+                                    <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
+                                        data-bs-target="#nuevo-medicamento-modal">
+                                        Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm shadow"
-                                    onclick="LoadMedicamentos()">
-                                    Cargar<i class="bi bi-download"></i>
-                                </button>
-                            </div>
-                            <!-- nuevo medicamento modal -->
-                            <div class="modal fade" id="nuevo-medicamento-modal"
-                                aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form class="form-floating">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="medicamentoNombre" placeholder="Nombre" value="Ibuprofeno">
-                                                    <label for="floatingInputValue">Nombre</label>
-                                                </div>
+                                        onclick="LoadMedicamentos()">
+                                        Cargar<i class="bi bi-download"></i>
+                                    </button>
+                                </div>
+                                <!-- nuevo medicamento modal -->
+                                <div class="modal fade" id="nuevo-medicamento-modal"
+                                    aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-floating">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="medicamentoNombre"
+                                                            placeholder="Nombre" value="Ibuprofeno">
+                                                        <label for="floatingInputValue">Nombre</label>
+                                                    </div>
 
+<<<<<<< HEAD
                                                 <div class="form-floating">
                                                     <textarea class="form-control" placeholder="Descripcion del medicamento" id="medicamentoDescripcion" style="height: 100px"></textarea>
                                                     <label for="floatingTextarea2">Comments</label>
@@ -459,6 +514,28 @@
                                                     <button type="button" class="btn btn-danger"
                                                         data-bs-dismiss="modal">Cancelar</button>
                                                 </div>                                                
+=======
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control"
+                                                            placeholder="Descripcion del medicamento"
+                                                            id="medicamentoDescripcion"
+                                                            style="height: 100px"></textarea>
+                                                        <label for="floatingTextarea2">Comments</label>
+                                                    </div>
+
+                                            </div>
+                                            <div class="m-3 form-check">
+                                                <label class="form-check-label" for="exampleCheck1">Activo</label>
+                                                <input type="checkbox" class="form-check-input" id="medicamentoEstado"
+                                                    checked>
+                                            </div>
+                                            <div class="m-2">
+                                                <button type="submit" class="btn btn-primary"
+                                                    onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                                            </div>
+>>>>>>> Branch-Lautaro
                                             </form>
                                         </div>
                                     </div>
@@ -533,36 +610,39 @@
                     </div>
                     <!-- tab usuarios -->
                     <div class="tab-pane container fade" id="medicamentos">
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Medicamentos (Usuarios)</h1>
                                 <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
-                                 <div class="btn-group m-2">
-                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                     data-bs-target="#nuevo-medicamento-modal">
-                                     Nuevo <i class="bi bi-upload"></i>
+                                <div class="btn-group m-2">
+                                    <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
+                                        data-bs-target="#nuevo-medicamento-modal">
+                                        Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm shadow"
-                                    onclick="LoadMedicamentos()">
-                                    Cargar<i class="bi bi-download"></i>
-                                </button>
-                            </div>
-                            <!-- nuevo medicamento modal -->
-                            <div class="modal fade" id="nuevo-medicamento-modal"
-                                aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form class="form-floating">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="medicamentoNombre" placeholder="Nombre" value="Ibuprofeno">
-                                                    <label for="floatingInputValue">Nombre</label>
-                                                </div>
+                                        onclick="LoadMedicamentos()">
+                                        Cargar<i class="bi bi-download"></i>
+                                    </button>
+                                </div>
+                                <!-- nuevo medicamento modal -->
+                                <div class="modal fade" id="nuevo-medicamento-modal"
+                                    aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-floating">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="medicamentoNombre"
+                                                            placeholder="Nombre" value="Ibuprofeno">
+                                                        <label for="floatingInputValue">Nombre</label>
+                                                    </div>
 
+<<<<<<< HEAD
                                                 <div class="form-floating">
                                                     <textarea class="form-control" placeholder="Descripcion del medicamento" id="medicamentoDescripcion" style="height: 100px"></textarea>
                                                     <label for="floatingTextarea2">Comments</label>
@@ -579,6 +659,28 @@
                                                     <button type="button" class="btn btn-danger"
                                                         data-bs-dismiss="modal">Cancelar</button>
                                                 </div>                                                
+=======
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control"
+                                                            placeholder="Descripcion del medicamento"
+                                                            id="medicamentoDescripcion"
+                                                            style="height: 100px"></textarea>
+                                                        <label for="floatingTextarea2">Comments</label>
+                                                    </div>
+
+                                            </div>
+                                            <div class="m-3 form-check">
+                                                <label class="form-check-label" for="exampleCheck1">Activo</label>
+                                                <input type="checkbox" class="form-check-input" id="medicamentoEstado"
+                                                    checked>
+                                            </div>
+                                            <div class="m-2">
+                                                <button type="submit" class="btn btn-primary"
+                                                    onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                                            </div>
+>>>>>>> Branch-Lautaro
                                             </form>
                                         </div>
                                     </div>
