@@ -1,4 +1,5 @@
-﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
+﻿using Api_Farmacia.Controllers.DTO_s.Cliente;
+using Api_Farmacia.Controllers.DTO_s.Medicamento;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,18 +9,18 @@ namespace Api_Farmacia.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicamentoController : ControllerBase
+    public class ClienteController : ControllerBase
     {
-        private IMedicamentoService _service;
+        private IClienteService _service;
 
-        public MedicamentoController(IMedicamentoService service)
+        public ClienteController(IClienteService service)
         {
             _service = service;
         }
 
-        // GET: api/<MedicamentoController>
+        // GET: api/<ClienteController>
         [HttpGet]
-        public ActionResult<List<MedicamentoPatchGetDto>> Get()
+        public ActionResult<List<ClientePatchGetDto>> Get()
         {
             try
             {
@@ -31,9 +32,9 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // GET api/<MedicamentoController>/5
+        // GET api/<ClienteController>/5
         [HttpGet("{id}")]
-        public ActionResult<MedicamentoPatchGetDto> Get(int id)
+        public ActionResult<ClientePatchGetDto> Get(int id)
         {
             try
             {
@@ -45,14 +46,13 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // POST api/<MedicamentoController>
+        // POST api/<ClienteController>
         [HttpPost]
-        //TODO: PONERLO COMO FROMBODY, para pasarlo como json desde el front
-        public ActionResult<MedicamentoPatchGetDto> Post(MedicamentoPostDto medicamentoPostDto)
+        public ActionResult<ClientePatchGetDto> Post(ClientePostDto clientePostDto)
         {
             try
             {
-               return Created(string.Empty ,_service.Create(medicamentoPostDto));
+                return Created(string.Empty, _service.Create(clientePostDto));
             }
             catch (Exception ex)
             {
@@ -60,18 +60,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // PUT api/<MedicamentoController>/5
-        [HttpPatch]
-        public ActionResult<MedicamentoPatchGetDto> Patch(MedicamentoPatchGetDto medicamentoPatchGetDto)
+        // PUT api/<ClienteController>/5
+        [HttpPut("{id}")]
+        public ActionResult<ClientePatchGetDto> Patch(ClientePatchGetDto clientePatchGetDto)
         {
             try
             {
-                MedicamentoPatchGetDto? medicamentoActualizado = _service.Update(medicamentoPatchGetDto);
-                if (medicamentoActualizado != null)
+                ClientePatchGetDto? clienteActualizado = _service.Update(clientePatchGetDto);
+                if (clienteActualizado != null)
                 {
-                    return Created(string.Empty, medicamentoActualizado);
+                    return Created(string.Empty, clienteActualizado);
                 }
-                return NotFound($"El medicamento no existe");
+                return NotFound($"El cliente no existe");
             }
             catch (Exception ex)
             {
@@ -79,17 +79,17 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // DELETE api/<MedicamentoController>/5
+        // DELETE api/<ClienteController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             try
             {
-                if (_service.LogicDelete(id))
+                if (_service.Delete(id))
                 {
                     return Ok();
                 }
-                return BadRequest($"El medicamento con id {id} no existe");
+                return BadRequest($"El cliente con id {id} no existe");
             }
             catch (Exception ex)
             {
