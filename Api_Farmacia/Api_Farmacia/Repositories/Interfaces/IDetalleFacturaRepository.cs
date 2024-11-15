@@ -6,6 +6,8 @@ namespace Api_Farmacia.Repositories.Interfaces
     {
         List<DetalleFactura> GetAll();
 
+        List<DetalleFactura> GetByIdFactura(int idFactura);
+
         bool Delete(int id);
 
         bool DeleteByIdFactura(int idFactura);

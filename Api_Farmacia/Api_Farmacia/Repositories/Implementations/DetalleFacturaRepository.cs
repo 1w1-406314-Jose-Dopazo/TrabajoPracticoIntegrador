@@ -89,7 +89,7 @@ namespace Api_Farmacia.Repositories.Implementations
                 throw;
             }
         }
-        public List<DetalleFactura>? GetByFacturaId(int idFactura)
+        public List<DetalleFactura>? GetByIdFactura(int idFactura)
         {
             try
             {

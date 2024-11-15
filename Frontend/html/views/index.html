@@ -1,0 +1,294 @@
+<!-- Row que contiene las 2 cols -->
+<div class="row">
+    <!-- sidebar con pills para las vistas -->
+    <nav id="sidebarMenu" class="col-4 col-sm-4 col-md-3 col-lg-2 d-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+            <ul class="nav nav-pills flex-column bg-light navbar-light shadow">
+                <li class="nav-item">
+                    <h3 class="text-center" id="sidebar-user">Nombre del Usuario</h3>
+                </li>
+                <!-- Nav pills -->
+                <li class="nav-item">
+                    <button class="nav-link w-100" data-bs-toggle="tab" href="#inicio"
+                        onclick="alert('Deberia cargar la vista de inicio, que se ve despues del login')"><i
+                            class="bi bi-house"></i></i>
+                        Inicio</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link w-100" data-bs-toggle="tab" href="#medicamentos"
+                        onclick="alert('Deberia cargar la vista con medicamentos')"><i
+                            class="bi bi-capsule"></i>
+                        Medicamentos</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link w-100" data-bs-toggle="tab" href="#facturas"
+                        onclick="alert('Deberia cargar la vista con Facturas')"><i class="bi bi-shop"></i>
+                        Facturas</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link w-100" data-bs-toggle="tab" href="#ventas"
+                        onclick="alert('Deberia cargar la vista con Ventas')"><i class="bi bi-cart"></i>
+                        Ventas</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- main que muestra la vista segun se seleccione, a la derecha del sidebar -->
+    <main class="vh-100 col-8 col-sm-8 col-md-9 col-lg-10 ms-sm-auto px-md-4" id="view-container">
+        <!-- Contenedor de Vistas de la sidebar -->
+        <div class="tab-content">
+            <!-- tab Inicio -->
+            <div class="tab-pane container fade" id="inicio">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <h1 class="h2">Inicio</h1>
+                    </div>
+                </div>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni architecto quibusdam,
+                    exercitationem doloribus omnis magnam at rem, eaque consequuntur hic corrupti optio, rerum
+                    autem blanditiis qui fugit quas voluptatem voluptas?
+                </p>
+            </div>
+            <!-- tab Medicamentos -->
+            <div class="tab-pane container fade" id="medicamentos">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <!-- Titulo y botones Nuevo/Cargar/Editar -->
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <h1 class="h2">Medicamentos</h1>
+                        <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
+                        <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
+                            data-bs-target="#nuevo-medicamento-modal">
+                            Nuevo <i class="bi bi-upload"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm ms-2 shadow"
+                            onclick="LoadMedicamentos()">
+                            Cargar<i class="bi bi-download"></i>
+                        </button>
+                        <!-- El Boton editar activa el modal con form para cargar nuevo medicamento -->
+                        <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
+                            data-bs-target="#editar-medicamento-modal">
+                            Editar <i class="bi bi-pencil"></i>
+                        </button>
+                    </div>
+                    <!-- nuevo medicamento modal -->
+                    <div class="modal fade" id="nuevo-medicamento-modal"
+                        aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3 row">
+                                            <label for="medicamentoNombre"
+                                                class="col-sm-3 col-form-label">Nombre</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="medicamentoNombre"
+                                                    value="Paracetamol">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="medicamentoDescripcion"
+                                                class="col-sm-3 col-form-label">Descripcion</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control"
+                                                    id="medicamentoDescripcion"
+                                                    value="Si te duele la cabeza tomate un paracetamol ;)">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <label class="form-check-label" for="exampleCheck1">Activo</label>
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                                checked>
+                                        </div>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- editar medicamento modal -->
+                    <div class="modal fade" id="editar-medicamento-modal"
+                        aria-labelledby="editar-medicamento-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Editar Medicamento</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3 row">
+                                            <label for="medicamentoId"
+                                                class="col-sm-3 col-form-label">Id</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="medicamentoId"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="medicamentoNombre"
+                                                class="col-sm-3 col-form-label">Nombre</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="medicamentoNombre"
+                                                    value="Paracetamol">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="medicamentoDescripcion"
+                                                class="col-sm-3 col-form-label">Descripcion</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control"
+                                                    id="medicamentoDescripcion"
+                                                    value="Si te duele la cabeza tomate un paracetamol ;)">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <label class="form-check-label" for="exampleCheck1">Activo</label>
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                                                checked>
+                                        </div>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive p-1" id="table-container">
+                    <table class="table table-dark table-sm">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="d-none">Id</th>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <!-- aca se cargan los medicamentos con LoadMedicamentos()-->
+                        <tbody id="tbody-medicamentos">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- tab facturas -->
+            <div class="tab-pane container active" id="facturas">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <!-- Titulo y botones Nuevo/Cargar/Editar -->
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <h1 class="h2">Facturas</h1>
+                        <!-- El Boton Nuevo activa el nueva-factura-modal -->
+                        <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
+                            data-bs-target="#nueva-factura-modal">
+                            Nueva <i class="bi bi-upload"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm ms-2 shadow"
+                            onclick="LoadFacturas()">
+                            Cargar<i class="bi bi-download"></i>
+                        </button>
+                        <!-- El Boton editar activa el editar-factura-modal -->
+                        <button type="button" class="btn btn-primary btn-sm ms-2 shadow" data-bs-toggle="modal"
+                            data-bs-target="#editar-factura-modal">
+                            Editar <i class="bi bi-pencil"></i>
+                        </button>
+                    </div>
+                    <!-- nueva factura modal -->
+                    <div class="modal fade" id="nueva-factura-modal" aria-labelledby="nueva-factura-label"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Nueva Factura</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3 row">
+                                            <label for="facturaCliente"
+                                                class="col-sm-3 col-form-label">Cliente</label>
+                                            <!-- Cargar combobox con nombres de los clientes de la db -->
+                                            <div class="col-sm-8 form-">
+                                                <input type="text" class="form-select" id="facturaCliente">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="NewEntity('https:/'+'/localhost:7263/api/Factura',CreateFactura())">
+                                            Guardar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                            Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- editar factura modal -->
+                    <div class="modal fade" id="editar-factura-modal" aria-labelledby="editar-factura-label"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">Editar Factura</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3 row">
+                                            <label for="facturaId" class="col-sm-3 col-form-label">Id</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="facturaId" value="">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="facturaCliente"
+                                                class="col-sm-3 col-form-label">Cliente</label>
+                                            <!-- Cargar combobox con nombres de los clientes de la db -->
+                                            <div class="col-sm-8 form-">
+                                                <input type="text" class="form-select" id="facturaCliente">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive p-1" id="table-container">
+                    <table class="table table-dark table-sm">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="d-none">Id</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <!-- aca se cargan los medicamentos con LoadMedicamentos()-->
+                        <tbody id="tbody-medicamentos">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- tab Ventas -->
+            <div class="tab-pane container fade" id="ventas">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <h1 class="h2">Ventas</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

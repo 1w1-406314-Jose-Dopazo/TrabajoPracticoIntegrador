@@ -7,49 +7,44 @@ async function Get(url){
     return entities;
 }
 
-async function LoadTable(url,modalId){
-    const entities =  await Get(url)
-    const $container = document.getElementById('tbody-medicamentos'); 
-    const table = await CreateTable(entities,url,modalId);
-    table.className = "table table-dark table-sm";
-    $container.innerHTML = ''
-    $container.appendChild(table)
-}
-function capitalize(word){
-const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-return capitalizedWord
-}
+// async function LoadTable(url, containerId){
+//     const entities =  await Get(url)
+//     const $container = document.getElementById('TableContainer')
+//     const table = await CreateTable(entities,url);
+//     table.className = "table table-bordered";
+//     $container.innerHTML = ''
+//     $container.appendChild(table)
+// }
 
+// async function CreateTable(entities,url) {
+//   console.log(entities);
 
+//   const table = document.createElement("table");
+//   const thead = document.createElement("thead");
 
-async function CreateTable(entities,url,modalId) {
-  const modal = new bootstrap.Modal(document.getElementById(modalId));
-  const table = document.createElement("table");
-  const thead = document.createElement("thead");
+//   const headers = Object.keys(entities[0]);
+//   const titles = headers.map(e=>e.toUpperCase())
+//   const headRow = document.createElement("tr");
+//   headers.forEach((header) => {
+//     const th = document.createElement("th");
+//     th.textContent = header.toUpperCase();
+//     if(th.textContent === 'ID'){
+//       th.style.display = 'none'
+//     }
+//     headRow.appendChild(th);
+//   });
+//   th = document.createElement("th");
+//   th.textContent = 'Acciones'
+//   headRow.appendChild(th);
+//   thead.appendChild(headRow);
+//   table.appendChild(thead);
 
-  const headers = Object.keys(entities[0]);
-  const headRow = document.createElement("tr");
-  headers.forEach((header) => {
-    const th = document.createElement("th");
-    th.textContent = capitalize(header)
-    if(th.textContent === 'Id'){
-      th.style.display = 'none'
-    }
-    th.className = 'text-center'
-    headRow.appendChild(th);
-  });
-  th = document.createElement("th");
-  th.textContent = 'Acciones'
-  headRow.appendChild(th);
-  thead.appendChild(headRow);
-  table.appendChild(thead);
+//   const tbody = document.createElement("tbody");
 
-  const tbody = document.createElement("tbody");
+//   const dataRows = Object.values(entities);
 
-  const dataRows = Object.values(entities);
-
-  entities.forEach((entity) => {
-    const row = document.createElement("tr");
+//   entities.forEach((entity) => {
+//     const row = document.createElement("tr");
 
     const td2 = document.createElement('td');
     
@@ -105,11 +100,11 @@ async function CreateTable(entities,url,modalId) {
       row.appendChild(td2)
     });
     
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  return table;
-}
+//     tbody.appendChild(row);
+//   });
+//   table.appendChild(tbody);
+//   return table;
+// }
 
 
 
@@ -163,7 +158,7 @@ async function DeletetEntity(url,url2,modalId){
     descripcionInput.value =$medicamento.descripcion
 }
 
-
+/*
   function CreateMedicamento(){
      const nombreValue = document.getElementById('txtNombreNuevo').value;
      const estadoValue = document.getElementById('chkNuevo').checked;
@@ -189,7 +184,7 @@ function EditMedicamento(){
      medicamento.descripcion = descripcionValue;
 
      return medicamento
-}
+}*/
 
 
 //#endregion
@@ -252,7 +247,7 @@ async function LoadDetalle(id){
 
 
 //#region Factura
-
+/*
 function CreateFactura(){
   const idCliente = document.getElementById('ID_Cliente').value;
   const fecha = document.getElementById('Fecha').value;
@@ -264,8 +259,9 @@ function CreateFactura(){
 
   return factura
 }
+/*
 
-
+/*
 function EditFactura(){
   const id = document.getElementById('ID_Factura').value;
   const idCliente = document.getElementById('ID_Cliente').value;
@@ -301,6 +297,7 @@ async function LoadFactura(id){
   idClienteInput.value = $factura.idCliente
   FechaInput.value = $factura.fecha
 }
+  */
 //#endregion
 
   

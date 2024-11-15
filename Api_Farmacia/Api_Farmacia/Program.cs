@@ -28,16 +28,24 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<FarmaciaContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+
 builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
-builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
-builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
-builder.Services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDetalleFacturaService, DetalleFacturaService>();
+
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
 builder.Services.AddScoped<IFacturaService, FacturaService>();
+
+builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
 builder.Services.AddScoped<IMedicamentoService,MedicamentoService>();
+
+builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
+builder.Services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
     (options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {

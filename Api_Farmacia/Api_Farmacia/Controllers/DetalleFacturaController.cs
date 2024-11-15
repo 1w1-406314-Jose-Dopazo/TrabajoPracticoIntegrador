@@ -16,7 +16,7 @@ namespace Api_Farmacia.Controllers
         }
 
 
-        [HttpGet("Detalle_Factura")]
+        [HttpGet]
         public ActionResult<List<DetalleFacturaPatchGetDto>> Get()
         {
             try
@@ -42,7 +42,20 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        [HttpDelete("Detalle_Factura/{id}")]
+        [HttpGet("GetByFactura")]
+        public ActionResult<DetalleFacturaPatchGetDto> GetByFactura(int id)
+        {
+            try
+            {
+                return Ok(_service.GetByIdFactura(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             try
@@ -72,15 +85,12 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-
-
-
         [HttpPatch("Detalle_Factura")]
         public ActionResult<DetalleFacturaPatchGetDto> UpdateDetalle(DetalleFacturaPatchGetDto detalleFacturaPatchGetDto)
         {
             try
             {
-                DetalleFacturaPatchGetDto? detalleFacturaActualizado= _service.Update(detalleFacturaPatchGetDto);
+                DetalleFacturaPatchGetDto? detalleFacturaActualizado = _service.Update(detalleFacturaPatchGetDto);
                 if (detalleFacturaActualizado != null)
                 {
                     return Created(string.Empty, detalleFacturaActualizado);

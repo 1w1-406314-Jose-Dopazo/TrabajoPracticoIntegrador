@@ -7,6 +7,8 @@ namespace Api_Farmacia.Services.Interfaces
     {
         List<DetalleFacturaPatchGetDto> GetAll();
 
+        List<DetalleFacturaPatchGetDto>? GetByIdFactura(int idFactura);
+
         bool Delete(int id);
 
         DetalleFacturaPatchGetDto? GetById(int id);
