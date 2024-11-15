@@ -138,12 +138,13 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
     console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
     
     if (cantidad > 0) {
-
-      let detalle ={};
-      detalle.idMedicamento = medicamentoId
-      detalle.cantidad = cantidad
-      detalle.precioUnitario = precio
-      lstDetallesLocal.push(detalle)
+      lstDetallesLocal.push(
+        {
+          "cantidad":  cantidad,
+          "precioUnitario":  precio,
+          "idMedicamento": medicamentoId 
+        }
+      )
 
         const tbody = document.getElementById(idTbody)
         const row = document.createElement("tr")
@@ -417,12 +418,12 @@ alert('factura Eliminada correctamente')
   let factura={};
   const cboCliente = document.getElementById('comboClientes')
   factura.idCliente =  lstClientes[cboCliente.selectedIndex].id
-  factura.detallesFacturasDto = lstDetallesLocal
   const fecha = document.getElementById('nueva-facturaFecha').value
   const fechaParse =new Date(fecha)
   console.log(fecha)
   factura.fecha = fechaParse.toISOString()
-
+  factura.detallesFacturasDto = lstDetallesLocal
+console.log(factura)
 
 
   const response = await fetch('https://localhost:7263/api/Factura', {
