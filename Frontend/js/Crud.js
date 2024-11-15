@@ -7,93 +7,90 @@ async function Get(url){
     return entities;
 }
 
-async function LoadTable(url, containerId){
-    const entities =  await Get(url)
-    const $container = document.getElementById('TableContainer')
-    const table = await CreateTable(entities,url);
-    table.className = "table table-bordered";
-    $container.innerHTML = ''
-    $container.appendChild(table)
-}
+// async function LoadTable(url, containerId){
+//     const entities =  await Get(url)
+//     const $container = document.getElementById('TableContainer')
+//     const table = await CreateTable(entities,url);
+//     table.className = "table table-bordered";
+//     $container.innerHTML = ''
+//     $container.appendChild(table)
+// }
 
-async function CreateTable(entities,url) {
-  console.log(entities);
+// async function CreateTable(entities,url) {
+//   console.log(entities);
 
-  const table = document.createElement("table");
-  const thead = document.createElement("thead");
+//   const table = document.createElement("table");
+//   const thead = document.createElement("thead");
 
-  const headers = Object.keys(entities[0]);
-  const titles = headers.map(e=>e.toUpperCase())
-  const headRow = document.createElement("tr");
-  headers.forEach((header) => {
-    const th = document.createElement("th");
-    th.textContent = header.toUpperCase();
-    if(th.textContent === 'ID'){
-      th.style.display = 'none'
-    }
-    headRow.appendChild(th);
-  });
-  th = document.createElement("th");
-  th.textContent = 'Acciones'
-  headRow.appendChild(th);
-  thead.appendChild(headRow);
-  table.appendChild(thead);
+//   const headers = Object.keys(entities[0]);
+//   const titles = headers.map(e=>e.toUpperCase())
+//   const headRow = document.createElement("tr");
+//   headers.forEach((header) => {
+//     const th = document.createElement("th");
+//     th.textContent = header.toUpperCase();
+//     if(th.textContent === 'ID'){
+//       th.style.display = 'none'
+//     }
+//     headRow.appendChild(th);
+//   });
+//   th = document.createElement("th");
+//   th.textContent = 'Acciones'
+//   headRow.appendChild(th);
+//   thead.appendChild(headRow);
+//   table.appendChild(thead);
 
-  const tbody = document.createElement("tbody");
+//   const tbody = document.createElement("tbody");
 
-  const dataRows = Object.values(entities);
+//   const dataRows = Object.values(entities);
 
-  entities.forEach((entity) => {
-    const row = document.createElement("tr");
+//   entities.forEach((entity) => {
+//     const row = document.createElement("tr");
 
-    const td2 = document.createElement('td');
-    const button = document.createElement('button');
-    button.textContent = 'Quitar';
-    button.className = 'btn btn-danger';
-    button.type = 'button'
-    button.dataset.id = entity.id
-    button.addEventListener('click',async function(){
-      const currentId =  button.dataset.id;
-      DeletetEntity(url+'/'+`${currentId}`,url)
-    })
-    td2.appendChild(button)
+//     const td2 = document.createElement('td');
+//     const button = document.createElement('button');
+//     button.textContent = 'Quitar';
+//     button.className = 'btn btn-danger';
+//     button.type = 'button'
+//     button.dataset.id = entity.id
+//     button.addEventListener('click',async function(){
+//       const currentId =  button.dataset.id;
+//       DeletetEntity(url+'/'+`${currentId}`,url)
+//     })
+//     td2.appendChild(button)
 
 
 
-    Object.values(entity).forEach((value) => {
-      const td = document.createElement("td");
-      td.textContent = value;
+//     Object.values(entity).forEach((value) => {
+//       const td = document.createElement("td");
+//       td.textContent = value;
      
-      row.appendChild(td);
-      row.appendChild(td2)
-    });
+//       row.appendChild(td);
+//       row.appendChild(td2)
+//     });
     
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  return table;
-}
+//     tbody.appendChild(row);
+//   });
+//   table.appendChild(tbody);
+//   return table;
+// }
 
 
-async function GetEntityParameters(url){
-  const entities =  await Get(url)
-  Parameters = Object.keys(entities[0])
- return Parameters
-}
+// async function GetEntityParameters(url){
+//   const entities =  await Get(url)
+//   Parameters = Object.keys(entities[0])
+//  return Parameters
+// }
 
 
 
-async function NewEntity(url,obj){
-  
-  console.log(obj)
-    fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-        credentials: 'same-origin'
-        
-    })
-    .catch(error => console.error('Error:', error));
+async function NewEntity(url, obj) {
+  console.log(obj);
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj),
+    credentials: "same-origin",
+  }).catch((error) => console.error("Error:", error));
 }
 
 async function EditEntity(url,obj){
