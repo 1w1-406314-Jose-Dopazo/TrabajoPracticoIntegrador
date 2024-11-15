@@ -4,13 +4,15 @@ const localhost = "https://localhost:7263/api/";
 // UpdateMedicamento, DeleteMedicamento, CreateMedicamento
 
 //#region Medicamento
-async function UpdateMedicamento(medicamento) {
+async function UpdateMedicamento() {
 
-    let med;
+    let med ={};
     med.id = medicamento.id
     med.nombre=document.getElementById('editar-medicamentoNombre').value
     med.descripcion=document.getElementById('editar-medicamentoDescripcion').value
-    med.estado=document.getElementById('nuevo-medicamentoEstado').value
+    med.estado=document.getElementById('editar-medicamentoEstado').checked
+
+    console.log(med)
     
 
         const response = await fetch('https://localhost:7263/api/Medicamento', {
@@ -27,25 +29,26 @@ async function UpdateMedicamento(medicamento) {
 
 // O delete entidad, como lo veas mejor
 async function DeleteMedicamento(id){
+    if (confirm("Eliminar medicamento?")) {
         const response = await fetch(`https://localhost:7263/api/Medicamento/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-        credentials: 'same-origin'
-        
-    })
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj),
+            credentials: 'same-origin'
+            
+        })
+    }
     if(response.ok){
       alert('medicamento Eliminado correctamente')
     }
 }
 
-
-async function CreateMedicamento(medicamento){
-    let med
-    med.nombre = document.getElementById('nuevo-medicamentoNombre').value
-    med.estado = document.getElementById('nuevo-medicamentoEstado').value
-    med.descripcion =document.getElementById('nuevo-medicamentoDescripcion').value
-
+async function CreateMedicamento(){
+  let med ={};
+    med.nombre=document.getElementById('nuevo-medicamentoNombre').value
+    med.descripcion=document.getElementById('nuevo-medicamentoDescripcion').value
+    med.estado=document.getElementById('nuevo-medicamentoEstado').value
+    console.log('holaaaaaa')
     const response = await fetch('https://localhost:7263/api/Medicamento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
