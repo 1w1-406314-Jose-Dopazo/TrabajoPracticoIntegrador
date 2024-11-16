@@ -24,7 +24,7 @@
         <div class="navbar-nav">
             <!-- Boton para salir, cierra la sesion -->
             <div class="nav-item text-nowrap">
-                <button class="btn text-white" onclick="alert('Deberia cerrar la sesion')">Salir</button>
+                <button class="btn text-white" id="logoutBtn">Salir</button>
             </div>
         </div>
     </header>
@@ -41,28 +41,26 @@
                         </li>
                         <!-- Nav pills -->
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#inicio"
-                                onclick="alert('Deberia cargar la vista de inicio, que se ve despues del login')"><i
-                                    class="bi bi-house"></i></i>
+                            <button class="nav-link w-100 esconder" data-bs-toggle="tab" href="#inicio"><i class="bi bi-house"></i></i>
                                 Inicio</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#medicamentos">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#medicamentos">
                                 <i class="bi bi-capsule"></i>
                                 Medicamentos</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#facturas">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#facturas">
                                 <i class="bi bi-shop"></i>
                                 Facturas</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#clientes">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#clientes">
                                 <i class="bi bi-people"></i>
                                 Clientes</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100" data-bs-toggle="tab" href="#usuarios">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#usuarios">
                                 <i class="bi bi-person-square"></i>
                                 Usuarios</button>
                         </li>
@@ -74,18 +72,32 @@
                 <!-- Contenedor de Vistas de la sidebar -->
                 <div class="tab-content">
                     <!-- tab Inicio -->
-                    <div class="tab-pane container fade" id="inicio">
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <h1 class="h2">Inicio</h1>
+                    <div class="tab-pane container active" id="inicio">
+                        <div class="d-flex justify-content-center align-items-center vh-100"> <!-- Alineación centrada -->
+                            <div class="col-3 text-center">
+                                <form class="form-floating">
+                                    <div class="row">
+                                        <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" id="loginUsuario" class="form-control" placeholder="usuario">
+                                                <label for="loginUsuario">Usuario</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" id="loginContraseña" class="form-control" placeholder="contraseña">
+                                                <label for="loginContraseña">Contraseña</label>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="Login('https:/'+'/localhost:7263/api/Auth/login')">
+                                        Iniciar Sesión
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni architecto quibusdam,
-                            exercitationem doloribus omnis magnam at rem, eaque consequuntur hic corrupti optio, rerum
-                            autem blanditiis qui fugit quas voluptatem voluptas?
-                        </p>
+
                     </div>
                     <!-- tab Medicamentos -->
                     <div class="tab-pane container fade" id="medicamentos">

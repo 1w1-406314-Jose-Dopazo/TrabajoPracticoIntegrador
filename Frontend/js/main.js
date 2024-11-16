@@ -524,3 +524,66 @@ alert('cliente Creado correctamente')
 //#endregion Clientes
 
 //#endregion Entidades
+
+function mostrarMenu(token) {
+  const menus = document.getElementsByClassName("menu-oculto");
+
+  for (let menu of menus) {
+    menu.className = "nav-link w-100";
+  }
+  for (let menu of menus) {
+    menu.className = "nav-link w-100";
+  }
+  for (let menu of menus) {
+    menu.className = "nav-link w-100";
+  }
+
+  document.getElementById("inicio").innerHTML = `
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <h1 class="h2">Token de sesion:</h1>
+                            </div>
+                        </div>
+                        <p>${token}</p>
+  `
+}
+
+function login_succes(nombre, token) {
+    
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+      alert('Sesión cerrada');
+      location.reload(); 
+  });
+  
+  document.getElementById('sidebar-user').innerText = nombre
+  
+  mostrarMenu(token)
+}
+
+async function Login(url) {
+  const nombre = document.getElementById("loginUsuario").value;
+  const contraseña = document.getElementById("loginContraseña").value;
+
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: nombre,
+      password: contraseña,
+    }),
+    credentials: "same-origin",
+  })
+    .then( async response => await response.json())
+    .then( token => {
+      console.log("Login exitoso", token);
+      if (token != null) {
+        login_succes(nombre, token.token);
+      }
+    })
+    .catch((error) => {
+      console.error("Error en el login:", error);
+    });
+}

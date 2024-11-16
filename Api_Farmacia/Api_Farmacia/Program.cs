@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<FarmaciaContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("LautiConnection")));
 
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
