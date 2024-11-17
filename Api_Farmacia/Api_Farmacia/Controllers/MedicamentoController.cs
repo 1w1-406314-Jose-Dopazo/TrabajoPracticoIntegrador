@@ -1,6 +1,7 @@
-﻿using Api_Farmacia.Controllers.DTO_s.Medicamento;
-using Api_Farmacia.Services.Interfaces;
+﻿using Api_Farmacia.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Api_Farmacia.Repositories.Implementations;
+using Api_Farmacia.Data.MedicamentoDTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,20 +11,20 @@ namespace Api_Farmacia.Controllers
     [ApiController]
     public class MedicamentoController : ControllerBase
     {
-        private IMedicamentoService _service;
+        private AbstractRepository<Medicamento> _repository;
 
-        public MedicamentoController(IMedicamentoService service)
+        public MedicamentoController(AbstractRepository<Medicamento> repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
-        // GET: api/<MedicamentoController>
+        // GET: api/Medicamento
         [HttpGet]
-        public ActionResult<List<MedicamentoPatchGetDto>> Get()
+        public async Task<ActionResult<List<Medicamento>>> GetAll()
         {
             try
             {
-                return Ok(_service.GetAll());
+                return Ok(await _repository.GetAll());
             }
             catch (Exception ex)
             {
@@ -31,13 +32,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // GET api/<MedicamentoController>/5
+        // GET api/Medicamento/5
         [HttpGet("{id}")]
-        public ActionResult<MedicamentoPatchGetDto> Get(int id)
+        public async Task<ActionResult<Medicamento>> GetById(int id)
         {
             try
             {
-                return Ok(_service.GetById(id));
+                Medicamento? medicamento = await _repository.GetById(id);
+                if (medicamento is not null)
+                {
+                    return Ok(medicamento);
+                }
+                return NotFound($"El medicamento con ID({id}) no existe.");
             }
             catch (Exception ex)
             {
@@ -45,33 +51,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // POST api/<MedicamentoController>
+        // POST api/Medicamento
         [HttpPost]
-        //TODO: PONERLO COMO FROMBODY, para pasarlo como json desde el front
-        public ActionResult<MedicamentoPatchGetDto> Post(MedicamentoPostDto medicamentoPostDto)
+        public async Task<ActionResult<Medicamento>> Post(MedicamentoPostDTO medicamentoPostDto)
         {
             try
             {
-               return Created(string.Empty ,_service.Create(medicamentoPostDto));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        // PUT api/<MedicamentoController>/5
-        [HttpPatch]
-        public ActionResult<MedicamentoPatchGetDto> Patch(MedicamentoPatchGetDto medicamentoPatchGetDto)
-        {
-            try
-            {
-                MedicamentoPatchGetDto? medicamentoActualizado = _service.Update(medicamentoPatchGetDto);
-                if (medicamentoActualizado != null)
+                Medicamento? medicamentoCreado = await _repository.Create(medicamentoPostDto.toMedicamento());
+                if (medicamentoCreado is not null)
                 {
-                    return Created(string.Empty, medicamentoActualizado);
+                    return CreatedAtAction(nameof(GetById), new { id = medicamentoCreado.Id }, medicamentoCreado);
                 }
-                return NotFound($"El medicamento no existe");
+                return NotFound("La creacion del medicamento no impactó en la base de datos");
             }
             catch (Exception ex)
             {
@@ -79,17 +70,40 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // DELETE api/<MedicamentoController>/5
+        // PATCH api/Medicamento/5
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Medicamento>> Patch(int id, MedicamentoPatchDTO medicamentoPatchDto)
+        {
+            if (id != medicamentoPatchDto.Id)
+            {
+                return BadRequest($"El ID({id}) de la URL no coincide con el ID({medicamentoPatchDto.Id}) del body de la request.");
+            }
+            try
+            {
+                Medicamento? medicamentoActualizado = await _repository.Update(medicamentoPatchDto.toMedicamento());
+                if (medicamentoActualizado is not null)
+                {
+                    return NoContent();
+                }
+                return NotFound($"El medicamento con ID({id}) no existe.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        // DELETE api/Medicamento/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                if (_service.LogicDelete(id))
+                if (await _repository.Delete(id))
                 {
-                    return Ok();
+                    return Ok($"Medicamento con id({id}) eliminado correctamente");
                 }
-                return BadRequest($"El medicamento con id {id} no existe");
+                return NotFound($"El medicamento con ID({id}) no existe.");
             }
             catch (Exception ex)
             {

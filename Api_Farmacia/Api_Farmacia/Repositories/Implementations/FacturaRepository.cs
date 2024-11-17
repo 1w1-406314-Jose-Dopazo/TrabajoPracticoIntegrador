@@ -1,108 +1,59 @@
-﻿using Api_Farmacia.Models;
-using Api_Farmacia.Repositories.Interfaces;
+﻿using Api_Farmacia.Data;
+using Api_Farmacia.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
-    public class FacturaRepository : IFacturaRepository
+    public class FacturaRepository : AbstractRepository<Factura>
     {
-        private FarmaciaContext _context;
-        public FacturaRepository(FarmaciaContext context)
+        public FacturaRepository(FarmaciaContext context) : base(context)
         {
-            _context = context;
-        }
-        public Factura? Create(Factura factura)
-        {
-            try
-            {
-                _context.Facturas.Add(factura);
-                _context.SaveChanges();
-                return factura;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
-        public bool Delete(int id)
+        public override async Task<Factura?> GetById(int id)
         {
+            return await _context.Set<Factura>().Include(f => f.DetallesFacturas).FirstOrDefaultAsync(f => f.Id == id);
+        }
+
+        public override async Task<Factura?> Update(Factura entidad)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync(); // Inicia una transacción
             try
             {
-                Factura? factura = GetById(id);
-                if (factura == null)
+                Factura? facturaExistente = await GetById(entidad.Id);
+
+                if (facturaExistente is not null)
                 {
-                    return false;
+                    facturaExistente.IdCliente = entidad.IdCliente;
+                    facturaExistente.Fecha = entidad.Fecha;
+
+                    // Actualizacion de detalles
+
+                    // Eliminar los detalles de la factura existente
+                    _context.DetallesFacturas.RemoveRange(facturaExistente.DetallesFacturas.ToList());
+
+                    // Actualizar los detalles existentes y cargar los nuevos
+                    foreach (DetalleFactura detalleNuevo in entidad.DetallesFacturas)
+                    {
+                        facturaExistente.DetallesFacturas.Add(new DetalleFactura
+                        {
+                            Cantidad = detalleNuevo.Cantidad,
+                            PrecioUnitario = detalleNuevo.PrecioUnitario,
+                            IdMedicamento = detalleNuevo.IdMedicamento
+                        });
+                    }
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
                 }
-                _context.Facturas.Remove(factura);
-                _context.SaveChanges();
-                return true;
+
+                return await GetById(entidad.Id);
             }
-            catch (Exception)
+            catch
             {
+                await transaction.RollbackAsync(); // Rollback si hay excepciones
                 throw;
             }
         }
 
-        public List<Factura> GetAll()
-        {
-            try
-            {
-                return _context.Facturas.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public Factura? GetById(int id)
-        {
-            try
-            {
-                return _context.Facturas.Find(id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public Factura? Update(Factura factura)
-        {
-            try
-            {
-                Factura? facturaDb = GetById(factura.Id); //Uso el metodo GetById en lugar de llamar al context.
-                if (facturaDb == null)
-                {
-                    return null;
-                }
-                facturaDb.IdCliente = factura.IdCliente;
-                facturaDb.Fecha = factura.Fecha;
-                //facturaDb.DetallesFacturas = factura.DetallesFacturas;
-                _context.SaveChanges();
-                return facturaDb;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public bool AddDetail(Factura factura, DetalleFactura detalle)
-        {
-            try
-            {
-                factura.DetallesFacturas.Add(detalle);
-                _context.Facturas.Update(factura);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
-        }
     }
 }

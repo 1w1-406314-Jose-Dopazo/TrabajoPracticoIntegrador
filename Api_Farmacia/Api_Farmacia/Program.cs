@@ -1,16 +1,23 @@
-using Api_Farmacia.Models;
+using Api_Farmacia.Data;
+using Api_Farmacia.Data.Models;
 using Api_Farmacia.Repositories.Implementations;
-using Api_Farmacia.Repositories.Interfaces;
-using Api_Farmacia.Services.Implementations;
-using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-// Add services to the container.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
+    (options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -25,42 +32,26 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Add services to the container.
+
 builder.Services.AddDbContext<FarmaciaContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("LautiConnection")));
 
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<AbstractRepository<Cliente>, ClienteRepository>();
 
-builder.Services.AddScoped<IDetalleFacturaRepository, DetalleFacturaRepository>();
-builder.Services.AddScoped<IDetalleFacturaService, DetalleFacturaService>();
+builder.Services.AddScoped<AbstractRepository<Medicamento>, MedicamentoRepository>();
 
-builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
-builder.Services.AddScoped<IFacturaService, FacturaService>();
+builder.Services.AddScoped<AbstractRepository<Usuario>, UsuarioRepository>();
 
-builder.Services.AddScoped<IMedicamentoRepository, MedicamentoRepository>();
-builder.Services.AddScoped<IMedicamentoService,MedicamentoService>();
+builder.Services.AddScoped<AbstractRepository<TipoUsuario>, TipoUsuarioRepository>();
 
-builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioRepository>();
-builder.Services.AddScoped<ITipoUsuarioService, TipoUsuarioService>();
-
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
-    (options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
-    });
+builder.Services.AddScoped<AbstractRepository<Factura>, FacturaRepository>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -74,9 +65,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseCors("AllowLocalhost");
 

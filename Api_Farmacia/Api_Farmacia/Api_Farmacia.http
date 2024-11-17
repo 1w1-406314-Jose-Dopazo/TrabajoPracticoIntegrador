@@ -1,0 +1,10 @@
+@Api_Farmacia_HostAddress = https://localhost:7263
+
+POST {{Api_Farmacia_HostAddress}}/api/cliente
+Content-Type: application/json
+
+{
+  //ClientePostDto
+}
+
+###

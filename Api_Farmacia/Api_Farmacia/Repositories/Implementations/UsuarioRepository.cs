@@ -1,82 +1,27 @@
-﻿using Api_Farmacia.Models;
-using Api_Farmacia.Repositories.Interfaces;
+﻿using Api_Farmacia.Data;
+using Api_Farmacia.Data.Models;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository : AbstractRepository<Usuario>
     {
-        private FarmaciaContext _context;
-
-        public UsuarioRepository(FarmaciaContext context)
+        public UsuarioRepository(FarmaciaContext context) : base(context)
         {
-            _context = context;
-        }
-        public bool Create(Usuario usuario, TipoUsuario tipoUsuario)
-        {
-            try
-            {
-                usuario.IdTipoUsuario = tipoUsuario.Id;
-                _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
         }
 
-        public bool Delete(int id)
+        public async override Task<Usuario?> Update(Usuario entidad)
         {
-            try
+            Usuario? usuarioExistente = await GetById(entidad.Id);
+            if (usuarioExistente is not null)
             {
-                _context.Usuarios.Remove(GetById(id));
-                _context.SaveChanges();
-                return true;
+                usuarioExistente.Nombre = entidad.Nombre;
+                usuarioExistente.Contraseña = entidad.Contraseña;
+                usuarioExistente.IdTipoUsuario = entidad.IdTipoUsuario;
+
+                await _context.SaveChangesAsync();
             }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
-        }
-
-        public List<Usuario> GetAll()
-        {
-            return _context.Usuarios.ToList();
-        }
-
-
-        public Usuario GetOne(string nombre)
-        {
-            List<Usuario> lstU = new List<Usuario>();
-            lstU = _context.Usuarios.Where(u => u.Nombre == nombre).ToList();
-            return lstU[0];
-        }
-
-        public Usuario GetById(int id)
-        {
-            List<Usuario> lstU = new List<Usuario>();
-            lstU = _context.Usuarios.Where(u => u.Id == id).ToList();
-            return lstU[0];
-        }
-
-        public bool Update(Usuario usuario)
-        {
-            try
-            {
-                _context.Usuarios.Update(usuario);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                _context.Dispose();
-                return false;
-            }
+            //si existe devuelve la entidad, sino null
+            return await GetById(entidad.Id);
         }
     }
 }

@@ -1,54 +1,71 @@
-﻿using Api_Farmacia.Models;
-using Api_Farmacia.Services;
-using Api_Farmacia.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Api_Farmacia.Data.Models;
+using Api_Farmacia.Repositories.Implementations;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Api_Farmacia.Controllers
 {
-    public class TipoUsuarioController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TipoUsuarioController : ControllerBase
     {
-        // GET: TipoUsuarioController
-        private ITipoUsuarioService _service;
+        private AbstractRepository<TipoUsuario> _repository;
 
-        public TipoUsuarioController(ITipoUsuarioService service)
+        public TipoUsuarioController(AbstractRepository<TipoUsuario> repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
-
-        [HttpGet("Tipos_Usuarios")]
-        public IActionResult GetTiposUsuarios()
+        // GET: api/TipoUsuario
+        [HttpGet]
+        public async Task<ActionResult<List<TipoUsuario>>> GetAll()
         {
-            return Ok(_service.TipoUsuarioGetAll());
+            try
+            {
+                return Ok(await _repository.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
-        [HttpGet("Tipos_Usuarios/{id}")]
-        public IActionResult GetTipoUsuarioById(int id)
+        // GET api/TipoUsuario/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TipoUsuario>> GetById(int id)
         {
-            return Ok(_service.TipoUsuarioGetById(id));
+            try
+            {
+                TipoUsuario? tipoUsuario = await _repository.GetById(id);
+                if (tipoUsuario is not null)
+                {
+                    return Ok(tipoUsuario);
+                }
+                return NotFound($"El tipo de usuario con ID({id}) no existe.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
-        [HttpDelete("Tipos_Usuarios/{id}")]
-        public IActionResult DeleteTipoUsuario(int id) 
-        {
-            return Ok(_service.TipoUsuarioDelete(id));
-        }
+        //// POST api/<TipoUsuarioController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
 
-        [HttpPost("Tipos_Usuarios")]
-        public IActionResult NewTipoUsuario(string descripcion) 
-        {
-            TipoUsuario tipoUsuario = new TipoUsuario();
-            tipoUsuario.Descripcion = descripcion;
-            return Ok(_service.TipoUsuarioCreate(tipoUsuario));
-        }
+        //// PUT api/<TipoUsuarioController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        [HttpPatch("Tipos_Usuarios")]
-        public IActionResult UpdateTipoUsuario(int id,string descripcion)
-        {
-            TipoUsuario tipoUsuario=new TipoUsuario() { Id=id,Descripcion=descripcion};
-            return Ok(_service.TipoUsuarioUpdate(tipoUsuario));
-        }
+        //// DELETE api/<TipoUsuarioController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
