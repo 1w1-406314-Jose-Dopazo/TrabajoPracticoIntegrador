@@ -1,5 +1,10 @@
 // const localhost = "https://localhost:7263/api/";
 //#region forms
+
+
+
+
+
 let lstClientes = [];
 async function LoadComboClientes(idComboC){
   lstClientes = []
@@ -48,14 +53,23 @@ function LoadModalEditarFactura(){
   
   LoadComboClientes("comboClientesEditar")
   LoadComboMedicamentos("comboMedicamentosEditar")
-  document.getElementById("editar-facturaFecha").value = new Date().toISOString()
+  document.getElementById("editar-facturaFecha").value = new Date().toLocaleDateString()
+
+
 }
 
 function LoadModalNuevaFactura(){
   lstDetallesLocal =[]
   LoadComboClientes("comboClientes")
   LoadComboMedicamentos("comboMedicamentos")
-  document.getElementById("nueva-facturaFecha").value = new Date().toISOString()
+  document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString()
+  
+  
+   fecha = document.getElementById("nueva-facturaFecha").value
+
+   fecha = new Date().toISOString()
+   
+  console.log(fecha)
 }
 
 //#endregion
@@ -84,20 +98,20 @@ fetch("https://localhost:7263/api/Medicamento")
       const row = document.createElement("tr");
       
       row.innerHTML = `
-        <td>${medicamento.nombre}</td>
-        <td>${medicamento.descripcion}</td>
-        <td class="text-center">${medicamento.estado ? "Activo" : "Inactivo"}</td>
-        <td class="text-center">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editar-medicamento-modal">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-outline-danger delete-btn ${medicamento.estado ? '' : 'd-none'}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </td>
-      `;
+      <td class="text-center">${medicamento.nombre}</td>
+      <td class="text-center">${medicamento.descripcion}</td>
+      <td class="text-center">${medicamento.estado ? "Activo" : "Inactivo"}</td>
+      <td class="text-center">
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editar-medicamento-modal">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-danger delete-btn ${medicamento.estado ? '' : 'd-none'}">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    `;
 
       // Agregar el evento para el botón de editar
       row.querySelector(".edit-btn").addEventListener("click", function(){
@@ -178,16 +192,17 @@ async function LoadFacturas() {
 
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
       const modalInfoFactura = new bootstrap.Modal(document.getElementById('info-factura-modal'))
-
+      
       for (const factura of facturas) {
         const row = document.createElement("tr");
         const responseCliente = await fetch(`https://localhost:7263/api/Cliente/${factura.idCliente}`)
         const cliente = await responseCliente.json()
-
+        var fechaParseada = factura.fecha
+        fechaParseada = new Date().toLocaleDateString() 
         row.innerHTML = `
           <td class="d-none">${factura.id}</td>
-          <td>${cliente.nombre + " " + cliente.apellido}</td>
-          <td class="text-center">${factura.fecha}</td>
+          <td  style="text-align: center;">${cliente.nombre + " " + cliente.apellido}</td>
+          <td class="text-center">${fechaParseada}</td>
           <td class="text-center">
             <div class="btn-group me-2">
               <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editar-factura-modal">
@@ -310,46 +325,70 @@ async function LoadFacturas() {
     
 
 
-function LoadClientes() {
-fetch("https://localhost:7263/api/Factura")
+async function LoadClientes() {
+  const tbody = document.getElementById("tbody-Clientes");
+  const idInput = document.getElementById('editar-cliente-Id')
+  const nombreInput = document.getElementById('editar-clienteNombre')
+  const apellidoInput = document.getElementById('editar-clienteApellido')
+  const telefonoInput = document.getElementById('editar-cliente-numero')
+fetch("https://localhost:7263/api/Cliente")
   .then((response) => response.json())
-  .then((data) => {
-    const tbody = document.getElementById("tbody-facturas");
+  .then(async(clientes) => {
     tbody.innerHTML = ""; // Limpiar la tabla
-    data.forEach((factura) => {
-      const cliente = fetch("https://localhost:7263/api/Cliente/" + factura.idCliente).
-      then((response) => response.json()).
-      then((clienteJson) => clienteJson.nombre + " " + clienteJson.apellido)
+
+    clientes.forEach((cliente) => {
       console.log(cliente)
-      const row = `
+      const row = document.createElement("tr");
+      
+
+       row.innerHTML = `
                 <tr>
-                  <td>${cliente}</td>
-                  <td>${factura.fecha}</td>
-                  <td>
-                    <button type="button" onclick="editMedicamento(${medicamento})" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                  data-bs-target="#editar-medicamento-modal">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button onclick="deleteMedicamento(${medicamento.id})" class="btn btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                  <td  style="text-align: center;">${cliente.nombre}</td>
+                  <td  style="text-align: center;">${cliente.apellido}</td>
+                  <td  style="text-align: center;">${cliente.telefono}</td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal"
+                                    data-bs-target="#editar-cliente-modal">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button onclick="deleteCliente(${cliente.id})" class="btn btn-outline-danger del-btn">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
             `;
-      tbody.innerHTML += row;
+            
+            row.querySelector(".edit-btn").addEventListener("click", function(){
+        
+              idInput.value = cliente.id
+              nombreInput.value = cliente.nombre
+              apellidoInput.value = cliente.apellido
+              telefonoInput.value = cliente.telefono
+
+          
+            })
+            
+            row.querySelector(".del-btn").addEventListener("click", function(){
+
+              DeleteCliente(cliente.id)
+
+            })
+            
+            tbody.appendChild(row);
     });
   })
-  .catch((error) => console.error("Error al cargar medicamentos:", error));
+  .catch((error) => console.error("Error al cargar Clientes:", error));
 }
 
 //#endregion
 
-//#region Entidades
+//#region Entidades ----------------------------------------------------------------------------------------------------------------------------------------------------//
 
-// aca pretendia que hagamos los metodos para gestionar las entidades:
-// UpdateMedicamento, DeleteMedicamento, CreateMedicamento
 
-//#region Medicamento
+
+//#region Medicamento ----------------------------------------------------------------------------------------------------------------------------------------------------//
 async function UpdateMedicamento() {
 
 let med ={};
@@ -368,8 +407,8 @@ console.log(med)
       
   })
   if(response.ok){
-    alert('medicamento actualizado correctamente')
-    
+    LoadMedicamentos()
+    alert('medicamento Actualizo correctamente')
   }
 }
 
@@ -411,7 +450,7 @@ console.log()
 
 //#endregion Medicamento
 
-//#region Factura
+//#region Factura  ----------------------------------------------------------------------------------------------------------------------------------------------------//
 async function UpdateFactura(factura) {
   // facturaUPD.id = document.getElementById('editar-facturaId').value
   // const cboCliente = document.getElementById('comboClientesEditar')
@@ -459,9 +498,9 @@ alert('factura Eliminada correctamente')
    let factura = {};
    const cboCliente = document.getElementById("comboClientes");
    factura.idCliente = lstClientes[cboCliente.selectedIndex].id;
-   const fecha = document.getElementById("nueva-facturaFecha").value;
-   const fechaParse = new Date(fecha);
-   factura.fecha = fechaParse.toISOString();
+   var fecha = document.getElementById("nueva-facturaFecha").value;
+   fecha = new Date().toISOString();
+   factura.fecha = fecha
    factura.detallesFacturasDto = lstDetallesLocal;
    console.log(factura);
 
@@ -483,15 +522,23 @@ alert('factura Eliminada correctamente')
 
 
 
-async function UpdateCliente(factura) {
-  const response = await fetch('https://localhost:7263/api/Cliente', {
-  method: 'PATCH',
+async function UpdateCliente() {
+
+  let cliente = {};
+  cliente.id = document.getElementById('editar-cliente-Id').value
+  cliente.nombre = document.getElementById('editar-clienteNombre').value
+  cliente.apellido = document.getElementById('editar-clienteApellido').value
+  cliente.telefono = document.getElementById('editar-cliente-numero').value
+
+  const response = await fetch(`https://localhost:7263/api/Cliente/${cliente.id}`, {
+  method: 'PUT',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
+  body: JSON.stringify(cliente),
   credentials: 'same-origin'
   
 })
 if(response.ok){
+LoadClientes()
 alert('cliente actualizado correctamente')
 }
 }
@@ -499,31 +546,73 @@ async function DeleteCliente(id){
   const response = await fetch(`https://localhost:7263/api/Cliente/${id}`, {
   method: 'DELETE',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
+  body: JSON.stringify(id),
   credentials: 'same-origin'
   
 })
 if(response.ok){
+LoadClientes()
 alert('cliente Eliminado correctamente')
 }
 }
 
-async function CreateCliente(factura){
-const response = await fetch('https://localhost:7263/api/Cliente', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
-  credentials: 'same-origin'
+async function CreateCliente(){
   
-})
-if(response.ok){
-alert('cliente Creado correctamente')
+  
+  if (ValidarNuevoCliente()==true){
+
+    let cliente = {};
+    cliente.nombre = document.getElementById('nuevo-clienteNombre').value
+    cliente.apellido = document.getElementById('nuevo-clienteApellido').value
+    cliente.telefono = document.getElementById('nuevo-cliente-numero').value
+    const response = await fetch('https://localhost:7263/api/Cliente', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cliente),
+      credentials: 'same-origin'
+      
+    })
+    if(response.ok){
+    LoadClientes()
+    alert('cliente Creado correctamente')
+    }
+  }
+  
+  }
+
+function ValidarNuevoCliente(){
+
+  const nombreInput = document.getElementById('nuevo-clienteNombre')
+  const apellidoInput = document.getElementById('nuevo-clienteApellido')
+  const telefonoInput = document.getElementById('nuevo-cliente-numero')
+
+  if(nombreInput.value === ""){
+
+    
+    alert('por favor introduzca un nombre')
+    return false
+  }
+  if(apellidoInput.value === ""){
+    alert('por favor introduzca un apellido')
+    return false
+  }
+  if(telefonoInput.value === ""){
+    alert('por favor introduzca un telefono')
+    return false
+  }
+
+  return true
 }
 
-}
+
+
+
 //#endregion Clientes
 
 //#endregion Entidades
+
+//#region Login ----------------------------------------------------------------------------------------------------------------------------------------------------//
+
 
 function mostrarMenu(token) {
   const menus = document.getElementsByClassName("menu-oculto");
@@ -560,7 +649,6 @@ function login_succes(nombre, token) {
   
   mostrarMenu(token)
 }
-
 async function Login(url) {
   const nombre = document.getElementById("loginUsuario").value;
   const contraseña = document.getElementById("loginContraseña").value;
@@ -587,3 +675,5 @@ async function Login(url) {
       console.error("Error en el login:", error);
     });
 }
+
+//#endregion
