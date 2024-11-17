@@ -482,25 +482,31 @@ await fetch("https://localhost:7263/Usuarios")
 //#region Medicamento ----------------------------------------------------------------------------------------------------------------------------------------------------//
 async function UpdateMedicamento() {
 
+  const modal = document.getElementById('editar-medicamento-modal')
+  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+
+
 let med ={};
 med.id = document.getElementById('editar-medicamentoId').value
 med.nombre=document.getElementById('editar-medicamentoNombre').value
 med.descripcion=document.getElementById('editar-medicamentoDescripcion').value
 med.estado=document.getElementById('editar-medicamentoEstado').checked
+if(ValidarEdicionMedicamento()===true){
 
-console.log(med)
-
-      const response = await fetch('https://localhost:7263/api/Medicamento', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(med),
-      credentials: 'same-origin'
-      
-  })
-  if(response.ok){
-    LoadMedicamentos()
-    alert('medicamento Actualizo correctamente')
-  }
+  
+        const response = await fetch('https://localhost:7263/api/Medicamento', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(med),
+        credentials: 'same-origin'
+        
+    })
+    if(response.ok){
+      LoadMedicamentos()
+      modalInstance.hide()
+      alert('medicamento Actualizo correctamente')
+    }
+}
 }
 
 // O delete entidad, como lo veas mejor
@@ -521,23 +527,70 @@ async function DeleteMedicamento(id){
 
 async function CreateMedicamento(){
 
-let med ={};
-med.nombre=document.getElementById('nuevo-medicamentoNombre').value
-med.descripcion=document.getElementById('nuevo-medicamentoDescripcion').value
-med.estado=document.getElementById('nuevo-medicamentoEstado').checked
-console.log()
-  const response = await fetch('https://localhost:7263/api/Medicamento', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(med),
-      credentials: 'same-origin'
-      
-  })
-  if(response.ok){
-    alert('medicamento Creado correctamente')
-  }
+  const modal = document.getElementById('nuevo-medicamento-modal')
+  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+
+if(ValidarNuevoMedicamento()===true){
+
+  let med ={};
+  med.nombre=document.getElementById('nuevo-medicamentoNombre').value
+  med.descripcion=document.getElementById('nuevo-medicamentoDescripcion').value
+  med.estado=document.getElementById('nuevo-medicamentoEstado').checked
+  console.log()
+    const response = await fetch('https://localhost:7263/api/Medicamento', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(med),
+        credentials: 'same-origin'
+        
+    })
+    if(response.ok){
+      LoadMedicamentos()
+      modalInstance.hide()
+      alert('medicamento Creado correctamente')
+    }
+}
 
 }
+function ValidarNuevoMedicamento(){
+
+  const nombreInput = document.getElementById('nuevo-medicamentoNombre')
+  const descripcionInput = document.getElementById('nuevo-medicamentoDescripcion')
+
+  if(nombreInput.value === ""){
+
+    
+    alert('por favor introduzca un nombre')
+    return false
+  }
+  if(descripcionInput.value === ""){
+    alert('por favor introduzca una descripcion')
+    return false
+  }
+  
+
+  return true
+}
+function ValidarEdicionMedicamento(){
+
+  const nombreInput = document.getElementById('editar-medicamentoNombre')
+  const descripcionInput = document.getElementById('editar-medicamentoDescripcion')
+
+  if(nombreInput.value === ""){
+
+    
+    alert('por favor introduzca un nombre')
+    return false
+  }
+  if(descripcionInput.value === ""){
+    alert('por favor introduzca una descripcion')
+    return false
+  }
+  
+
+  return true
+}
+
 
 //#endregion Medicamento
 
@@ -607,6 +660,8 @@ alert('factura Eliminada correctamente')
    }
  }
 
+ 
+
 //#endregion Factura
 
 //#region Clientes
@@ -615,23 +670,31 @@ alert('factura Eliminada correctamente')
 
 async function UpdateCliente() {
 
+  const modal = document.getElementById('editar-cliente-modal')
+  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+
   let cliente = {};
   cliente.id = document.getElementById('editar-cliente-Id').value
   cliente.nombre = document.getElementById('editar-clienteNombre').value
   cliente.apellido = document.getElementById('editar-clienteApellido').value
   cliente.telefono = document.getElementById('editar-cliente-numero').value
-
-  const response = await fetch(`https://localhost:7263/api/Cliente/${cliente.id}`, {
-  method: 'PUT',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(cliente),
-  credentials: 'same-origin'
   
-})
-if(response.ok){
-LoadClientes()
-alert('cliente actualizado correctamente')
-}
+  if(ValidarEdicionCliente()===true){
+    
+    const response = await fetch(`https://localhost:7263/api/Cliente/${cliente.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cliente),
+    credentials: 'same-origin'
+    
+  })
+  if(response.ok){
+  LoadClientes()
+  modalInstance.hide()
+  alert('cliente actualizado correctamente')
+  }
+
+  }
 }
 async function DeleteCliente(id){
   const response = await fetch(`https://localhost:7263/api/Cliente/${id}`, {
@@ -649,6 +712,8 @@ alert('cliente Eliminado correctamente')
 
 async function CreateCliente(){
   
+  const modal = document.getElementById('nuevo-cliente-modal')
+  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
   
   if (ValidarNuevoCliente()==true){
 
@@ -665,6 +730,7 @@ async function CreateCliente(){
     })
     if(response.ok){
     LoadClientes()
+    modalInstance.hide()
     alert('cliente Creado correctamente')
     }
   }
@@ -676,6 +742,29 @@ function ValidarNuevoCliente(){
   const nombreInput = document.getElementById('nuevo-clienteNombre')
   const apellidoInput = document.getElementById('nuevo-clienteApellido')
   const telefonoInput = document.getElementById('nuevo-cliente-numero')
+
+  if(nombreInput.value === ""){
+
+    
+    alert('por favor introduzca un nombre')
+    return false
+  }
+  if(apellidoInput.value === ""){
+    alert('por favor introduzca un apellido')
+    return false
+  }
+  if(telefonoInput.value === ""){
+    alert('por favor introduzca un telefono')
+    return false
+  }
+
+  return true
+}
+function ValidarEdicionCliente(){
+
+  const nombreInput = document.getElementById('editar-clienteNombre')
+  const apellidoInput = document.getElementById('editar-clienteApellido')
+  const telefonoInput = document.getElementById('editar-cliente-numero')
 
   if(nombreInput.value === ""){
 
@@ -707,25 +796,30 @@ function ValidarNuevoCliente(){
 
 async function UpdateUsuario() {
 
+  const modal = document.getElementById('editar-usuario-modal')
+  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+
   let usuario = {};
   usuario.id = document.getElementById('editar-usuario-id').value
   usuario.nombre = document.getElementById('editar-usuarioNombre').value
   usuario.contraseña = document.getElementById('editar-usuarioContraseña').value
   usuario.idTipoUsuario = document.getElementById('comboTiposUsuariosEditar').value
 
-  console.log(usuario)
+  if(ValidarEdicionUsuario()===true){
 
-  const response = await fetch(`https://localhost:7263/Usuarios`, {
-  method: 'PATCH',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(usuario),
-  credentials: 'same-origin'
-  
-})
-if(response.ok){
-LoadUsuarios()
-alert('usuario actualizado correctamente')
-}
+    const response = await fetch(`https://localhost:7263/Usuarios`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(usuario),
+    credentials: 'same-origin'
+    
+  })
+  if(response.ok){
+  LoadUsuarios()
+  modalInstance.hide()
+  alert('usuario actualizado correctamente')
+  }
+  }
 }
 async function DeleteUsuario(id){
   const response = await fetch(`https://localhost:7263/Usuarios/${id}`, {
@@ -743,9 +837,12 @@ alert('Usuario Eliminado correctamente')
 
 async function CreateUsuario(){
   
+      const modal = document.getElementById('nuevo-usuario-modal')
+      const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
   
-  
-
+  if(ValidarNuevoUsuario()===true){
+    
+    
     let usuario = {};
     usuario.nombre = document.getElementById('nuevo-usuarioNombre').value
     usuario.contraseña = document.getElementById('nuevo-usuarioContraseña').value
@@ -758,11 +855,57 @@ async function CreateUsuario(){
       
     })
     if(response.ok){
-    LoadUsuarios()
-    alert('Usuario Creado correctamente')
+      LoadUsuarios()
+      modalInstance.hide()
+      alert('Usuario Creado correctamente')
     }
+  }
+  
+
   
   }
+
+  function ValidarNuevoUsuario(){
+
+    const nombreInput = document.getElementById('nuevo-usuarioNombre')
+    const contraseñaInput = document.getElementById('nuevo-usuarioContraseña')
+  
+    if(nombreInput.value === ""){
+  
+      
+      alert('por favor introduzca un nombre')
+      return false
+    }
+    if(contraseñaInput.value === ""){
+      alert('por favor introduzca una contraseña')
+      return false
+    }
+    
+  
+    return true
+  }
+
+  function ValidarEdicionUsuario(){
+
+    const nombreInput = document.getElementById('editar-usuarioNombre')
+    const contraseñaInput = document.getElementById('editar-usuarioContraseña')
+  
+    if(nombreInput.value === ""){
+  
+      
+      alert('por favor introduzca un nombre')
+      return false
+    }
+    if(contraseñaInput.value === ""){
+      alert('por favor introduzca una contraseña')
+      return false
+    }
+    
+  
+    return true
+  }
+
+
 //#endregion
 
 
