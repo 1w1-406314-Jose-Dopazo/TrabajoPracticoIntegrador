@@ -1,19 +1,20 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.Usuario;
+using Api_Farmacia.Models;
 
 namespace Api_Farmacia.Services.Interfaces
 {
     public interface IUsuarioService
     {
-        List<Usuario> UsuarioGetAll();
+        List<UsuarioPatchGetDto> UsuarioGetAll();
 
 
         Usuario UsuarioGetOne(string nombre);
         Usuario UsuarioGetById(int id);
 
-        bool UsuarioUpdate(Usuario usuario);
+        bool UsuarioUpdate(UsuarioPatchGetDto usuario);
 
         bool UsuarioDelete(int id);
 
-        bool UsuarioCreate(Usuario usuario, TipoUsuario tipoUsuario);
+        bool UsuarioCreate(UsuarioPostDto usuario);
     }
 }

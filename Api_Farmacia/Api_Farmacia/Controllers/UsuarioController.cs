@@ -1,4 +1,6 @@
-﻿using Api_Farmacia.Models;
+﻿using Api_Farmacia.Controllers.DTO_s.Factura;
+using Api_Farmacia.Controllers.DTO_s.Usuario;
+using Api_Farmacia.Models;
 using Api_Farmacia.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +17,7 @@ namespace Api_Farmacia.Controllers
 
 
         [HttpGet("Usuarios")]
-        public IActionResult GetUsuarios()
+        public ActionResult<UsuarioPatchGetDto> GetUsuarios()
         {
             return Ok(_service.UsuarioGetAll());
         }
@@ -40,18 +42,23 @@ namespace Api_Farmacia.Controllers
         }
 
         [HttpPost("Usuarios")]
-        public IActionResult NewUsuario(string nombre,string contraseña,TipoUsuario tipoUsuario)
+        public ActionResult NewUsuario([FromBody] UsuarioPostDto usuario)
         {
-            
-            Usuario usuario = new Usuario() { Nombre=nombre,Contraseña=contraseña};
-            
-            return Ok(_service.UsuarioCreate(usuario,tipoUsuario));
+
+            try
+            {
+                return Created(string.Empty, _service.UsuarioCreate(usuario));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPatch("Usuarios")]
-        public IActionResult UpdateUsuario(int id,string nombre,string contraseña,TipoUsuario tipoUsuario)
+        public ActionResult UpdateUsuario([FromBody]UsuarioPatchGetDto usuario)
         {
-            Usuario usuario = new Usuario() {Id=id,Nombre=nombre,Contraseña=contraseña,IdTipoUsuario=tipoUsuario.Id };
+            
             return Ok(_service.UsuarioUpdate(usuario));
         }
     }

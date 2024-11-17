@@ -49,6 +49,28 @@ fetch("https://localhost:7263/api/medicamento")
   });
   console.log(lstMedicamentos)
 }
+
+let lstTiposUsuarios = [];
+function LoadComboTiposUsuarios(idComboT){
+  fetch("https://localhost:7263/Tipos_Usuarios")
+  .then((respones) => respones.json())
+  .then((tiposUsuarios) => {
+    const selectTipoUsuario = document.getElementById(idComboT);
+    selectTipoUsuario.innerHTML = "";
+    tiposUsuarios.forEach((tipoUsuario) => {
+      
+        const option = document.createElement("option");
+        option.value = tipoUsuario.id;
+        option.text = tipoUsuario.descripcion;
+        selectTipoUsuario.appendChild(option);
+        lstTiposUsuarios.push(tipoUsuario)
+        
+      
+    });
+  });
+  console.log(lstMedicamentos)
+}
+
 function LoadModalEditarFactura(){
   
   LoadComboClientes("comboClientesEditar")
@@ -71,6 +93,12 @@ function LoadModalNuevaFactura(){
    
   console.log(fecha)
 }
+
+function LoadModalTipoUsuario(cboId){
+  lstTiposUsuarios =[]
+  LoadComboTiposUsuarios(cboId)
+}
+
 
 //#endregion
 
@@ -183,7 +211,6 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
 }
 
 async function LoadFacturas() {
-  await fetch("https://localhost:7263/api/Factura")
   const response = await fetch("https://localhost:7263/api/Factura");
   const facturas = await response.json();
       const tbody = document.getElementById("tbody-facturas");
@@ -373,6 +400,70 @@ fetch("https://localhost:7263/api/Cliente")
             row.querySelector(".del-btn").addEventListener("click", function(){
 
               DeleteCliente(cliente.id)
+
+            })
+            
+            tbody.appendChild(row);
+    });
+  })
+  .catch((error) => console.error("Error al cargar Clientes:", error));
+}
+
+async function LoadUsuarios() {
+  const tbody = document.getElementById("tbody-usuarios");
+  const idInput = document.getElementById('editar-usuario-id')
+  const nombreInput = document.getElementById('editar-usuarioNombre')
+  const contraseñaInput = document.getElementById('editar-usuarioContraseña')
+  const editarUsuarioInput = document.getElementById('editar-usuario-rol')
+await fetch("https://localhost:7263/Usuarios")
+  .then((response) => response.json())
+  .then(async(usuarios) => {
+    tbody.innerHTML = ""; // Limpiar la tabla
+
+
+    const rolesMap = {
+      1: "Admin",
+      2: "Estándar"
+    };
+
+    usuarios.forEach((usuario) => {
+      console.log(usuario)
+      const row = document.createElement("tr");
+      
+
+       row.innerHTML = `
+                <tr>
+                  <td  style="text-align: center;">${usuario.nombre}</td>
+                  <td  style="text-align: center;">${usuario.contraseña}</td>
+                   <td style="text-align: center;">${rolesMap[usuario.idTipoUsuario] || "Desconocido"}</td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal"
+                                    data-bs-target="#editar-usuario-modal">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button onclick="DeleteUsuario(${usuario.id})" class="btn btn-outline-danger del-btn">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+            `;
+            
+            row.querySelector(".edit-btn").addEventListener("click", function(){
+              
+              LoadModalTipoUsuario('comboTiposUsuariosEditar')
+              idInput.value = usuario.id
+              nombreInput.value = usuario.nombre
+              contraseñaInput.value = usuario.contraseña
+              document.getElementById("comboTiposUsuarios").selected = usuario.idTipoUsuario
+
+          
+            })
+            
+            row.querySelector(".del-btn").addEventListener("click", function(){
+
+              DeleteCliente(usuario.id)
 
             })
             
@@ -608,6 +699,72 @@ function ValidarNuevoCliente(){
 
 
 //#endregion Clientes
+
+//#region Usuarios
+
+  
+
+
+async function UpdateUsuario() {
+
+  let usuario = {};
+  usuario.id = document.getElementById('editar-usuario-id').value
+  usuario.nombre = document.getElementById('editar-usuarioNombre').value
+  usuario.contraseña = document.getElementById('editar-usuarioContraseña').value
+  usuario.idTipoUsuario = document.getElementById('comboTiposUsuariosEditar').value
+
+  console.log(usuario)
+
+  const response = await fetch(`https://localhost:7263/Usuarios`, {
+  method: 'PATCH',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(usuario),
+  credentials: 'same-origin'
+  
+})
+if(response.ok){
+LoadUsuarios()
+alert('usuario actualizado correctamente')
+}
+}
+async function DeleteUsuario(id){
+  const response = await fetch(`https://localhost:7263/Usuarios/${id}`, {
+  method: 'DELETE',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(id),
+  credentials: 'same-origin'
+  
+})
+if(response.ok){
+LoadUsuarios()
+alert('Usuario Eliminado correctamente')
+}
+}
+
+async function CreateUsuario(){
+  
+  
+  
+
+    let usuario = {};
+    usuario.nombre = document.getElementById('nuevo-usuarioNombre').value
+    usuario.contraseña = document.getElementById('nuevo-usuarioContraseña').value
+    usuario.idTipoUsuario = document.getElementById('comboTiposUsuarios').value
+    const response = await fetch('https://localhost:7263/Usuarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(usuario),
+      credentials: 'same-origin'
+      
+    })
+    if(response.ok){
+    LoadUsuarios()
+    alert('Usuario Creado correctamente')
+    }
+  
+  }
+//#endregion
+
 
 //#endregion Entidades
 

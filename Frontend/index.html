@@ -516,7 +516,7 @@
                                 <!-- El Boton Nuevo activa el modal con form para cargar nuevo Cliente -->
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                        data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente">
+                                        data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm shadow"
@@ -619,7 +619,117 @@
                         </div>
                     </div>
                     <!-- tab usuarios -->
-                    
+                    <div class="tab-pane container fade" id="usuarios">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <!-- Titulo y botones Nuevo/Cargar/Editar -->
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <h1 class="h2">Usuarios</h1>
+                                <!-- El Boton Nuevo activa el modal con form para cargar nuevo usuario -->
+                                <div class="btn-group m-2">
+                                    <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
+                                        data-bs-target="#nuevo-usuario-modal" id="btn-nuevo-usuario" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
+                                        Nuevo <i class="bi bi-upload"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm shadow"
+                                        onclick="LoadUsuarios()">
+                                        Cargar<i class="bi bi-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- nuevo usuario modal -->
+                            <div class="modal fade" id="nuevo-usuario-modal" aria-labelledby="nuevo-usuario-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Nuevo Usuario</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioNombre" placeholder="Nombre">
+                                                    <label for="nuevo-usuarioNombre">Nombre</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioContraseña" placeholder="Contraseña">
+                                                    <label for="nuevo-usuarioContraseña">Contraseña</label>
+                                                </div>
+                                                
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="comboTiposUsuarios"></select>
+                                                    <label for="comboTiposUsuarios">Tipo Usuario</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-guardar-usuario" onclick="CreateUsuario()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- editar usuario modal -->
+                            <div class="modal fade" id="editar-usuario-modal"
+                                aria-labelledby="editar-usuario-label">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Editar Usuario</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="editar-usuario-id" placeholder="ID">
+                                                    <label for="editar-usuario-id">Id</label>
+                                                </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioNombre" placeholder="Nombre">
+                                                    <label for="editar-usuarioNombre">Nombre</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioContraseña" placeholder="Contraseña">
+                                                    <label for="editar-usuarioContraseña">Contraseña</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="comboTiposUsuariosEditar"></select>
+                                                    <label for="comboTiposUsuariosEditar">Tipo Usuario</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="m-2">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                                onclick="UpdateUsuario()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive p-1" id="table-container">
+                            <table class="table table-dark table-sm">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th class="d-none">Id</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <!-- aca se cargan los medicamentos con LoadUsuarios()-->
+                                <tbody id="tbody-usuarios">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
