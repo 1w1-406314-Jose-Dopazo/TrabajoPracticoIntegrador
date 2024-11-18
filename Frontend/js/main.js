@@ -192,6 +192,7 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
         const row = document.createElement("tr")
         row.className = "text-center"
         row.innerHTML = `
+                        <td class="d-none">${medicamentoId}</td>
                         <td>${medicamentoNombre}</td>
                         <td>${cantidad}</td>
                         <td>${precio}</td>
@@ -268,7 +269,7 @@ async function LoadFacturas() {
         
         // Agregar el evento para el botón de eliminar
         row.querySelector(".delete-btn").addEventListener("click", function(){
-          DeleteMedicamento(factura.id);
+          DeleteFactura(factura.id);
           console.log("Botón de eliminar presionado para:", factura);
           // Eliminar medicamento
         });
@@ -318,11 +319,6 @@ async function LoadFacturas() {
           for (const detalleFactura of factura.detallesFacturas) {
             const row = document.createElement("tr");
             row.className = "text-center";
-            lstDetallesLocal.push({
-              "cantidad":  detalleFactura.cantidad,
-              "precioUnitario":  detalleFactura.precioUnitario,
-              "idMedicamento": detalleFactura.idMedicamento 
-            })
             const medicamento = await fetch(
               `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
             ).then((response) => response.json());
@@ -417,7 +413,13 @@ async function LoadUsuarios() {
   const nombreInput = document.getElementById('editar-usuarioNombre')
   const contraseñaInput = document.getElementById('editar-usuarioContraseña')
   const editarUsuarioInput = document.getElementById('editar-usuario-rol')
-await fetch("https://localhost:7263/api/Usuario")
+await fetch("https://localhost:7263/api/Usuario",{
+  method:'GET',
+  headers:{
+    'Content-Type': 'application/json', 
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+})
   .then((response) => response.json())
   .then(async(usuarios) => {
     tbody.innerHTML = ""; // Limpiar la tabla
@@ -598,12 +600,30 @@ function ValidarEdicionMedicamento(){
 
 //#region Factura  ----------------------------------------------------------------------------------------------------------------------------------------------------//
 async function UpdateFactura(factura) {
-  // facturaUPD.id = document.getElementById('editar-facturaId').value
-  // const cboCliente = document.getElementById('comboClientesEditar')
-  // facturaUPD.idCliente =  lstClientes[cboCliente.selectedIndex].id
-  // fecha = document.getElementById("editar-facturaFecha").value = new Date().toISOString()
-  // facturaUPD.fecha = fecha
-  // facturaUPD.detallesFacturasDto = lstDetallesLocal
+  const lstDetalles =[]
+  let contador = 0;
+  const filas = document.querySelectorAll('#table-detallesFactura tr')
+  filas.forEach(fila => {
+    contador++
+    const celdas = fila.querySelectorAll('td');
+    let detalleFactura = {}
+    celdas.forEach(celda => {
+      if (celdas.length === 0) return;
+      if(celda.cellIndex===0){
+        detalleFactura.idMedicamento = celda.textContent
+      }
+      if(celda.cellIndex===2){
+        detalleFactura.cantidad = celda.textContent
+      }
+      if(celda.cellIndex===3){
+        detalleFactura.precioUnitario = celda.textContent
+      }
+    });
+    if (Object.keys(detalleFactura).length > 0) {
+      lstDetalles.push(detalleFactura);
+    
+    }
+  });
   
 
 
@@ -611,17 +631,18 @@ async function UpdateFactura(factura) {
     id: document.getElementById("editar-facturaId").value,
     idCliente: document.getElementById("comboClientesEditar").value,
     fecha: (document.getElementById("editar-facturaFecha").value = new Date().toISOString()),
-    detallesFacturas: lstDetallesLocal,
+    detallesFacturas: lstDetalles
   };
   console.log(facturaUPD);
 
-  const response = await fetch('https://localhost:7263/api/Factura', {
+  const response = await fetch(`https://localhost:7263/api/Factura/${facturaUPD.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(facturaUPD),
     credentials: "same-origin",
   });
   if (response.ok) {
+    LoadFacturas();
     alert("factura actualizada correctamente");
   }
 }
@@ -630,24 +651,53 @@ async function UpdateFactura(factura) {
 async function DeleteFactura(id){
   const response = await fetch(`https://localhost:7263/api/Factura/${id}`, {
   method: 'DELETE',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(obj),
+  headers: { 'Content-Type': 'application/json'},
+  body: JSON.stringify(id),
   credentials: 'same-origin'
   
 })
 if(response.ok){
+LoadFacturas()
 alert('factura Eliminada correctamente')
 }
 }
 
  async function CreateFactura() {
+
+  const lstDetalles =[]
+  let contador = 0;
+  const filas = document.querySelectorAll('#table-detallesFactura tr')
+  filas.forEach(fila => {
+    contador++
+    const celdas = fila.querySelectorAll('td');
+    let detalleFactura = {}
+    celdas.forEach(celda => {
+      if (celdas.length === 0) return;
+      if(celda.cellIndex===0){
+        detalleFactura.idMedicamento = celda.textContent
+      }
+      if(celda.cellIndex===2){
+        detalleFactura.cantidad = celda.textContent
+      }
+      if(celda.cellIndex===3){
+        detalleFactura.precioUnitario = celda.textContent
+      }
+    });
+    if (Object.keys(detalleFactura).length > 0) {
+      lstDetalles.push(detalleFactura);
+    
+    }
+  });
+   
+  console.log(lstDetalles)
+
    let factura = {};
    const cboCliente = document.getElementById("comboClientes");
    factura.idCliente = lstClientes[cboCliente.selectedIndex].id;
    var fecha = document.getElementById("nueva-facturaFecha").value;
    fecha = new Date().toISOString();
    factura.fecha = fecha
-   factura.detallesFacturas = lstDetallesLocal;
+   factura.detallesFacturas = lstDetalles;
    console.log(factura);
 
    const response = await fetch("https://localhost:7263/api/Factura", {
@@ -657,6 +707,7 @@ alert('factura Eliminada correctamente')
      credentials: "same-origin",
    });
    if (response.ok) {
+     LoadFacturas();
      alert("factura Creada correctamente");
      document.getElementById("tbody-detallesFactura").innerHTML = ""
    }
@@ -812,7 +863,7 @@ async function UpdateUsuario() {
 
     const response = await fetch(`https://localhost:7263/api/Usuario?id=${usuario.id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}`},
     body: JSON.stringify(usuario),
     credentials: 'same-origin'
     
@@ -824,10 +875,12 @@ async function UpdateUsuario() {
   }
   }
 }
+
+
 async function DeleteUsuario(id){
   const response = await fetch(`https://localhost:7263/api/Usuario/${id}`, {
   method: 'DELETE',
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}` },
   body: JSON.stringify(id),
   credentials: 'same-origin'
   
@@ -837,6 +890,7 @@ LoadUsuarios()
 alert('Usuario Eliminado correctamente')
 }
 }
+
 
 async function CreateUsuario(){
   
@@ -852,7 +906,7 @@ async function CreateUsuario(){
     usuario.idTipoUsuario = document.getElementById('comboTiposUsuarios').value
     const response = await fetch('https://localhost:7263/api/Usuario', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(usuario),
       credentials: 'same-origin'
       
@@ -867,6 +921,8 @@ async function CreateUsuario(){
 
   
   }
+
+
 
   function ValidarNuevoUsuario(){
 
@@ -888,6 +944,8 @@ async function CreateUsuario(){
   
     return true
   }
+
+
 
   function ValidarEdicionUsuario(){
 
@@ -918,7 +976,7 @@ async function CreateUsuario(){
 //#region Login ----------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
-function mostrarMenu(token) {
+function mostrarMenu() {
   const menu = document.getElementById("inicio")
   menu.style.display = 'block'
   const menus = document.getElementsByClassName("menu-oculto");
@@ -949,6 +1007,9 @@ function esconderMenu(){
   const menu = document.getElementById("inicio")
   menu.style.display = 'none'
 }
+function storeToken(token){
+ localStorage.setItem('token',token)
+}
 
 function login_succes(nombre, token) {
     
@@ -959,8 +1020,11 @@ function login_succes(nombre, token) {
   
   document.getElementById('sidebar-user').innerText = nombre
   
-  mostrarMenu(token)
+  mostrarMenu()
+  storeToken(token)
 }
+
+
 async function Login(url) {
   const nombre = document.getElementById("loginUsuario").value;
   const contraseña = document.getElementById("loginContraseña").value;
@@ -971,14 +1035,13 @@ async function Login(url) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      username: nombre,
-      password: contraseña,
+      nombre: nombre,
+      contraseña: contraseña,
     }),
     credentials: "same-origin",
   })
     .then( async response => await response.json())
     .then( token => {
-      console.log("Login exitoso", token);
       if (token != null) {
         login_succes(nombre, token.token);
       }
