@@ -28,7 +28,7 @@ namespace Api_Farmacia.Repositories.Implementations
             await _context.SaveChangesAsync();
             return await GetById(entidad.Id);
         }
-        public async Task<bool> Delete(int id)
+        public virtual async Task<bool> Delete(int id)
         {
             T? entidad = await GetById(id);
             if (entidad is not null)

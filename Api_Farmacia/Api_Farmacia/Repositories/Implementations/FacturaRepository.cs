@@ -1,6 +1,7 @@
 ﻿using Api_Farmacia.Data;
 using Api_Farmacia.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
@@ -13,6 +14,29 @@ namespace Api_Farmacia.Repositories.Implementations
         public override async Task<Factura?> GetById(int id)
         {
             return await _context.Set<Factura>().Include(f => f.DetallesFacturas).FirstOrDefaultAsync(f => f.Id == id);
+        }
+
+        public override async Task<bool> Delete(int id)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync(); //Inicia la transaccion
+            try
+            {
+                Factura? entidad = await GetById(id);
+                if (entidad is not null)
+                {
+                    _context.DetallesFacturas.RemoveRange(entidad.DetallesFacturas.ToList());
+                    _context.Facturas.Remove(entidad);
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public override async Task<Factura?> Update(Factura entidad)
