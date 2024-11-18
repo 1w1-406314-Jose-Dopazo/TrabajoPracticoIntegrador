@@ -1,10 +1,12 @@
 ﻿using Api_Farmacia.Data.Models;
 using Api_Farmacia.Data.UsuarioDTOs;
 using Api_Farmacia.Repositories.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : Controller
