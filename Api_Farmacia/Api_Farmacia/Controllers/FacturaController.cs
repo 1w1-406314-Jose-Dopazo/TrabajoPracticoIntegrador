@@ -1,5 +1,8 @@
-﻿using Api_Farmacia.Controllers.DTO_s.Factura;
-using Api_Farmacia.Services.Interfaces;
+﻿using Api_Farmacia.Data.FacturaDTOs;
+using Api_Farmacia.Data.MedicamentoDTOs;
+using Api_Farmacia.Data.Models;
+using Api_Farmacia.Repositories.Implementations;
+using Api_Farmacia.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
@@ -8,20 +11,20 @@ namespace Api_Farmacia.Controllers
     [ApiController]
     public class FacturaController : Controller
     {
-        IFacturaService _service;
+        private AbstractRepository<Factura> _repositoryFactura;
 
-        public FacturaController(IFacturaService service)
+        public FacturaController(AbstractRepository<Factura> repositoryFactura)
         {
-            _service = service;
+            _repositoryFactura = repositoryFactura;
         }
 
-
+        // GET: api/Factura
         [HttpGet]
-        public ActionResult<List<FacturaGetDto>> GetFacturas()
+        public async Task<ActionResult<List<Factura>>> GetAll()
         {
             try
             {
-                return Ok(_service.GetAll());
+                return Ok(await _repositoryFactura.GetAll());
             }
             catch (Exception ex)
             {
@@ -29,12 +32,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
+        // GET api/Factura/5
         [HttpGet("{id}")]
-        public ActionResult<FacturaGetDto> GetFacturasById(int id)
+        public async Task<ActionResult<Factura>> GetById(int id)
         {
             try
             {
-                return Ok(_service.GetById(id));
+                Factura? factura = await _repositoryFactura.GetById(id);
+                if (factura is not null)
+                {
+                    return Ok(factura);
+                }
+                return NotFound($"La factura con ID({id}) no existe.");
             }
             catch (Exception ex)
             {
@@ -42,30 +51,26 @@ namespace Api_Farmacia.Controllers
             }
         }
 
+        // POST api/Factura
         [HttpPost]
-        public ActionResult<FacturaGetDto> NewFacturas(FacturaPostDto facturaPostDto)
+        public async Task<ActionResult<Factura>> Post(FacturaPostDTO facturaPostDto)
         {
             try
             {
-                return Created(string.Empty, _service.Create(facturaPostDto));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpPatch]
-        public ActionResult<FacturaGetDto> UpdateFacturas(FacturaPatchDto facturaPatchDto)
-        {
-            try
-            {
-                FacturaGetDto? facturaActualizada = _service.Update(facturaPatchDto);
-                if (facturaActualizada != null)
+                Console.WriteLine(facturaPostDto);
+                if(!facturaPostDto.DetallesFacturas.Any())
                 {
-                    return Created(string.Empty, facturaActualizada);
+                    return BadRequest("No se puede cargar una factura sin detalles");
                 }
-                return NotFound($"La factura no existe");
+                
+                Factura? facturaCreada = await _repositoryFactura.Create(facturaPostDto.toFactura());
+
+                if (facturaCreada is not null)
+                {
+                    return CreatedAtAction(nameof(GetById), new { id = facturaCreada.Id }, facturaCreada);
+                }
+
+                return NotFound("La creacion de la factura no impactó en la base de datos");
             }
             catch (Exception ex)
             {
@@ -73,16 +78,40 @@ namespace Api_Farmacia.Controllers
             }
         }
 
+        // PATCH api/Factura/5
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Factura>> Patch(int id, FacturaPatchDTO facturaPatchDto)
+        {
+            if (id != facturaPatchDto.Id)
+            {
+                return BadRequest($"El ID({id}) de la URL no coincide con el ID({facturaPatchDto.Id}) del body de la request.");
+            }
+            try
+            {
+                Factura? facturaActualizada = await _repositoryFactura.Update(facturaPatchDto.toFactura());
+                if (facturaActualizada is not null)
+                {
+                    return NoContent();
+                }
+                return NotFound($"La factura con ID({id}) no existe.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        // DELETE api/Factura/5
         [HttpDelete("{id}")]
-        public ActionResult DeleteFacturas(int id)
+        public async Task<ActionResult<bool>> DeleteFacturas(int id)
         {
             try
             {
-                if (_service.Delete(id))
+                if (await _repositoryFactura.Delete(id))
                 {
-                    return Ok();
+                    return Ok($"Factura con id({id}) fue eliminada correctamente");
                 }
-                return BadRequest($"La factura no existe");
+                return NotFound($"La factura con ID({id}) no existe.");
             }
             catch (Exception ex)
             {

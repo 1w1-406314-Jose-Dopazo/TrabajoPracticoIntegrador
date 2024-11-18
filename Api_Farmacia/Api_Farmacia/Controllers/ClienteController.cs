@@ -1,7 +1,7 @@
-﻿using Api_Farmacia.Controllers.DTO_s.Cliente;
-using Api_Farmacia.Controllers.DTO_s.Medicamento;
-using Api_Farmacia.Services.Interfaces;
+﻿using Api_Farmacia.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Api_Farmacia.Repositories.Implementations;
+using Api_Farmacia.Data.ClienteDTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,20 +11,20 @@ namespace Api_Farmacia.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private IClienteService _service;
+        private AbstractRepository<Cliente> _repository;
 
-        public ClienteController(IClienteService service)
+        public ClienteController(AbstractRepository<Cliente> repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
-        // GET: api/<ClienteController>
+        // GET: api/Cliente
         [HttpGet]
-        public ActionResult<List<ClientePatchGetDto>> Get()
+        public async Task<ActionResult<List<Cliente>>> Get()
         {
             try
             {
-                return Ok(_service.GetAll());
+                return Ok(await _repository.GetAll());
             }
             catch (Exception ex)
             {
@@ -32,13 +32,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // GET api/<ClienteController>/5
+        //GET: api/Cliente/5
         [HttpGet("{id}")]
-        public ActionResult<ClientePatchGetDto> Get(int id)
+        public async Task<ActionResult<Cliente>> GetById(int id)
         {
             try
             {
-                return Ok(_service.GetById(id));
+                Cliente? cliente = await _repository.GetById(id);
+                if (cliente is not null)
+                {
+                    return Ok(cliente);
+                }
+                return NotFound($"El cliente con ID({id}) no existe.");
             }
             catch (Exception ex)
             {
@@ -46,32 +51,18 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // POST api/<ClienteController>
+        // POST api/Cliente
         [HttpPost]
-        public ActionResult<ClientePatchGetDto> Post(ClientePostDto clientePostDto)
+        public async Task<ActionResult<Cliente>> Post(ClientePostDTO clientePostDto)
         {
             try
             {
-                return Created(string.Empty, _service.Create(clientePostDto));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        // PUT api/<ClienteController>/5
-        [HttpPut("{id}")]
-        public ActionResult<ClientePatchGetDto> Patch(ClientePatchGetDto clientePatchGetDto)
-        {
-            try
-            {
-                ClientePatchGetDto? clienteActualizado = _service.Update(clientePatchGetDto);
-                if (clienteActualizado != null)
+                Cliente? clienteCreado = await _repository.Create(clientePostDto.toCliente());
+                if (clienteCreado is not null)
                 {
-                    return Created(string.Empty, clienteActualizado);
+                    return CreatedAtAction(nameof(GetById), new { id = clienteCreado.Id }, clienteCreado);
                 }
-                return NotFound($"El cliente no existe");
+                return NotFound("La creacion del cliente no impactó en la base de datos");
             }
             catch (Exception ex)
             {
@@ -79,17 +70,40 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-        // DELETE api/<ClienteController>/5
+        // PATCH api/Cliente/5
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Cliente>> Patch(int id, ClientePatchDTO clientePatchDTO)
+        {
+            if (id != clientePatchDTO.Id)
+            {
+                return BadRequest($"El ID({id}) de la URL no coincide con el ID({clientePatchDTO.Id}) del body de la request.");
+            }
+            try
+            {
+                Cliente? clienteActualizado = await _repository.Update(clientePatchDTO.toCliente());
+                if (clienteActualizado is not null)
+                {
+                    return NoContent();
+                }
+                return NotFound($"El cliente con ID({id}) no existe.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        // DELETE api/Cliente/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                if (_service.Delete(id))
+                if (await _repository.Delete(id))
                 {
-                    return Ok();
+                    return Ok($"Cliente con id({id}) eliminado correctamente");
                 }
-                return BadRequest($"El cliente con id {id} no existe");
+                return NotFound($"El cliente con ID({id}) no existe.");
             }
             catch (Exception ex)
             {

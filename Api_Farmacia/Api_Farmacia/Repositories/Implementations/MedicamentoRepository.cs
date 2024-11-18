@@ -1,141 +1,28 @@
-﻿using Api_Farmacia.Models;
-using Api_Farmacia.Repositories.Interfaces;
+﻿using Api_Farmacia.Data;
+using Api_Farmacia.Data.Models;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
-    public class MedicamentoRepository : IMedicamentoRepository
+    public class MedicamentoRepository : AbstractRepository<Medicamento>
     {
-        private FarmaciaContext _context;
-
-        public MedicamentoRepository(FarmaciaContext context)
+        public MedicamentoRepository(FarmaciaContext context) : base(context)
         {
-            _context = context;
         }
 
-        /// <summary>
-        /// Devuelve todos los medicamentos de la base de datos
-        /// </summary>
-        /// <returns>List<Medicamento></returns>
-        public List<Medicamento> GetAll()
+        public override async Task<Medicamento?> Update(Medicamento entidad)
         {
-            try
+            Medicamento? medicamentoExistente = await GetById(entidad.Id);
+            if (medicamentoExistente is not null)
             {
-                return _context.Medicamentos.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+                medicamentoExistente.Nombre = entidad.Nombre;
+                medicamentoExistente.Estado = entidad.Estado;
+                medicamentoExistente.Descripcion = entidad.Descripcion;
+                medicamentoExistente.PrecioUnitario = entidad.PrecioUnitario;
 
-        /// <summary>
-        /// Elimina el medicamento de la base de datos
-        /// </summary>
-        /// <param name="id">id del medicamento a borrar</param>
-        /// <returns>Bool que indica si se eliminó exitosamente</returns>
-        public bool Delete(int id)
-        {
-            try
-            {
-                Medicamento? medicamento = GetById(id);
-                if (medicamento == null)
-                {
-                    return false;
-                }
-                _context.Medicamentos.Remove(medicamento);
-                _context.SaveChanges();
-                return true;
+                await _context.SaveChangesAsync();
             }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Hace un borrado LOGICO del medicamento seteando su estado a false
-        /// </summary>
-        /// <param name="id">id del medicamento a borrar</param>
-        /// <returns>Bool que indica si se cambió el estado del medicamento a false</returns>
-        public bool LogicDelete(int id)
-        {
-            try
-            {
-                Medicamento? medicamento = GetById(id);
-                if (medicamento == null)
-                {
-                    return false;
-                }
-                medicamento.Estado = false;
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Agrega un medicamento a la base de datos
-        /// </summary>
-        /// <param name="medicamento">Medicamento a agregar</param>
-        /// <returns>True si se agregó, false si no</returns>
-        public Medicamento? Create(Medicamento medicamento)
-        {
-            try
-            {
-                _context.Medicamentos.Add(medicamento);
-                _context.SaveChanges();
-                return medicamento;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Busca un medicamento por su id
-        /// </summary>
-        /// <param name="id">id del medicamento a buscar</param>
-        /// <returns>La entidad medicamento encontrada o null</returns>
-        public Medicamento? GetById(int id)
-        {
-            try
-            {
-                return _context.Medicamentos.Find(id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Actualiza los valores de un medicamento si este existe.
-        /// </summary>
-        /// <param name="medicamento">Medicamento con los nuevos valores</param>
-        /// <returns>Devuelve el medicamento actualizado</returns>
-        public Medicamento? Update(Medicamento medicamento)
-        {
-            try
-            {
-                Medicamento? medicamentoDb = GetById(medicamento.Id); //Uso el metodo GetById en lugar de llamar al context.
-                if (medicamentoDb == null)
-                {
-                    return null;
-                }
-                medicamentoDb.Nombre = medicamento.Nombre;
-                medicamentoDb.Descripcion = medicamento.Descripcion;
-                medicamentoDb.Estado = medicamento.Estado;
-                _context.SaveChanges();
-                return medicamentoDb;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            //si existe devuelve la entidad, sino null
+            return await GetById(entidad.Id);
         }
     }
 }

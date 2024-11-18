@@ -1,78 +1,26 @@
-﻿using Api_Farmacia.Models;
-using Api_Farmacia.Repositories.Interfaces;
+﻿using Api_Farmacia.Data;
+using Api_Farmacia.Data.Models;
 
 namespace Api_Farmacia.Repositories.Implementations
 {
-    public class TipoUsuarioRepository : ITipoUsuarioRepository
+    public class TipoUsuarioRepository : AbstractRepository<TipoUsuario>
     {
-        private FarmaciaContext _context;
-        public TipoUsuarioRepository(FarmaciaContext context)
+        public TipoUsuarioRepository(FarmaciaContext context) : base(context)
         {
-            _context = context;
         }
 
-        public bool Create(TipoUsuario tipoUsuario)
+        public override async Task<TipoUsuario?> Update(TipoUsuario entidad)
         {
-            try
+            TipoUsuario? tipoUsuarioExistente = await GetById(entidad.Id);
+            if (tipoUsuarioExistente is not null)
             {
-                _context.TiposUsuarios.Add(tipoUsuario);
-                _context.SaveChanges();
-                return true;
+                tipoUsuarioExistente.Nombre = entidad.Nombre;
+                tipoUsuarioExistente.Descripcion = entidad.Descripcion;
 
+                await _context.SaveChangesAsync();
             }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
-        }
-
-        public bool Delete(int id)
-        {
-            try
-            {
-                _context.TiposUsuarios.Remove(GetById(id));
-                _context.SaveChanges();
-                return true;
-
-            }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
-        }
-
-        public List<TipoUsuario> GetAll()
-        {
-            return _context.TiposUsuarios.ToList();
-
-        }
-
-        public TipoUsuario GetById(int id)
-        {
-
-            List<TipoUsuario> lstU = _context.TiposUsuarios.Where(t => t.Id == id).ToList();
-            return lstU[0];
-
-        }
-
-        public bool Update(TipoUsuario tipoUsuario)
-        {
-            try
-            {
-                _context.TiposUsuarios.Update(tipoUsuario);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-
-                _context.Dispose();
-                return false;
-            }
+            //si existe devuelve la entidad, sino null
+            return await GetById(entidad.Id);
         }
     }
 }
