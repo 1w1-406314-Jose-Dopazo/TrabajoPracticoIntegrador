@@ -131,14 +131,13 @@ CREATE TABLE Usuarios
 (
 id int primary key identity(1,1),
 nombre varchar (100) not null,
+email varchar (50) not null,
 contraseña varchar (100) not null,
 id_tipo_usuario int not null,
 CONSTRAINT fk_usuarios_tiposUsuario FOREIGN KEY (id_tipo_usuario) REFERENCES Tipos_Usuario (id)
 )
 
-INSERT INTO Usuarios(nombre, contraseña, id_tipo_usuario)
+INSERT INTO Usuarios(nombre, email, contraseña, id_tipo_usuario)
 VALUES
-('administrador', 'administrador', 1),
-('vendedor', 'vendedor', 2)
-
---Crear tablas necesarias para usar JWT
+('administrador', 'administrador@gmail.com', 'administrador', 1),
+('vendedor', 'vendedor@gmail.com', 'vendedor', 2)

@@ -130,6 +130,10 @@ public partial class FarmaciaContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Usuarios__3213E83FE1998F63");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("email");
             entity.Property(e => e.Contraseña)
                 .HasMaxLength(100)
                 .IsUnicode(false)
