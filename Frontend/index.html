@@ -41,26 +41,26 @@
                         </li>
                         <!-- Nav pills -->
                         <li class="nav-item">
-                            <button class="nav-link w-100 esconder" data-bs-toggle="tab" href="#inicio"><i class="bi bi-house"></i></i>
+                            <button class="nav-link w-100 esconder" data-bs-toggle="tab" href="#inicio" onclick="mostrarMenu('a')"><i class="bi bi-house"></i></i>
                                 Inicio</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#medicamentos">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#medicamentos" onclick="esconderMenu()">
                                 <i class="bi bi-capsule"></i>
                                 Medicamentos</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#facturas">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#facturas" onclick="esconderMenu()">
                                 <i class="bi bi-shop"></i>
                                 Facturas</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#clientes">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#clientes" onclick="esconderMenu()">
                                 <i class="bi bi-people"></i>
                                 Clientes</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#usuarios">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#usuarios" onclick="esconderMenu()">
                                 <i class="bi bi-person-square"></i>
                                 Usuarios</button>
                         </li>
@@ -90,7 +90,7 @@
                                                 <label for="loginContraseña">Contraseña</label>
                                             </div>
                                         </div>
-                                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="Login('https:/'+'/localhost:7263/api/Auth/login')">
+                                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="Login('https:/'+'/localhost:7263/api/Login')">
                                         Iniciar Sesión
                                         </button>
                                     </div>
@@ -131,7 +131,7 @@
                                             <form class="form-floating">
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" id="nuevo-medicamentoNombre"
-                                                        placeholder="Nombre" value="Ibuprofeno">
+                                                        placeholder="Nombre">
                                                     <label for="nuevo-medicamentoNombre">Nombre</label>
                                                 </div>
 
@@ -151,9 +151,9 @@
                                                 checked>
                                         </div>
                                         <div class="m-2">
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" class="btn btn-primary" 
                                                 onclick="CreateMedicamento()">Guardar</button>
-                                            <button type="button" class="btn btn-danger"
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                                 data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                         </form>
@@ -200,9 +200,9 @@
                                                 id="editar-medicamentoEstado">
                                         </div>
                                         <div class="m-2">
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" class="btn btn-primary" 
                                                 onclick="UpdateMedicamento()">Guardar</button>
-                                            <button type="button" class="btn btn-danger"
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                                 data-bs-dismiss="modal">Cancelar</button>
                                             </form>
                                         </div>
@@ -328,7 +328,7 @@
                                                 </table>
                                             </div>
                                             <div class="m-2">
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                                                     onclick="CreateFactura()">Guardar</button>
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                                     onclick="LimpiarDetalles()">Cancelar</button>
@@ -425,7 +425,7 @@
                                                 </table>
                                             </div>
                                             <div class="m-2">
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                                                     onclick="UpdateFactura()">Guardar</button>
                                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                                     onclick="LimpiarDetalles()">Cancelar</button>
@@ -507,109 +507,95 @@
                         </div>
                     </div>
                     <!-- tab Clientes -->
-                    <div class="tab-pane container fade" id="medicamentos">
+                    <div class="tab-pane container fade" id="clientes">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
-                                <h1 class="h2">Medicamentos (Clientes)</h1>
-                                <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
+                                <h1 class="h2">Clientes</h1>
+                                <!-- El Boton Nuevo activa el modal con form para cargar nuevo Cliente -->
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                        data-bs-target="#nuevo-medicamento-modal">
+                                        data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadMedicamentos()">
+                                        onclick="LoadClientes()">
                                         Cargar<i class="bi bi-download"></i>
                                     </button>
                                 </div>
-                                <!-- nuevo medicamento modal -->
-                                <div class="modal fade" id="nuevo-medicamento-modal"
-                                    aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form class="form-floating">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="medicamentoNombre"
-                                                            placeholder="Nombre" value="Ibuprofeno">
-                                                        <label for="floatingInputValue">Nombre</label>
-                                                    </div>
-
-                                                    <div class="form-floating">
-                                                        <textarea class="form-control"
-                                                            placeholder="Descripcion del medicamento"
-                                                            id="medicamentoDescripcion"
-                                                            style="height: 100px"></textarea>
-                                                        <label for="floatingTextarea2">Comments</label>
-                                                    </div>
-
-                                            </div>
-                                            <div class="m-3 form-check">
-                                                <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                <input type="checkbox" class="form-check-input" id="medicamentoEstado"
-                                                    checked>
-                                            </div>
-                                            <div class="m-2">
-                                                <button type="submit" class="btn btn-primary"
-                                                    onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Cancelar</button>
-                                            </div>
+                            </div>
+                            <!-- nuevo Cliente modal -->
+                            <div class="modal fade" id="nuevo-cliente-modal" aria-labelledby="nuevo-cliente-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Nuevo Cliente</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-clienteNombre" placeholder="Nombre">
+                                                    <label for="nuevo-clienteNombre">Nombre</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-clienteApellido" placeholder="Apellido">
+                                                    <label for="nuevo-clienteApellido">Apellido</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="nuevo-cliente-numero" placeholder="Telefono">
+                                                    <label for="nuevo-cliente-numero">Número</label>
+                                                </div>
                                             </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"  id="btn-guardar-cliente" onclick="CreateCliente()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- editar medicamento modal -->
-                            <div class="modal fade" id="editar-medicamento-modal"
-                                aria-labelledby="editar-medicamento-label" aria-hidden="true">
+                            <!-- editar cliente modal -->
+                            <div class="modal fade" id="editar-cliente-modal"
+                                aria-labelledby="editar-cliente-label">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5">Editar Medicamento</h1>
+                                            <h1 class="modal-title fs-5">Editar Cliente</h1>
                                         </div>
-
                                         <div class="modal-body">
                                             <form>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoId"
-                                                        class="col-sm-3 col-form-label">Id</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="medicamentoId">
-                                                    </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="editar-cliente-Id" placeholder="ID">
+                                                    <label for="editar-cliente-Id">Id</label>
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoNombre"
-                                                        class="col-sm-3 col-form-label">Nombre</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="medicamentoNombre">
-                                                    </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-clienteNombre" placeholder="Nombre">
+                                                    <label for="editar-clienteNombre">Nombre</label>
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoDescripcion"
-                                                        class="col-sm-3 col-form-label">Descripcion</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control"
-                                                            id="medicamentoDescripcion">
-                                                    </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-clienteApellido" placeholder="Apellido">
+                                                    <label for="editar-clienteApellido">Apellido</label>
                                                 </div>
-                                                <div class="mb-3 form-check">
-                                                    <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="editar-cliente-numero" placeholder="Telefono">
+                                                    <label for="editar-cliente-numero">Número</label>
                                                 </div>
-                                                <button type="button" class="btn btn-primary"
-                                                    onclick="CreateMedicamento()">Guardar</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Cancelar</button>
                                             </form>
                                         </div>
-
+                                        <div class="m-2">
+                                            <button type="button" class="btn btn-primary" 
+                                                onclick="UpdateCliente()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -620,122 +606,108 @@
                                     <tr>
                                         <th class="d-none">Id</th>
                                         <th>Nombre</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
-                                        <th>Opciones</th>
+                                        <th>Apellido</th>
+                                        <th>Telefono</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <!-- aca se cargan los medicamentos con LoadMedicamentos()-->
-                                <tbody id="tbody-medicamentos">
+                                <!-- aca se cargan los medicamentos con LoadClientes()-->
+                                <tbody id="tbody-Clientes">
 
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <!-- tab usuarios -->
-                    <div class="tab-pane container fade" id="medicamentos">
+                    <div class="tab-pane container fade" id="usuarios">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
-                                <h1 class="h2">Medicamentos (Usuarios)</h1>
-                                <!-- El Boton Nuevo activa el modal con form para cargar nuevo medicamento -->
+                                <h1 class="h2">Usuarios</h1>
+                                <!-- El Boton Nuevo activa el modal con form para cargar nuevo usuario -->
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                        data-bs-target="#nuevo-medicamento-modal">
+                                        data-bs-target="#nuevo-usuario-modal" id="btn-nuevo-usuario" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                     <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadMedicamentos()">
+                                        onclick="LoadUsuarios()">
                                         Cargar<i class="bi bi-download"></i>
                                     </button>
                                 </div>
-                                <!-- nuevo medicamento modal -->
-                                <div class="modal fade" id="nuevo-medicamento-modal"
-                                    aria-labelledby="nuevo-medicamento-label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5">Nuevo Medicamento</h1>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form class="form-floating">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="medicamentoNombre"
-                                                            placeholder="Nombre" value="Ibuprofeno">
-                                                        <label for="floatingInputValue">Nombre</label>
-                                                    </div>
-
-                                                    <div class="form-floating">
-                                                        <textarea class="form-control"
-                                                            placeholder="Descripcion del medicamento"
-                                                            id="medicamentoDescripcion"
-                                                            style="height: 100px"></textarea>
-                                                        <label for="floatingTextarea2">Comments</label>
-                                                    </div>
-
-                                            </div>
-                                            <div class="m-3 form-check">
-                                                <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                <input type="checkbox" class="form-check-input" id="medicamentoEstado"
-                                                    checked>
-                                            </div>
-                                            <div class="m-2">
-                                                <button type="submit" class="btn btn-primary"
-                                                    onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento())">Guardar</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Cancelar</button>
-                                            </div>
+                            </div>
+                            <!-- nuevo usuario modal -->
+                            <div class="modal fade" id="nuevo-usuario-modal" aria-labelledby="nuevo-usuario-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Nuevo Usuario</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioNombre" placeholder="Nombre">
+                                                    <label for="nuevo-usuarioNombre">Nombre</label>
+                                                </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioContraseña" placeholder="Contraseña">
+                                                    <label for="nuevo-usuarioContraseña">Contraseña</label>
+                                                </div>
+                                                
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="comboTiposUsuarios"></select>
+                                                    <label for="comboTiposUsuarios">Tipo Usuario</label>
+                                                </div>
                                             </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"  id="btn-guardar-usuario" onclick="CreateUsuario()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- editar medicamento modal -->
-                            <div class="modal fade" id="editar-medicamento-modal"
-                                aria-labelledby="editar-medicamento-label" aria-hidden="true">
+                            <!-- editar usuario modal -->
+                            <div class="modal fade" id="editar-usuario-modal"
+                                aria-labelledby="editar-usuario-label">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5">Editar Medicamento</h1>
+                                            <h1 class="modal-title fs-5">Editar Usuario</h1>
                                         </div>
-
                                         <div class="modal-body">
                                             <form>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoId"
-                                                        class="col-sm-3 col-form-label">Id</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="medicamentoId">
-                                                    </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="editar-usuario-id" placeholder="ID">
+                                                    <label for="editar-usuario-id">Id</label>
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoNombre"
-                                                        class="col-sm-3 col-form-label">Nombre</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="medicamentoNombre">
-                                                    </div>
+
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioNombre" placeholder="Nombre">
+                                                    <label for="editar-usuarioNombre">Nombre</label>
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="medicamentoDescripcion"
-                                                        class="col-sm-3 col-form-label">Descripcion</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control"
-                                                            id="medicamentoDescripcion">
-                                                    </div>
+                            
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioContraseña" placeholder="Contraseña">
+                                                    <label for="editar-usuarioContraseña">Contraseña</label>
                                                 </div>
-                                                <div class="mb-3 form-check">
-                                                    <label class="form-check-label" for="exampleCheck1">Activo</label>
-                                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="comboTiposUsuariosEditar"></select>
+                                                    <label for="comboTiposUsuariosEditar">Tipo Usuario</label>
                                                 </div>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                                    onclick="NewEntity('https:/'+'/localhost:7263/api/Medicamento',CreateMedicamento(medicamento))">Guardar</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Cancelar</button>
                                             </form>
                                         </div>
-
+                                        <div class="m-2">
+                                            <button type="button" class="btn btn-primary" 
+                                                onclick="UpdateUsuario()">Guardar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -746,13 +718,13 @@
                                     <tr>
                                         <th class="d-none">Id</th>
                                         <th>Nombre</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
-                                        <th>Opciones</th>
+                                        <th>Apellido</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <!-- aca se cargan los medicamentos con LoadMedicamentos()-->
-                                <tbody id="tbody-medicamentos">
+                                <!-- aca se cargan los medicamentos con LoadUsuarios()-->
+                                <tbody id="tbody-usuarios">
 
                                 </tbody>
                             </table>
