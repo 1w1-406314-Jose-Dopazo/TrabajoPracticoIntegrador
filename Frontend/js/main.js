@@ -874,6 +874,7 @@ async function CreateUsuario(){
   
       
       alert('por favor introduzca un nombre')
+      nombreInput.focus()
       return false
     }
     if(contraseñaInput.value === ""){
@@ -915,6 +916,8 @@ async function CreateUsuario(){
 
 
 function mostrarMenu(token) {
+  const menu = document.getElementById("inicio")
+  menu.style.display = 'block'
   const menus = document.getElementsByClassName("menu-oculto");
 
   for (let menu of menus) {
@@ -928,14 +931,20 @@ function mostrarMenu(token) {
   }
 
   document.getElementById("inicio").innerHTML = `
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <h1 class="h2">Token de sesion:</h1>
-                            </div>
-                        </div>
-                        <p>${token}</p>
+                       
+                            <div class="d-flex justify-content-center">
+                              <img src="assets/Logo.gif"  alt="..." style="height: 40%;width: 40%;">
+                              </div>
+                              <div class="d-flex justify-content-center">
+                                <img src="assets/Bienvenida.gif"  alt="..." style="height: 100%;width: 100%;">
+                              </div>
+                            
   `
+}
+
+function esconderMenu(){
+  const menu = document.getElementById("inicio")
+  menu.style.display = 'none'
 }
 
 function login_succes(nombre, token) {
