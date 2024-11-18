@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-﻿using Api_Farmacia.Controllers.DTO_s.Factura;
-using Api_Farmacia.Controllers.DTO_s.Usuario;
-using Api_Farmacia.Models;
-using Api_Farmacia.Services.Interfaces;
-=======
 ﻿using Api_Farmacia.Data.Models;
 using Api_Farmacia.Data.UsuarioDTOs;
 using Api_Farmacia.Repositories.Implementations;
->>>>>>> Branch-Lautaro
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
@@ -25,15 +18,9 @@ namespace Api_Farmacia.Controllers
             _repositoryTipoUsuario = repositoryTipoUsuario;
         }
 
-<<<<<<< HEAD
-
-        [HttpGet("Usuarios")]
-        public ActionResult<UsuarioPatchGetDto> GetUsuarios()
-=======
         // GET: api/Usuario
         [HttpGet]
         public async Task<ActionResult<List<Usuario>>> GetAll()
->>>>>>> Branch-Lautaro
         {
             try
             {
@@ -115,15 +102,6 @@ namespace Api_Farmacia.Controllers
             }
         }
 
-<<<<<<< HEAD
-        [HttpPost("Usuarios")]
-        public ActionResult NewUsuario([FromBody] UsuarioPostDto usuario)
-        {
-
-            try
-            {
-                return Created(string.Empty, _service.UsuarioCreate(usuario));
-=======
         // DELETE api/Usuario/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -135,22 +113,11 @@ namespace Api_Farmacia.Controllers
                     return Ok($"Usuario con id({id}) eliminado correctamente");
                 }
                 return NotFound($"El usuario con ID({id}) no existe.");
->>>>>>> Branch-Lautaro
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-<<<<<<< HEAD
-        }
-
-        [HttpPatch("Usuarios")]
-        public ActionResult UpdateUsuario([FromBody]UsuarioPatchGetDto usuario)
-        {
-            
-            return Ok(_service.UsuarioUpdate(usuario));
-=======
->>>>>>> Branch-Lautaro
         }
     }
 }

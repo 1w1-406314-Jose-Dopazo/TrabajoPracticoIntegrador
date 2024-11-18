@@ -33,6 +33,8 @@ namespace Api_Farmacia.Repositories.Implementations
                     _context.DetallesFacturas.RemoveRange(facturaExistente.DetallesFacturas.ToList());
 
                     // Actualizar los detalles existentes y cargar los nuevos
+                    if (entidad.DetallesFacturas.Count() > 0)
+                    {
                     foreach (DetalleFactura detalleNuevo in entidad.DetallesFacturas)
                     {
                         facturaExistente.DetallesFacturas.Add(new DetalleFactura
@@ -41,6 +43,8 @@ namespace Api_Farmacia.Repositories.Implementations
                             PrecioUnitario = detalleNuevo.PrecioUnitario,
                             IdMedicamento = detalleNuevo.IdMedicamento
                         });
+                    }
+
                     }
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();

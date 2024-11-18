@@ -52,7 +52,7 @@ fetch("https://localhost:7263/api/medicamento")
 
 let lstTiposUsuarios = [];
 function LoadComboTiposUsuarios(idComboT){
-  fetch("https://localhost:7263/Tipos_Usuarios")
+  fetch("https://localhost:7263/api/TipoUsuario")
   .then((respones) => respones.json())
   .then((tiposUsuarios) => {
     const selectTipoUsuario = document.getElementById(idComboT);
@@ -61,7 +61,7 @@ function LoadComboTiposUsuarios(idComboT){
       
         const option = document.createElement("option");
         option.value = tipoUsuario.id;
-        option.text = tipoUsuario.descripcion;
+        option.text = tipoUsuario.nombre;
         selectTipoUsuario.appendChild(option);
         lstTiposUsuarios.push(tipoUsuario)
         
@@ -182,9 +182,9 @@ function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
     if (cantidad > 0) {
       lstDetallesLocal.push(
         {
+          "idMedicamento": medicamentoId,
           "cantidad":  cantidad,
-          "precioUnitario":  precio,
-          "idMedicamento": medicamentoId 
+          "precioUnitario":  precio
         }
       )
 
@@ -278,13 +278,14 @@ async function LoadFacturas() {
     }
 
     async function LoadDetallesFacturaInfo(id) {
-      await fetch("https://localhost:7263/api/DetalleFactura/GetByFactura?id=" + id)
+      await fetch("https://localhost:7263/api/Factura/" + id)
         .then((response) => response.json())
-        .then(async (detallesFactura) => {
+        .then(async (Factura) => {
           const tbody = document.getElementById("tbody-detallesFacturaInfo");
           tbody.innerHTML = ""; // Limpiar la tabla
-    
-          for (const detalleFactura of detallesFactura) {
+          
+
+          for (const detalleFactura of Factura.detallesFacturas) {
             const row = document.createElement("tr");
             row.className = "text-center";
 
@@ -307,13 +308,14 @@ async function LoadFacturas() {
     }
 
     async function LoadDetallesFactura(id) {
-      await fetch("https://localhost:7263/api/DetalleFactura/GetByFactura?id=" + id)
+      await fetch("https://localhost:7263/api/Factura/" + id)
         .then((response) => response.json())
-        .then(async (detallesFactura) => {
+        .then(async (factura) => {
           const tbody = document.getElementById("tbody-detallesFacturaEditar");
           tbody.innerHTML = ""; // Limpiar la tabla
+          
     
-          for (const detalleFactura of detallesFactura) {
+          for (const detalleFactura of factura.detallesFacturas) {
             const row = document.createElement("tr");
             row.className = "text-center";
             lstDetallesLocal.push({
@@ -415,7 +417,7 @@ async function LoadUsuarios() {
   const nombreInput = document.getElementById('editar-usuarioNombre')
   const contraseñaInput = document.getElementById('editar-usuarioContraseña')
   const editarUsuarioInput = document.getElementById('editar-usuario-rol')
-await fetch("https://localhost:7263/Usuarios")
+await fetch("https://localhost:7263/api/Usuario")
   .then((response) => response.json())
   .then(async(usuarios) => {
     tbody.innerHTML = ""; // Limpiar la tabla
@@ -609,11 +611,11 @@ async function UpdateFactura(factura) {
     id: document.getElementById("editar-facturaId").value,
     idCliente: document.getElementById("comboClientesEditar").value,
     fecha: (document.getElementById("editar-facturaFecha").value = new Date().toISOString()),
-    detallesFacturasDto: lstDetallesLocal,
+    detallesFacturas: lstDetallesLocal,
   };
   console.log(facturaUPD);
 
-  const response = await fetch("https://localhost:7263/api/Factura", {
+  const response = await fetch('https://localhost:7263/api/Factura', {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(facturaUPD),
@@ -645,7 +647,7 @@ alert('factura Eliminada correctamente')
    var fecha = document.getElementById("nueva-facturaFecha").value;
    fecha = new Date().toISOString();
    factura.fecha = fecha
-   factura.detallesFacturasDto = lstDetallesLocal;
+   factura.detallesFacturas = lstDetallesLocal;
    console.log(factura);
 
    const response = await fetch("https://localhost:7263/api/Factura", {
@@ -682,7 +684,7 @@ async function UpdateCliente() {
   if(ValidarEdicionCliente()===true){
     
     const response = await fetch(`https://localhost:7263/api/Cliente/${cliente.id}`, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(cliente),
     credentials: 'same-origin'
@@ -804,10 +806,11 @@ async function UpdateUsuario() {
   usuario.nombre = document.getElementById('editar-usuarioNombre').value
   usuario.contraseña = document.getElementById('editar-usuarioContraseña').value
   usuario.idTipoUsuario = document.getElementById('comboTiposUsuariosEditar').value
+  console.log(usuario)
 
   if(ValidarEdicionUsuario()===true){
 
-    const response = await fetch(`https://localhost:7263/Usuarios`, {
+    const response = await fetch(`https://localhost:7263/api/Usuario?id=${usuario.id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(usuario),
@@ -822,7 +825,7 @@ async function UpdateUsuario() {
   }
 }
 async function DeleteUsuario(id){
-  const response = await fetch(`https://localhost:7263/Usuarios/${id}`, {
+  const response = await fetch(`https://localhost:7263/api/Usuario/${id}`, {
   method: 'DELETE',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(id),
@@ -847,7 +850,7 @@ async function CreateUsuario(){
     usuario.nombre = document.getElementById('nuevo-usuarioNombre').value
     usuario.contraseña = document.getElementById('nuevo-usuarioContraseña').value
     usuario.idTipoUsuario = document.getElementById('comboTiposUsuarios').value
-    const response = await fetch('https://localhost:7263/Usuarios', {
+    const response = await fetch('https://localhost:7263/api/Usuario', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(usuario),
