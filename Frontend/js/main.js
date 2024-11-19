@@ -2,7 +2,21 @@
 //#region forms
 
 
+function GetComboClientesIndex(nombreCompleto) {
+  const dropdown = document.getElementById('comboClientesEditar');
+  
+  if (!dropdown) {
+      console.error(`Dropdown con ID '${dropdownId}' no encontrado.`);
+      return -1;
+  }
 
+  for (let i = 0; i < dropdown.options.length; i++) {
+      if (dropdown.options[i].text === nombreCompleto) {
+          return i; 
+      }
+  }
+  return -1;
+}
 
 
 let lstClientes = [];
@@ -71,12 +85,12 @@ function LoadComboTiposUsuarios(idComboT){
   console.log(lstMedicamentos)
 }
 
-function LoadModalEditarFactura(){
-  
-  LoadComboClientes("comboClientesEditar")
-  LoadComboMedicamentos("comboMedicamentosEditar")
+async function LoadModalEditarFactura(nombre,apellido){
+  const nombreCompleto = nombre+" "+apellido
+  await LoadComboClientes("comboClientesEditar")
+  await LoadComboMedicamentos("comboMedicamentosEditar")
   document.getElementById("editar-facturaFecha").value = new Date().toLocaleDateString()
-
+  document.getElementById("comboClientesEditar").selectedIndex = GetComboClientesIndex(nombreCompleto)
 
 }
 
@@ -165,59 +179,73 @@ fetch("https://localhost:7263/api/Medicamento")
   .catch((error) => console.error("Error al cargar medicamentos:", error));
 }
 
-function LimpiarDetalles(){
-    document.getElementById("tbody-detallesFactura").innerHTML = ""
-}
 
 let lstDetallesLocal =[];
-function AgregarDetalle(idComboM,idDetCant,idDetPre,tbody){
-    idTbody=tbody
-    const medicamento = document.getElementById(idComboM)
-    const medicamentoId = medicamento.value
-    const medicamentoNombre = medicamento.options[medicamento.selectedIndex].text;
-    const cantidad = document.getElementById(idDetCant).value
-    const precio = document.getElementById(idDetPre).value
-    console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio)
+function AgregarDetalle(idComboM, idDetCant, idDetPre, tbody) {
+  idTbody = tbody;
+  const medicamento = document.getElementById(idComboM);
+  const medicamentoId = medicamento.value;
+  const medicamentoNombre = medicamento.options[medicamento.selectedIndex].text;
+  const cantidad = parseInt(document.getElementById(idDetCant).value, 10);
+  const precio = parseFloat(document.getElementById(idDetPre).value);
+  
+  console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio);
+  
+  if (cantidad > 0) {
+    const tbody = document.getElementById(idTbody);
+    let existingRow = null;
+    // esto de acá funciona generando un array a partir de las filas del tbody (vale oro)
+    Array.from(tbody.rows).forEach(row => {
+      const rowMedicamentoId = row.cells[0].textContent.trim();
+      if (rowMedicamentoId === medicamentoId) {
+        existingRow = row;
+      }
+    });
     
-    if (cantidad > 0) {
-      lstDetallesLocal.push(
-        {
-          "idMedicamento": medicamentoId,
-          "cantidad":  cantidad,
-          "precioUnitario":  precio
-        }
-      )
-
-        const tbody = document.getElementById(idTbody)
-        const row = document.createElement("tr")
-        row.className = "text-center"
-        row.innerHTML = `
-                        <td class="d-none">${medicamentoId}</td>
-                        <td>${medicamentoNombre}</td>
-                        <td>${cantidad}</td>
-                        <td>${precio}</td>
-                        <td>
-                            <button class="btn btn-outline-danger delete-btn">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-        `;
-        tbody.appendChild(row)
-        row.querySelector(".delete-btn").addEventListener('click', () => {
-            row.remove()
-        })
+    if (existingRow) {
+      const currentQuantity = parseInt(existingRow.cells[2].textContent.trim(), 10);
+          const newQuantity = currentQuantity + cantidad;
+          existingRow.cells[2].textContent = newQuantity;
+          
+      } else {
+        lstDetallesLocal.push({
+              "idMedicamento": medicamentoId,
+              "cantidad": cantidad,
+              "precioUnitario": precio
+            });
+            
+            const row = document.createElement("tr");
+            row.className = "text-center";
+            row.innerHTML = `
+              <td class="d-none">${medicamentoId}</td>
+              <td>${medicamentoNombre}</td>
+              <td>${cantidad}</td>
+              <td>${precio}</td>
+              <td>
+                  <button class="btn btn-outline-danger delete-btn">
+                      <i class="bi bi-trash"></i>
+                      </button>
+                      </td>
+                      `;
+                      tbody.appendChild(row);
+                      
+                      row.querySelector(".delete-btn").addEventListener('click', () => {
+              row.remove();
+          });
+      }
     }
-
-
 }
 
+function LimpiarDetalles(){
+    lstDetallesLocal = []
+}
 async function LoadFacturas() {
   const response = await fetch("https://localhost:7263/api/Factura");
   const facturas = await response.json();
       const tbody = document.getElementById("tbody-facturas");
       const idInput = document.getElementById('editar-facturaId')
       tbody.innerHTML = ""; // Limpiar la tabla
-
+      
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
       const modalInfoFactura = new bootstrap.Modal(document.getElementById('info-factura-modal'))
       
@@ -248,7 +276,7 @@ async function LoadFacturas() {
 
         // Agregar el evento para el botón de editar
         row.querySelector(".edit-btn").addEventListener("click", function(){
-          LoadModalEditarFactura()
+          LoadModalEditarFactura(cliente.nombre,cliente.apellido)
           idInput.value = factura.id
           LoadDetallesFactura(factura.id)
           modalEditarFactura.show()
@@ -498,7 +526,7 @@ med.estado=document.getElementById('editar-medicamentoEstado').checked
 if(ValidarEdicionMedicamento()===true){
 
   
-        const response = await fetch('https://localhost:7263/api/Medicamento', {
+        const response = await fetch(`https://localhost:7263/api/Medicamento/${med.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(med),
@@ -603,6 +631,7 @@ async function UpdateFactura(factura) {
   const lstDetalles =[]
   let contador = 0;
   const filas = document.querySelectorAll('#table-detallesFactura tr')
+  if(ValidarEdicionFactura()===true){
   filas.forEach(fila => {
     contador++
     const celdas = fila.querySelectorAll('td');
@@ -641,6 +670,7 @@ async function UpdateFactura(factura) {
     body: JSON.stringify(facturaUPD),
     credentials: "same-origin",
   });
+  }
   if (response.ok) {
     LoadFacturas();
     alert("factura actualizada correctamente");
@@ -663,10 +693,11 @@ alert('factura Eliminada correctamente')
 }
 
  async function CreateFactura() {
-
+ 
   const lstDetalles =[]
   let contador = 0;
   const filas = document.querySelectorAll('#table-detallesFactura tr')
+  if(ValidarNuevaFactura()===true){
   filas.forEach(fila => {
     contador++
     const celdas = fila.querySelectorAll('td');
@@ -684,10 +715,13 @@ alert('factura Eliminada correctamente')
       }
     });
     if (Object.keys(detalleFactura).length > 0) {
-      lstDetalles.push(detalleFactura);
+      
+
+        lstDetalles.push(detalleFactura);
+      
     
     }
-  });
+  })};
    
   console.log(lstDetalles)
 
@@ -713,6 +747,62 @@ alert('factura Eliminada correctamente')
    }
  }
 
+ function ValidarNuevaFactura(){
+
+  const cantidadInput = document.getElementById('nuevo-detalleCantidad')
+  const precioInput = document.getElementById('nuevo-detallePrecioUnitario')
+  const filas = document.querySelectorAll('#table-detallesFactura tr')
+  let i = 0
+  filas.forEach(fila => {
+    i++
+    console.log('pppppppppppppppppppp: '+i)
+    
+  });
+  if(i<4){
+    alert('por favor introduzca un detalle')
+    return false
+  }
+  if(cantidadInput.value === ""){
+
+    
+    alert('por favor introduzca cantidad')
+    return false
+  }
+  if(precioInput.value === ""){
+    alert('por favor introduzca un precio')
+    return false
+  }
+  
+  return true
+}
+function ValidarEdicionFactura(){
+
+  const cantidadInput = document.getElementById('nuevo-detalleCantidad')
+  const precioInput = document.getElementById('nuevo-detallePrecioUnitario')
+  const filas = document.querySelectorAll('#table-detallesFactura tr')
+  let i = 0
+  filas.forEach(fila => {
+    i++
+    console.log('pppppppppppppppppppp: '+i)
+    
+  });
+  if(i<4){
+    alert('por favor introduzca un detalle')
+    return false
+  }
+  if(cantidadInput.value === ""){
+
+    
+    alert('por favor introduzca cantidad')
+    return false
+  }
+  if(precioInput.value === ""){
+    alert('por favor introduzca un precio')
+    return false
+  }
+  
+  return true
+}
  
 
 //#endregion Factura

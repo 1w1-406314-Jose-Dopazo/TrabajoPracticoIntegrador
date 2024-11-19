@@ -45,22 +45,22 @@
                                 Inicio</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#medicamentos" onclick="esconderMenu()">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#medicamentos" onclick="esconderMenu(),LoadMedicamentos()">
                                 <i class="bi bi-capsule"></i>
                                 Medicamentos</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#facturas" onclick="esconderMenu()">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#facturas" onclick="esconderMenu(),LoadFacturas()">
                                 <i class="bi bi-shop"></i>
                                 Facturas</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#clientes" onclick="esconderMenu()">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#clientes" onclick="esconderMenu(),LoadClientes()">
                                 <i class="bi bi-people"></i>
                                 Clientes</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#usuarios" onclick="esconderMenu()">
+                            <button class="nav-link w-100 d-none menu-oculto" data-bs-toggle="tab" href="#usuarios" onclick="esconderMenu(),LoadUsuarios()">
                                 <i class="bi bi-person-square"></i>
                                 Usuarios</button>
                         </li>
@@ -111,10 +111,6 @@
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
                                         data-bs-target="#nuevo-medicamento-modal">
                                         Nuevo <i class="bi bi-upload"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadMedicamentos()">
-                                        Cargar<i class="bi bi-download"></i>
                                     </button>
                                 </div>
                             </div>
@@ -238,13 +234,10 @@
                                 <!-- El Boton Nuevo activa el nueva-factura-modal -->
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                        data-bs-target="#nueva-factura-modal" onclick="LoadModalNuevaFactura()">
+                                        data-bs-target="#nueva-factura-modal" onclick="LoadModalNuevaFactura(),LimpiarDetalles()">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadFacturas()">
-                                        Cargar<i class="bi bi-download"></i>
-                                    </button>
+                                    
                                 </div>
                             </div>
                             <!-- nueva factura modal -->
@@ -519,10 +512,7 @@
                                         data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadClientes()">
-                                        Cargar<i class="bi bi-download"></i>
-                                    </button>
+                                    
                                 </div>
                             </div>
                             <!-- nuevo Cliente modal -->
@@ -631,10 +621,7 @@
                                         data-bs-target="#nuevo-usuario-modal" id="btn-nuevo-usuario" onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-sm shadow"
-                                        onclick="LoadUsuarios()">
-                                        Cargar<i class="bi bi-download"></i>
-                                    </button>
+                                    
                                 </div>
                             </div>
                             <!-- nuevo usuario modal -->
