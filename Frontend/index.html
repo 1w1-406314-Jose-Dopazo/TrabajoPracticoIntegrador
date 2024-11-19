@@ -66,13 +66,6 @@
                         </button>
                     </li>
                 </ul>
-                <script>
-                    // Reemplaza la clase "active" por "fade" en la tab-pane de inicio
-                    function fadeLogin() {
-                        const inicio = document.getElementById("inicio");
-                        inicio.classList.replace("active", "fade");
-                    }
-                </script>
             </nav>
             <!-- col main que muestra la vista que se seleccione a la derecha del sidebar -->
             <main class="vh-100 col-7 col-sm-7 col-md-8 col-lg-9 ms-sm-auto px-md-4" id="view-container">
@@ -116,7 +109,7 @@
                         </div>
                     </div>
                     <!-- tab Medicamentos -->
-                    <div class="tab-pane container active" id="medicamentos">
+                    <div class="tab-pane container fade" id="medicamentos">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
@@ -266,7 +259,7 @@
                         </div>
                     </div>
                     <!-- tab facturas -->
-                    <div class="tab-pane container active" id="facturas">
+                    <div class="tab-pane container fade" id="facturas">
                         <div
                             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
@@ -519,12 +512,12 @@
                                 <!-- El Boton Nuevo activa el modal con form para cargar nuevo Cliente -->
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
-                                        data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente"
-                                        onclick="LoadModalNuevoCliente()">
+                                        data-bs-target="#nuevo-cliente-modal" id="btn-nuevo-cliente">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                 </div>
                             </div>
+                        </div>
                             <!-- nuevo Cliente modal -->
                             <div class="modal fade" id="nuevo-cliente-modal" aria-labelledby="nuevo-cliente-label"
                                 aria-hidden="true">
@@ -534,31 +527,39 @@
                                             <h1 class="modal-title fs-5">Nuevo Cliente</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
-                                                <div class="form-floating mb-3">
+                                            <form class="form-floating p-4 row" id="formNuevoCliente">
+                                                <div class="col-6 form-floating mb-3">
                                                     <input type="text" class="form-control" id="nuevo-clienteNombre"
-                                                        placeholder="Nombre">
+                                                        placeholder="Nombre" pattern="^[a-zA-Z\s]{3,50}$" required>
                                                     <label for="nuevo-clienteNombre">Nombre</label>
                                                 </div>
 
-                                                <div class="form-floating mb-3">
+                                                <div class="col-6 form-floating mb-3">
                                                     <input type="text" class="form-control" id="nuevo-clienteApellido"
-                                                        placeholder="Apellido">
+                                                        placeholder="Apellido" pattern="^[a-zA-Z\s]{3,50}$" title="" required>
                                                     <label for="nuevo-clienteApellido">Apellido</label>
                                                 </div>
 
                                                 <div class="form-floating mb-3">
-                                                    <input type="number" class="form-control" id="nuevo-cliente-numero"
-                                                        placeholder="Telefono">
-                                                    <label for="nuevo-cliente-numero">Número</label>
+                                                    <input type="tel" class="form-control" id="nuevo-clienteTelefono"
+                                                        placeholder="Numero de telefono">
+                                                    <label for="nuevo-clienteTelefono">Numero de telefono</label>
                                                 </div>
+                                                <button type="submit" class="btn btn-lg btn-primary btn-block w-100 mb-3">
+                                                    Guardar
+                                                </button>
+                                                <!-- este script evita que se refresque la pagina al hacer submit, y llama a CreateMedicamento() -->
+                                                <script>
+                                                    document.getElementById('formNuevoCliente').addEventListener('submit', function (event) {
+                                                        event.preventDefault()
+                                                        CreateCliente()
+                                                    })
+                                                </script>
+                                                <button type="button" class="btn btn-lg btn-danger btn-block w-100"
+                                                    data-bs-dismiss="modal" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" id="btn-guardar-cliente"
-                                                onclick="CreateCliente()">Guardar</button>
-                                            <button type="button" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -571,44 +572,48 @@
                                             <h1 class="modal-title fs-5">Editar Cliente</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="number" class="form-control" id="editar-cliente-Id"
-                                                        placeholder="ID">
-                                                    <label for="editar-cliente-Id">Id</label>
+                                            <form class="form-floating p-4 row" id="formEditarCliente">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="number" class="form-control" id="editar-clienteId" placeholder="ID" disabled>
+                                                    <label for="editar-clienteId">Id</label>
                                                 </div>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="editar-clienteNombre"
-                                                        placeholder="Nombre">
+                                                <div class="col-6 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-clienteNombre" placeholder="Nombre"
+                                                        pattern="^[a-zA-Z\s]{3,50}$" required>
                                                     <label for="editar-clienteNombre">Nombre</label>
                                                 </div>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="editar-clienteApellido"
-                                                        placeholder="Apellido">
+                            
+                                                <div class="col-6 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-clienteApellido" placeholder="Apellido"
+                                                        pattern="^[a-zA-Z\s]{3,50}$" title="" required>
                                                     <label for="editar-clienteApellido">Apellido</label>
                                                 </div>
-
+                            
                                                 <div class="form-floating mb-3">
-                                                    <input type="number" class="form-control" id="editar-cliente-numero"
-                                                        placeholder="Telefono">
-                                                    <label for="editar-cliente-numero">Número</label>
+                                                    <input type="tel" class="form-control" id="editar-clienteTelefono"
+                                                        placeholder="Numero de telefono">
+                                                    <label for="editar-clienteTelefono">Numero de telefono</label>
                                                 </div>
-                                            </form>
-                                        </div>
-                                        <div class="m-2">
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="UpdateCliente()">Guardar</button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                                                data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-lg btn-primary btn-block w-100 mb-3">
+                                                    Guardar
+                                                </button>
+                                                <!-- este script evita que se refresque la pagina al hacer submit, y llama a CreateMedicamento() -->
+                                                <script>
+                                                    document.getElementById('formEditarCliente').addEventListener('submit', function (event) {
+                                                        event.preventDefault()
+                                                        UpdateCliente()
+                                                    })
+                                                </script>
+                                                <button type="button" class="btn btn-lg btn-danger btn-block w-100" data-bs-dismiss="modal"
+                                                    data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <!-- </div> --> 
                         <div class="table-responsive p-1" id="table-container">
                             <table class="table table-dark table-sm">
                                 <thead class="text-center">
@@ -628,9 +633,8 @@
                         </div>
                     </div>
                     <!-- tab usuarios -->
-                    <div class="tab-pane container fade" id="usuarios">
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div class="tab-pane container active" id="usuarios">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <!-- Titulo y botones Nuevo/Cargar/Editar -->
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <h1 class="h2">Usuarios</h1>
@@ -638,11 +642,12 @@
                                 <div class="btn-group m-2">
                                     <button type="button" class="btn btn-primary btn-sm shadow" data-bs-toggle="modal"
                                         data-bs-target="#nuevo-usuario-modal" id="btn-nuevo-usuario"
-                                        onclick="LoadModalTipoUsuario('comboTiposUsuarios')">
+                                        onclick="LoadModalNuevoUsuario()">
                                         Nuevo <i class="bi bi-upload"></i>
                                     </button>
                                 </div>
                             </div>
+                        </div>
                             <!-- nuevo usuario modal -->
                             <div class="modal fade" id="nuevo-usuario-modal" aria-labelledby="nuevo-usuario-label"
                                 aria-hidden="true">
@@ -652,30 +657,43 @@
                                             <h1 class="modal-title fs-5">Nuevo Usuario</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="nuevo-usuarioNombre"
-                                                        placeholder="Nombre">
+                                            <form class="form-floating p-4 row" id="formNuevoUsuario">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioNombre" placeholder="Nombre" pattern="\w{3,20}"
+                                                        title="3 a 20 caracteres, sin espacios" required>
                                                     <label for="nuevo-usuarioNombre">Nombre</label>
                                                 </div>
 
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="nuevo-usuarioContraseña"
-                                                        placeholder="Contraseña">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="email" class="form-control" id="nuevo-usuarioEmail" placeholder="Email" title="3 a 20 caracteres, sin espacios" required>
+                                                    <label for="nuevo-usuarioEmail">Email</label>
+                                                </div>
+
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="nuevo-usuarioContraseña" placeholder="Contraseña" pattern="\w{3,20}"
+                                                        title="3 a 20 caracteres, sin espacios" required>
                                                     <label for="nuevo-usuarioContraseña">Contraseña</label>
                                                 </div>
 
-                                                <div class="form-floating mb-3">
-                                                    <select class="form-select" id="comboTiposUsuarios"></select>
-                                                    <label for="comboTiposUsuarios">Tipo Usuario</label>
+                                                <div class="col-12 form-floating mb-3">
+                                                    <select class="form-select" id="nuevo-usuarioComboTipoUsuario"></select>
+                                                    <label for="nuevo-usuarioComboTipoUsuario">Tipo Usuario</label>
                                                 </div>
+                                                <button type="submit" class="btn btn-lg btn-primary btn-block w-100 mb-3">
+                                                    Guardar
+                                                </button>
+                                                <!-- este script evita que se refresque la pagina al hacer submit, y llama a CreateMedicamento() -->
+                                                <script>
+                                                    document.getElementById('formNuevoUsuario').addEventListener('submit', function (event) {
+                                                        event.preventDefault()
+                                                        CreateUsuario()
+                                                    })
+                                                </script>
+                                                <button type="button" class="btn btn-lg btn-danger btn-block w-100"
+                                                    data-bs-dismiss="modal" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" id="btn-guardar-usuario"
-                                                onclick="CreateUsuario()">Guardar</button>
-                                            <button type="button" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -688,39 +706,47 @@
                                             <h1 class="modal-title fs-5">Editar Usuario</h1>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="number" class="form-control" id="editar-usuario-id"
-                                                        placeholder="ID">
-                                                    <label for="editar-usuario-id">Id</label>
+                                            <form class="form-floating p-4 row" id="formEditarUsuario">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioId" placeholder="Id" disabled>
+                                                    <label for="editar-usuarioId">Id</label>
                                                 </div>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="editar-usuarioNombre"
-                                                        placeholder="Nombre">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioNombre" placeholder="Nombre" pattern="\w{3,20}"
+                                                        title="3 a 20 caracteres, sin espacios" required>
                                                     <label for="editar-usuarioNombre">Nombre</label>
                                                 </div>
 
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control"
-                                                        id="editar-usuarioContraseña" placeholder="Contraseña">
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="email" class="form-control" id="editar-usuarioEmail" placeholder="Email" title="3 a 20 caracteres, sin espacios" required>
+                                                    <label for="editar-usuarioEmail">Email</label>
+                                                </div>
+
+                                                <div class="col-12 form-floating mb-3">
+                                                    <input type="text" class="form-control" id="editar-usuarioContraseña" placeholder="Contraseña" pattern="\w{3,20}"
+                                                        title="3 a 20 caracteres, sin espacios" required>
                                                     <label for="editar-usuarioContraseña">Contraseña</label>
                                                 </div>
 
-                                                <div class="form-floating mb-3">
-                                                    <select class="form-select" id="comboTiposUsuariosEditar"></select>
-                                                    <label for="comboTiposUsuariosEditar">Tipo Usuario</label>
+                                                <div class="col-12 form-floating mb-3">
+                                                    <select class="form-select" id="editar-usuarioComboTipoUsuario"></select>
+                                                    <label for="editar-usuarioComboTipoUsuario">Tipo Usuario</label>
                                                 </div>
+                                                <button type="submit" class="btn btn-lg btn-primary btn-block w-100 mb-3">
+                                                    Guardar
+                                                </button>
+                                                <!-- este script evita que se refresque la pagina al hacer submit, y llama a CreateMedicamento() -->
+                                                <script>
+                                                    document.getElementById('formEditarUsuario').addEventListener('submit', function (event) {
+                                                        event.preventDefault()
+                                                        UpdateUsuario()
+                                                    })
+                                                </script>
+                                                <button type="button" class="btn btn-lg btn-danger btn-block w-100"
+                                                    data-bs-dismiss="modal" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </form>
-                                        </div>
-                                        <div class="m-2">
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="UpdateUsuario()">Guardar</button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                                                data-bs-dismiss="modal">Cancelar</button>
-                                            </form>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -731,8 +757,8 @@
                                     <tr>
                                         <th class="d-none">Id</th>
                                         <th>Nombre</th>
-                                        <th>Apellido</th>
-                                        <th>Rol</th>
+                                        <th>Contraseña</th>
+                                        <th>Tipo</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -742,7 +768,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                 </div>
             </main>
         </div>

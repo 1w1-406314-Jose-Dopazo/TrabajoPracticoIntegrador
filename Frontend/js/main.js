@@ -74,8 +74,12 @@ function LoadModalNuevaFactura(){
   document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString("es-ES")
 }
 
-function LoadModalTipoUsuario(cboId){
-  LoadComboTiposUsuarios(cboId)
+function LoadModalNuevoUsuario(){
+  LoadComboTiposUsuarios("nuevo-usuarioComboTipoUsuario")
+}
+
+function LoadModalEditarUsuario(usuario){
+  LoadComboTiposUsuarios("editar-usuarioComboTipoUsuario")
 }
 
 function LoadModalEditarMedicamento(medicamento) {
@@ -84,6 +88,13 @@ function LoadModalEditarMedicamento(medicamento) {
   document.getElementById("editar-medicamentoDescripcion").value = medicamento.descripcion;
   document.getElementById("editar-medicamentoEstado").value = medicamento.estado;
   document.getElementById("editar-medicamentoPrecio").value = medicamento.precioUnitario;
+}
+
+function LoadModalEditarCliente(cliente){
+  document.getElementById("editar-clienteId").value = cliente.id;
+  document.getElementById("editar-clienteNombre").value = cliente.nombre;
+  document.getElementById("editar-clienteApellido").value = cliente.apellido;
+  document.getElementById("editar-clienteTelefono").value = cliente.telefono;
 }
 
 //#endregion
@@ -368,6 +379,8 @@ async function LoadClientes() {
     const tbody = document.getElementById("tbody-clientes");
     tbody.innerHTML = "";
 
+    const modalEditarCliente = new bootstrap.Modal(document.getElementById('editar-cliente-modal'))
+
     clientes.forEach((cliente) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -389,9 +402,11 @@ async function LoadClientes() {
                 </tr>
             `;
             
-            row.querySelector(".edit-btn").addEventListener("click", function(){
-              LoadModalEditarCliente();         
-            })
+            row.querySelector(".edit-btn").addEventListener("click", function () {
+                console.log("Botón de editar presionado para:", cliente);
+                modalEditarCliente.show();
+                LoadModalEditarCliente(cliente);
+              });
             
             row.querySelector(".del-btn").addEventListener("click", function(){
               DeleteCliente(cliente.id)
@@ -405,69 +420,60 @@ async function LoadClientes() {
 
 async function LoadUsuarios() {
   const tbody = document.getElementById("tbody-usuarios");
-  const idInput = document.getElementById('editar-usuario-id')
-  const nombreInput = document.getElementById('editar-usuarioNombre')
-  const contraseñaInput = document.getElementById('editar-usuarioContraseña')
-  const editarUsuarioInput = document.getElementById('editar-usuario-rol')
-await fetch("https://localhost:7263/api/Usuario",{
-  method:'GET',
-  headers:{
-    'Content-Type': 'application/json', 
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  }
-})
-  .then((response) => response.json())
-  .then(async(usuarios) => {
-    tbody.innerHTML = ""; // Limpiar la tabla
 
+  await fetch("https://localhost:7263/api/Usuario", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  })
+    .then((response) => response.json())
+    .then(async (usuarios) => {
+      tbody.innerHTML = ""; // Limpiar la tabla
 
-    const rolesMap = {
-      1: "Admin",
-      2: "Estándar"
-    };
-
-    usuarios.forEach((usuario) => {
-      console.log(usuario)
-      const row = document.createElement("tr");
+      const tiposUsuario = await fetch("https://localhost:7263/api/TipoUsuario", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }).
+      then(response => response.json())
       
-
-       row.innerHTML = `
+      usuarios.forEach((usuario) => {
+        console.log(usuario);
+        const row = document.createElement("tr");
+        row.innerHTML = `
                 <tr>
                   <td  style="text-align: center;">${usuario.nombre}</td>
                   <td  style="text-align: center;">${usuario.contraseña}</td>
-                   <td style="text-align: center;">${rolesMap[usuario.idTipoUsuario] || "Desconocido"}</td>
+                   <td style="text-align: center;">${tiposUsuario.find(tipo => tipo.id === usuario.idTipoUsuario)?.nombre || "desconocido"}</td>
                   <td class="text-center">
                     <div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal"
                                     data-bs-target="#editar-usuario-modal">
                         <i class="bi bi-pencil"></i>
                       </button>
-                      <button onclick="DeleteUsuario(${usuario.id})" class="btn btn-outline-danger del-btn">
+                      <button class="btn btn-outline-danger del-btn">
                         <i class="bi bi-trash"></i>
                       </button>
                     </div>
                   </td>
                 </tr>
             `;
-            
-            row.querySelector(".edit-btn").addEventListener("click", function(){
-              
-              LoadModalTipoUsuario('comboTiposUsuariosEditar')
-              nombreInput.value = usuario.nombre
-              contraseñaInput.value = usuario.contraseña
-              document.getElementById("comboTiposUsuarios").selected = usuario.idTipoUsuario
 
-          
-            })
-            
-            row.querySelector(".del-btn").addEventListener("click", function(){
-              DeleteCliente(usuario.id)
-            })
-            
-            tbody.appendChild(row);
-    });
-  })
-  .catch((error) => console.error("Error al cargar Clientes:", error));
+        row.querySelector(".edit-btn").addEventListener("click", function () {
+          LoadModalEditarUsuario(usuario);
+        });
+
+        row.querySelector(".del-btn").addEventListener("click", function () {
+          DeleteUsuario(usuario.id);
+        });
+        tbody.appendChild(row);
+      });
+    })
+    .catch((error) => console.error("Error al cargar Clientes:", error));
 }
 
 //#endregion
@@ -689,124 +695,73 @@ function ValidarFactura(idTableDetallesFactura){
 
 
 async function UpdateCliente() {
-
-  const modal = document.getElementById('editar-cliente-modal')
-  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+  const modal = document.getElementById("editar-cliente-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
   let cliente = {};
-  cliente.id = document.getElementById('editar-cliente-Id').value
-  cliente.nombre = document.getElementById('editar-clienteNombre').value
-  cliente.apellido = document.getElementById('editar-clienteApellido').value
-  cliente.telefono = document.getElementById('editar-cliente-numero').value
-  
-  if(ValidarEdicionCliente()===true){
-    
-    const response = await fetch(`https://localhost:7263/api/Cliente/${cliente.id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cliente),
-    credentials: 'same-origin'
-    
-  })
-  if(response.ok){
-  LoadClientes()
-  modalInstance.hide()
-  alert('cliente actualizado correctamente')
-  }
-
-  }
-}
-async function DeleteCliente(id){
-  const response = await fetch(`https://localhost:7263/api/Cliente/${id}`, {
-  method: 'DELETE',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(id),
-  credentials: 'same-origin'
-  
-})
-if(response.ok){
-LoadClientes()
-alert('cliente Eliminado correctamente')
-}
-}
-
-async function CreateCliente(){
-  
-  const modal = document.getElementById('nuevo-cliente-modal')
-  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
-  
-  if (ValidarNuevoCliente()==true){
-
-    let cliente = {};
-    cliente.nombre = document.getElementById('nuevo-clienteNombre').value
-    cliente.apellido = document.getElementById('nuevo-clienteApellido').value
-    cliente.telefono = document.getElementById('nuevo-cliente-numero').value
-    const response = await fetch('https://localhost:7263/api/Cliente', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  cliente.id = document.getElementById("editar-clienteId").value;
+  cliente.nombre = document.getElementById("editar-clienteNombre").value;
+  cliente.apellido = document.getElementById("editar-clienteApellido").value;
+  cliente.telefono = document.getElementById("editar-clienteTelefono").value;
+  const response = await fetch(
+    `https://localhost:7263/api/Cliente/${cliente.id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(cliente),
-      credentials: 'same-origin'
-      
-    })
-    if(response.ok){
-    LoadClientes()
-    modalInstance.hide()
-    alert('cliente Creado correctamente')
+      credentials: "same-origin",
+    }
+  );
+  if (response.ok) {
+    LoadClientes();
+    modalInstance.hide();
+    alert("cliente actualizado correctamente");
+  }else{
+    alert("No se pudo actualizar el cliente, revise el formato del numero de telefono")
+  }
+}
+
+async function DeleteCliente(id) {
+  if (confirm(`Eliminar cliente con id ${id}?`)) { 
+    const response = await fetch(`https://localhost:7263/api/Cliente/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(id),
+      credentials: "same-origin",
+    });
+    if (response.ok) {
+      LoadClientes();
+      alert("Cliente eliminado correctamente");
+    }else{
+      alert("El cliente no se pudo borrar:")
     }
   }
-  
-  }
-
-function ValidarNuevoCliente(){
-
-  const nombreInput = document.getElementById('nuevo-clienteNombre')
-  const apellidoInput = document.getElementById('nuevo-clienteApellido')
-  const telefonoInput = document.getElementById('nuevo-cliente-numero')
-
-  if(nombreInput.value === ""){
-
-    
-    alert('por favor introduzca un nombre')
-    return false
-  }
-  if(apellidoInput.value === ""){
-    alert('por favor introduzca un apellido')
-    return false
-  }
-  if(telefonoInput.value === ""){
-    alert('por favor introduzca un telefono')
-    return false
-  }
-
-  return true
-}
-function ValidarEdicionCliente(){
-
-  const nombreInput = document.getElementById('editar-clienteNombre')
-  const apellidoInput = document.getElementById('editar-clienteApellido')
-  const telefonoInput = document.getElementById('editar-cliente-numero')
-
-  if(nombreInput.value === ""){
-
-    
-    alert('por favor introduzca un nombre')
-    return false
-  }
-  if(apellidoInput.value === ""){
-    alert('por favor introduzca un apellido')
-    return false
-  }
-  if(telefonoInput.value === ""){
-    alert('por favor introduzca un telefono')
-    return false
-  }
-
-  return true
 }
 
+async function CreateCliente() {
+  const modal = document.getElementById("nuevo-cliente-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
-
-
+  let cliente = {};
+  cliente.nombre = document.getElementById("nuevo-clienteNombre").value;
+  cliente.apellido = document.getElementById("nuevo-clienteApellido").value;
+  cliente.telefono = document.getElementById("nuevo-clienteTelefono").value;
+  const response = await fetch("https://localhost:7263/api/Cliente", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cliente),
+    credentials: "same-origin",
+  });
+  if (response.ok) {
+    LoadClientes();
+    modalInstance.hide();
+    alert("Cliente creado correctamente");
+  }else{
+    alert("No se pudo crear el cliente, revise el formato del numero de telefono")
+  }
+}
 //#endregion Clientes
 
 //#region Usuarios
@@ -815,81 +770,91 @@ function ValidarEdicionCliente(){
 
 
 async function UpdateUsuario() {
+  const modal = document.getElementById("editar-usuario-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
-  const modal = document.getElementById('editar-usuario-modal')
-  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
+    let usuario = {
+      "nombre": document.getElementById("editar-usuarioNombre").value,
+      "email": document.getElementById("editar-usuarioEmail").value,
+    "contraseña": document.getElementById("editar-usuarioContraseña").value,
+    "idTipoUsuario" :  document.getElementById("editar-usuarioComboTipoUsuario").value
+  };
 
-  let usuario = {};
-  usuario.id = document.getElementById('editar-usuario-id').value
-  usuario.nombre = document.getElementById('editar-usuarioNombre').value
-  usuario.contraseña = document.getElementById('editar-usuarioContraseña').value
-  usuario.idTipoUsuario = document.getElementById('comboTiposUsuariosEditar').value
-  console.log(usuario)
+  console.log(usuario);
 
-  if(ValidarEdicionUsuario()===true){
-
-    const response = await fetch(`https://localhost:7263/api/Usuario?id=${usuario.id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}`},
-    body: JSON.stringify(usuario),
-    credentials: 'same-origin'
-    
-  })
-  if(response.ok){
-  LoadUsuarios()
-  modalInstance.hide()
-  alert('usuario actualizado correctamente')
-  }
-  }
-}
-
-
-async function DeleteUsuario(id){
-  const response = await fetch(`https://localhost:7263/api/Usuario/${id}`, {
-  method: 'DELETE',
-  headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}` },
-  body: JSON.stringify(id),
-  credentials: 'same-origin'
-  
-})
-if(response.ok){
-LoadUsuarios()
-alert('Usuario Eliminado correctamente')
-}
-}
-
-
-async function CreateUsuario(){
-  
-      const modal = document.getElementById('nuevo-usuario-modal')
-      const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
-  
-  if(ValidarNuevoUsuario()===true){
-    
-    
-    let usuario = {};
-    usuario.nombre = document.getElementById('nuevo-usuarioNombre').value
-    usuario.contraseña = document.getElementById('nuevo-usuarioContraseña').value
-    usuario.idTipoUsuario = document.getElementById('comboTiposUsuarios').value
-    const response = await fetch('https://localhost:7263/api/Usuario', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}` },
-      body: JSON.stringify(usuario),
-      credentials: 'same-origin'
-      
-    })
-    if(response.ok){
-      LoadUsuarios()
-      modalInstance.hide()
-      alert('Usuario Creado correctamente')
+  if (ValidarEdicionUsuario() === true) {
+    const response = await fetch(
+      `https://localhost:7263/api/Usuario?id=${usuario.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(usuario),
+        credentials: "same-origin",
+      }
+    );
+    if (response.ok) {
+      LoadUsuarios();
+      modalInstance.hide();
+      alert("usuario actualizado correctamente");
     }
   }
-  
+}
 
-  
+
+async function DeleteUsuario(id) {
+  if (confirm(`Eliminar usuario con id ${id}?`)) {
+    const response = await fetch(`https://localhost:7263/api/Usuario/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(id),
+      credentials: "same-origin",
+    });
+    if (response.ok) {
+      LoadUsuarios();
+      alert("Usuario Eliminado correctamente");
+    }else{
+      alert("No se pudo eliminar el usuario")
+    }
   }
+}
 
 
+async function CreateUsuario() {
+  const modal = document.getElementById("nuevo-usuario-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+
+  let usuario = {
+    "nombre": document.getElementById("nuevo-usuarioNombre").value,
+    "email": document.getElementById("nuevo-usuarioEmail").value,
+  "contraseña": document.getElementById("nuevo-usuarioContraseña").value,
+  "idTipoUsuario" :  document.getElementById("nuevo-usuarioComboTipoUsuario").value
+};
+
+  const response = await fetch("https://localhost:7263/api/Usuario", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(usuario),
+    credentials: "same-origin",
+  });
+  if (response.ok) {
+    LoadUsuarios();
+    modalInstance.hide();
+    alert("Usuario Creado correctamente");
+  }else{
+    alert("No se pudo crear el usuario")
+  }
+}
 
   function ValidarNuevoUsuario(){
 
