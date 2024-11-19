@@ -262,7 +262,7 @@ async function LoadFacturas() {
 
         // Agregar el evento para el boton de informacion de factura
         row.querySelector(".info-btn").addEventListener("click", function () {
-          LoadDetallesFacturaInfo(factura.id);
+          LoadModalInfoFactura(factura.id);
           modalInfoFactura.show();
           console.log("Botón de info presionado para:", factura);
           // Mostrar modal
@@ -281,21 +281,24 @@ async function LoadFacturas() {
 }
 
 
-    async function LoadDetallesFacturaInfo(id) {
+    async function LoadModalInfoFactura(id) {
       await fetch("https://localhost:7263/api/Factura/" + id)
         .then((response) => response.json())
-        .then(async (Factura) => {
+        .then(async (factura) => {
+          const cliente = await fetch(
+            `https://localhost:7263/api/Cliente/${factura.idCliente}`
+          ).then((response) => response.json());
+          document.getElementById("info-facturaCliente").value = cliente.nombre +" "+ cliente.apellido
+          document.getElementById("info-facturaFecha").value = new Date(factura.fecha).toLocaleDateString("es-ES")
+
           const tbody = document.getElementById("tbody-detallesFacturaInfo");
           tbody.innerHTML = ""; // Limpiar la tabla
-          
 
-          for (const detalleFactura of Factura.detallesFacturas) {
-            const row = document.createElement("tr");
-
+          factura.detallesFacturas.forEach(async (detalleFactura) => {
             const medicamento = await fetch(
               `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
             ).then((response) => response.json());
-
+            const row = document.createElement("tr");
             row.innerHTML = `
                     <tr>
                       <td class="d-none">${medicamento.id}</td>
@@ -305,9 +308,9 @@ async function LoadFacturas() {
                     <tr>
                       `;
             tbody.appendChild(row);
-          }
+          })
         })
-        .catch((error) => console.error("Error al cargar medicamentos:", error));
+        .catch((error) => console.error("Error al cargar info de la factura:", error));
     }
 
     async function LoadDetallesFactura(id) {
