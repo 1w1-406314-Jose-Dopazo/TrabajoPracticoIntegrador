@@ -153,11 +153,6 @@ function LoadModalEditarMedicamento(medicamento) {
 
 //#region tablas
 
-async function DeleteEntityById(url, id) {
-  const response = await fetch(url + id);
-  return await response.json();
-}
-
 async function LoadMedicamentos() {
 await fetch("https://localhost:7263/api/Medicamento")
   .then((response) => response.json())
@@ -227,7 +222,6 @@ function LimpiarDetalles(idTbody){
 }
 
 let lstDetallesLocal =[];
-
 async function AgregarDetalle(
   idComboMedicamento,
   idMedicamentoCantidad,
@@ -240,6 +234,10 @@ async function AgregarDetalle(
     `https://localhost:7263/api/medicamento/` + idMedicamento
   ).then((response) => response.json());
   const cantidad = document.getElementById(idMedicamentoCantidad).value;
+  if (cantidad < 1 || cantidad == null) {
+    alert("Debe seleccionar al menos un medicamento");
+    return;
+  }
   console.log(
     idMedicamento +
       " " +
@@ -249,7 +247,17 @@ async function AgregarDetalle(
       " " +
       medicamento.precioUnitario
   );
+  const tbody = document.getElementById(idTbody);
+  let existingRow = null;
+  // esto de acá funciona generando un array a partir de las filas del tbody (vale oro)
+  Array.from(tbody.rows).forEach((row) => {
+    const rowMedicamentoId = row.cells[0].textContent.trim();
+    if (rowMedicamentoId === idMedicamento) {
+      existingRow = row;
+    }
+  });
 
+<<<<<<< HEAD
 >>>>>>> Branch-Lautaro
   if (cantidad > 0) {
     const tbody = document.getElementById(idTbody);
@@ -288,22 +296,25 @@ async function AgregarDetalle(
       if (rowMedicamentoId === idMedicamento) {
         existingRow = row;
       }
+=======
+  if (existingRow) {
+    const currentQuantity = parseInt(
+      existingRow.cells[2].textContent.trim(),
+      10
+    );
+    const newQuantity = currentQuantity + parseInt(cantidad);
+    existingRow.cells[2].textContent = newQuantity;
+  } else {
+    lstDetallesLocal.push({
+      idMedicamento: idMedicamento,
+      cantidad: cantidad,
+      precioUnitario: medicamento.precioUnitario,
+>>>>>>> Branch-Lautaro
     });
 
-    if (existingRow) {
-      const currentQuantity = parseInt(existingRow.cells[2].textContent.trim(),10);
-      const newQuantity = currentQuantity + cantidad;
-      existingRow.cells[2].textContent = newQuantity;
-    } else {
-      lstDetallesLocal.push({
-        idMedicamento: idMedicamento,
-        cantidad: cantidad,
-        precioUnitario: medicamento.precioUnitario,
-      });
-
-      const row = document.createElement("tr");
-      row.className = "text-center";
-      row.innerHTML = `
+    const row = document.createElement("tr");
+    row.className = "text-center";
+    row.innerHTML = `
               <td class="d-none">${idMedicamento}</td>
               <td>${medicamento.nombre}</td>
               <td>${cantidad}</td>
@@ -315,6 +326,7 @@ async function AgregarDetalle(
                       </button>
                       </td>
                       `;
+<<<<<<< HEAD
 <<<<<<< HEAD
                       tbody.appendChild(row);
                       
@@ -330,6 +342,12 @@ async function AgregarDetalle(
         row.remove();
       });
     }
+=======
+    tbody.appendChild(row);
+    row.querySelector(".delete-btn").addEventListener("click", () => {
+      row.remove();
+    });
+>>>>>>> Branch-Lautaro
   }
 >>>>>>> Branch-Lautaro
 }
@@ -456,7 +474,6 @@ async function LoadFacturas() {
 
           for (const detalleFactura of Factura.detallesFacturas) {
             const row = document.createElement("tr");
-            row.className = "text-center";
 
             const medicamento = await fetch(
               `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
@@ -491,6 +508,7 @@ async function LoadFacturas() {
             const row = document.createElement("tr");
             row.innerHTML = `
                     <tr>
+                      <td class="d-none">${medicamento.id}</td>
                       <td>${medicamento.nombre}</td>
                       <td>${detalleFactura.cantidad}</td>
                       <td>${detalleFactura.precioUnitario}</td>
@@ -724,9 +742,10 @@ async function CreateMedicamento() {
 //#endregion Medicamento
 
 //#region Factura  ----------------------------------------------------------------------------------------------------------------------------------------------------//
-async function UpdateFactura(factura) {
+async function UpdateFactura() {
   const lstDetalles =[]
   let contador = 0;
+<<<<<<< HEAD
   const filas = document.querySelectorAll('#table-detallesFactura tr')
   if(ValidarEdicionFactura()===true){
   filas.forEach(fila => {
@@ -750,8 +769,41 @@ async function UpdateFactura(factura) {
     
     }
   });
-  
+=======
+  //Filas de la tr del tbody
+  const filas = document.querySelectorAll('#table-detallesFacturaEditar tr')
 
+  if(ValidarFactura("table-detallesFacturaEditar")){
+    filas.forEach(fila => {
+      contador++
+      const celdas = fila.querySelectorAll('td');
+      let detalleFactura = {}
+>>>>>>> Branch-Lautaro
+  
+      celdas.forEach(celda => {
+        if (celdas.length === 0) return;
+        if(celda.cellIndex===0){
+          detalleFactura.idMedicamento = parseInt(celda.textContent)
+        }
+        if(celda.cellIndex===2){
+          detalleFactura.cantidad = parseInt(celda.textContent)
+        }
+        if(celda.cellIndex===3){
+          detalleFactura.precioUnitario = parseFloat(celda.textContent)
+        }
+      });
+      if (Object.keys(detalleFactura).length > 0) {
+        console.log(detalleFactura);
+        lstDetalles.push(detalleFactura);
+        }
+    })};
+    if (Object.keys(detalleFactura).length > 0) {
+      console.log(detalleFactura);
+      lstDetalles.push(detalleFactura);
+      }
+      console.log(lstDetalles)
+
+<<<<<<< HEAD
 
   let facturaUPD = {
     id: document.getElementById("editar-facturaId").value,
@@ -774,6 +826,30 @@ async function UpdateFactura(factura) {
   }
 }
 
+=======
+      let factura = {};
+      factura.id = document.getElementById("editar-facturaId")
+      factura.idCliente = document.getElementById("editar-facturaComboClientes").value
+      factura.fecha = new Date().toISOString();
+      factura.detallesFacturas = lstDetalles;
+  
+      console.log(factura);
+   
+      const response = await fetch(`https://localhost:7263/api/Factura/${factura.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(factura),
+        credentials: "same-origin",
+      });
+      if (response.ok) {
+        LoadFacturas();
+        alert("factura actualizada correctamente");
+        document.getElementById("tbody-detallesFacturaEditar").innerHTML = ""
+      }else{
+       alert("No se pudo actualizar la factura")
+      }
+} 
+>>>>>>> Branch-Lautaro
 
 async function DeleteFactura(id){
   const response = await fetch(`https://localhost:7263/api/Factura/${id}`, {
@@ -789,17 +865,39 @@ alert('factura Eliminada correctamente')
 }
 }
 
+function ValidarFactura(idTableDetallesFactura){
+  console.log(`#${idTableDetallesFactura} tr`)
+  const tbody = document.getElementById(`tbody-detallesFacturaNuevo`)
+  const filas = tbody.querySelectorAll("tr");
+  let i = 0
+  if(filas.length < 1){
+    alert('por favor introduzca al menos un medicamento')
+    return false
+  }  
+  return true
+}
+
  async function CreateFactura() {
+<<<<<<< HEAD
 <<<<<<< HEAD
  
   const lstDetalles =[]
   let contador = 0;
   const filas = document.querySelectorAll('#table-detallesFactura tr')
   if(ValidarNuevaFactura()===true){
+=======
+  const lstDetalles =[]
+  let contador = 0;
+  //Filas de la tr del tbody
+  const filas = document.querySelectorAll('#table-detallesFacturaNueva tr')
+
+  if(ValidarFactura("tbody-detallesFacturaNuevo")){
+>>>>>>> Branch-Lautaro
   filas.forEach(fila => {
     contador++
     const celdas = fila.querySelectorAll('td');
     let detalleFactura = {}
+<<<<<<< HEAD
     celdas.forEach(celda => {
       if (celdas.length === 0) return;
       if(celda.cellIndex===0){
@@ -847,14 +945,32 @@ alert('factura Eliminada correctamente')
   // });
 >>>>>>> Branch-Lautaro
    
+=======
+
+    celdas.forEach(celda => {
+      if (celdas.length === 0) return;
+      if(celda.cellIndex===0){
+        detalleFactura.idMedicamento = parseInt(celda.textContent)
+      }
+      if(celda.cellIndex===2){
+        detalleFactura.cantidad = parseInt(celda.textContent)
+      }
+      if(celda.cellIndex===3){
+        detalleFactura.precioUnitario = parseFloat(celda.textContent)
+      }
+    });
+    if (Object.keys(detalleFactura).length > 0) {
+      console.log(detalleFactura);
+      lstDetalles.push(detalleFactura);
+      }
+  })};
+>>>>>>> Branch-Lautaro
   console.log(lstDetalles)
 
    let factura = {};
    const cboCliente = document.getElementById("nueva-facturaComboClientes");
-   factura.idCliente = lstClientes[cboCliente.selectedIndex].id;
-   var fecha = document.getElementById("nueva-facturaFecha").value;
-   fecha = new Date().toISOString();
-   factura.fecha = fecha
+   factura.idCliente = cboCliente.value
+   factura.fecha = new Date().toISOString();
    factura.detallesFacturas = lstDetalles;
    console.log(factura);
 
@@ -868,8 +984,11 @@ alert('factura Eliminada correctamente')
      LoadFacturas();
      alert("factura Creada correctamente");
      document.getElementById("tbody-detallesFacturaNuevo").innerHTML = ""
+   }else{
+    alert("No se pudo crear la factura")
    }
  }
+<<<<<<< HEAD
 
  function ValidarNuevaFactura(){
 
@@ -929,6 +1048,8 @@ function ValidarEdicionFactura(){
 }
  
 
+=======
+>>>>>>> Branch-Lautaro
 //#endregion Factura
 
 //#region Clientes
