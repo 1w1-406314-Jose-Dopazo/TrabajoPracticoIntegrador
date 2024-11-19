@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Farmacia.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "administrador")]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : Controller

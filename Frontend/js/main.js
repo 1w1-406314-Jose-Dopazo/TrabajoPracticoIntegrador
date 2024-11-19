@@ -1,7 +1,14 @@
 // const localhost = "https://localhost:7263/api/";
 //#region forms
 
+async function LoadComboClientes(idCombo) {
+  fetch("https://localhost:7263/api/cliente")
+    .then((respones) => respones.json())
+    .then((clientes) => {
+      const selectCliente = document.getElementById(idCombo);
+      selectCliente.innerHTML = "";
 
+<<<<<<< HEAD
 function GetComboClientesIndex(nombreCompleto) {
   const dropdown = document.getElementById('comboClientesEditar');
   
@@ -52,39 +59,58 @@ fetch("https://localhost:7263/api/medicamento")
     selectCliente.innerHTML = "";
     medicamentos.forEach((medicamento) => {
       if (medicamento.estado) {
+=======
+      clientes.forEach((cliente) => {
+>>>>>>> Branch-Lautaro
         const option = document.createElement("option");
-        option.value = medicamento.id;
-        option.text = medicamento.nombre;
+
+        option.value = cliente.id;
+        option.text = cliente.nombre + " " + cliente.apellido;
+
         selectCliente.appendChild(option);
-        lstMedicamentos.push(medicamento)
-        
-      }
+      });
     });
-  });
-  console.log(lstMedicamentos)
 }
 
-let lstTiposUsuarios = [];
-function LoadComboTiposUsuarios(idComboT){
+function LoadComboMedicamentos(idCombo) {
+  fetch("https://localhost:7263/api/medicamento")
+    .then((respones) => respones.json())
+    .then((medicamentos) => {
+      const selectCliente = document.getElementById(idCombo);
+      selectCliente.innerHTML = "";
+
+      medicamentos.forEach((medicamento) => {
+        if (medicamento.estado) {
+          const option = document.createElement("option");
+
+          option.value = medicamento.id;
+          option.text = medicamento.nombre;
+
+          selectCliente.appendChild(option);
+        }
+      });
+    });
+}
+
+function LoadComboTiposUsuarios(idCombo) {
   fetch("https://localhost:7263/api/TipoUsuario")
-  .then((respones) => respones.json())
-  .then((tiposUsuarios) => {
-    const selectTipoUsuario = document.getElementById(idComboT);
-    selectTipoUsuario.innerHTML = "";
-    tiposUsuarios.forEach((tipoUsuario) => {
-      
+    .then((respones) => respones.json())
+    .then((tiposUsuarios) => {
+      const selectTipoUsuario = document.getElementById(idCombo);
+      selectTipoUsuario.innerHTML = "";
+
+      tiposUsuarios.forEach((tipoUsuario) => {
         const option = document.createElement("option");
+
         option.value = tipoUsuario.id;
         option.text = tipoUsuario.nombre;
+
         selectTipoUsuario.appendChild(option);
-        lstTiposUsuarios.push(tipoUsuario)
-        
-      
+      });
     });
-  });
-  console.log(lstMedicamentos)
 }
 
+<<<<<<< HEAD
 async function LoadModalEditarFactura(nombre,apellido){
   const nombreCompleto = nombre+" "+apellido
   await LoadComboClientes("comboClientesEditar")
@@ -92,38 +118,48 @@ async function LoadModalEditarFactura(nombre,apellido){
   document.getElementById("editar-facturaFecha").value = new Date().toLocaleDateString()
   document.getElementById("comboClientesEditar").selectedIndex = GetComboClientesIndex(nombreCompleto)
 
+=======
+function LoadModalEditarFactura(factura){
+  LoadComboClientes("editar-facturaComboClientes")
+  LoadComboMedicamentos("editar-facturaComboMedicamentos")
+  LoadDetallesFactura(factura.id)
+  document.getElementById("editar-facturaFecha").value = new Date(factura.fecha).toLocaleDateString("es-ES")
+  document.getElementById("editar-facturaId").value = factura.id
+  
+  console.log(document.getElementById("editar-facturaComboClientes").value)
+>>>>>>> Branch-Lautaro
 }
 
 function LoadModalNuevaFactura(){
-  lstDetallesLocal =[]
-  LoadComboClientes("comboClientes")
-  LoadComboMedicamentos("comboMedicamentos")
-  document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString()
-  
-  
-   fecha = document.getElementById("nueva-facturaFecha").value
-
-   fecha = new Date().toISOString()
-   
-  console.log(fecha)
+  // LimpiarDetalles("table-detallesFactura")
+  LoadComboClientes("nueva-facturaComboClientes")
+  LoadComboMedicamentos("nueva-facturaComboMedicamentos")
+  document.getElementById("nueva-facturaFecha").value = new Date().toLocaleDateString("es-ES")
 }
 
 function LoadModalTipoUsuario(cboId){
-  lstTiposUsuarios =[]
   LoadComboTiposUsuarios(cboId)
 }
 
+function LoadModalEditarMedicamento(medicamento) {
+  document.getElementById("editar-medicamentoId").value = medicamento.id;
+  document.getElementById("editar-medicamentoNombre").value = medicamento.nombre;
+  document.getElementById("editar-medicamentoDescripcion").value = medicamento.descripcion;
+  document.getElementById("editar-medicamentoEstado").value = medicamento.estado;
+  document.getElementById("editar-medicamentoPrecio").value = medicamento.precioUnitario;
+}
 
 //#endregion
 
 //#region tablas
 
 async function DeleteEntityById(url, id) {
-const response = await fetch(url + id);
-return await response.json();
+  const response = await fetch(url + id);
+  return await response.json();
 }
-function LoadMedicamentos() {
-fetch("https://localhost:7263/api/Medicamento")
+
+async function LoadMedicamentos() {
+await fetch("https://localhost:7263/api/Medicamento")
   .then((response) => response.json())
   .then((medicamentos) => {
     const tbody = document.getElementById("tbody-medicamentos");
@@ -131,17 +167,13 @@ fetch("https://localhost:7263/api/Medicamento")
 
     const modalEditarMedicamento = new bootstrap.Modal(document.getElementById('editar-medicamento-modal'))
 
-    const idInput = document.getElementById('editar-medicamentoId')
-    const nombreInput=document.getElementById('editar-medicamentoNombre')
-    const descripcionInput=document.getElementById('editar-medicamentoDescripcion')
-    const estadoInput=document.getElementById('editar-medicamentoEstado')
-
     medicamentos.forEach((medicamento) => {
       const row = document.createElement("tr");
       
       row.innerHTML = `
       <td class="text-center">${medicamento.nombre}</td>
       <td class="text-center">${medicamento.descripcion}</td>
+      <td class="text-center">${medicamento.precioUnitario}</td>
       <td class="text-center">${medicamento.estado ? "Activo" : "Inactivo"}</td>
       <td class="text-center">
         <div class="d-flex justify-content-center">
@@ -157,12 +189,9 @@ fetch("https://localhost:7263/api/Medicamento")
 
       // Agregar el evento para el botón de editar
       row.querySelector(".edit-btn").addEventListener("click", function(){
-        modalEditarMedicamento.show()
         console.log("Botón de editar presionado para:", medicamento);
-        idInput.value = medicamento.id
-        nombreInput.value = medicamento.nombre
-        descripcionInput.value = medicamento.descripcion
-        estadoInput.checked = medicamento.estado
+        LoadModalEditarMedicamento(medicamento)        
+        modalEditarMedicamento.show()
         // Mostrar modal
       });
       
@@ -179,6 +208,7 @@ fetch("https://localhost:7263/api/Medicamento")
   .catch((error) => console.error("Error al cargar medicamentos:", error));
 }
 
+<<<<<<< HEAD
 
 let lstDetallesLocal =[];
 function AgregarDetalle(idComboM, idDetCant, idDetPre, tbody) {
@@ -191,10 +221,41 @@ function AgregarDetalle(idComboM, idDetCant, idDetPre, tbody) {
   
   console.log(medicamentoId + " " + medicamentoNombre + " " + cantidad + " " + precio);
   
+=======
+function LimpiarDetalles(idTbody){
+    document.getElementById(idTbody).innerHTML = ""
+}
+
+let lstDetallesLocal =[];
+
+async function AgregarDetalle(
+  idComboMedicamento,
+  idMedicamentoCantidad,
+  idTbody
+) {
+  const comboMedicamentos = document.getElementById(idComboMedicamento);
+
+  const idMedicamento = comboMedicamentos.value;
+  const medicamento = await fetch(
+    `https://localhost:7263/api/medicamento/` + idMedicamento
+  ).then((response) => response.json());
+  const cantidad = document.getElementById(idMedicamentoCantidad).value;
+  console.log(
+    idMedicamento +
+      " " +
+      medicamento.nombre +
+      " " +
+      cantidad +
+      " " +
+      medicamento.precioUnitario
+  );
+
+>>>>>>> Branch-Lautaro
   if (cantidad > 0) {
     const tbody = document.getElementById(idTbody);
     let existingRow = null;
     // esto de acá funciona generando un array a partir de las filas del tbody (vale oro)
+<<<<<<< HEAD
     Array.from(tbody.rows).forEach(row => {
       const rowMedicamentoId = row.cells[0].textContent.trim();
       if (rowMedicamentoId === medicamentoId) {
@@ -221,12 +282,40 @@ function AgregarDetalle(idComboM, idDetCant, idDetPre, tbody) {
               <td>${medicamentoNombre}</td>
               <td>${cantidad}</td>
               <td>${precio}</td>
+=======
+    Array.from(tbody.rows).forEach((row) => {
+      const rowMedicamentoId = row.cells[0].textContent.trim();
+      if (rowMedicamentoId === idMedicamento) {
+        existingRow = row;
+      }
+    });
+
+    if (existingRow) {
+      const currentQuantity = parseInt(existingRow.cells[2].textContent.trim(),10);
+      const newQuantity = currentQuantity + cantidad;
+      existingRow.cells[2].textContent = newQuantity;
+    } else {
+      lstDetallesLocal.push({
+        idMedicamento: idMedicamento,
+        cantidad: cantidad,
+        precioUnitario: medicamento.precioUnitario,
+      });
+
+      const row = document.createElement("tr");
+      row.className = "text-center";
+      row.innerHTML = `
+              <td class="d-none">${idMedicamento}</td>
+              <td>${medicamento.nombre}</td>
+              <td>${cantidad}</td>
+              <td>${medicamento.precioUnitario}</td>
+>>>>>>> Branch-Lautaro
               <td>
                   <button class="btn btn-outline-danger delete-btn">
                       <i class="bi bi-trash"></i>
                       </button>
                       </td>
                       `;
+<<<<<<< HEAD
                       tbody.appendChild(row);
                       
                       row.querySelector(".delete-btn").addEventListener('click', () => {
@@ -234,17 +323,27 @@ function AgregarDetalle(idComboM, idDetCant, idDetPre, tbody) {
           });
       }
     }
+=======
+      tbody.appendChild(row);
+
+      row.querySelector(".delete-btn").addEventListener("click", () => {
+        row.remove();
+      });
+    }
+  }
+>>>>>>> Branch-Lautaro
 }
 
 function LimpiarDetalles(){
     lstDetallesLocal = []
 }
 async function LoadFacturas() {
-  const response = await fetch("https://localhost:7263/api/Factura");
-  const facturas = await response.json();
+  await fetch("https://localhost:7263/api/Factura")
+    .then((response) => response.json())
+    .then((facturas) => {
       const tbody = document.getElementById("tbody-facturas");
-      const idInput = document.getElementById('editar-facturaId')
       tbody.innerHTML = ""; // Limpiar la tabla
+<<<<<<< HEAD
       
       const modalEditarFactura = new bootstrap.Modal(document.getElementById('editar-factura-modal'))
       const modalInfoFactura = new bootstrap.Modal(document.getElementById('info-factura-modal'))
@@ -273,8 +372,42 @@ async function LoadFacturas() {
             </div>
           </td>
         `;
+=======
 
+      const modalEditarFactura = new bootstrap.Modal(
+        document.getElementById("editar-factura-modal")
+      );
+      const modalInfoFactura = new bootstrap.Modal(
+        document.getElementById("info-factura-modal")
+      );
+      console.log(facturas)
+>>>>>>> Branch-Lautaro
+
+      facturas.forEach( async (factura) => {
+        const cliente = await fetch(
+          `https://localhost:7263/api/Cliente/${factura.idCliente}`
+        ).then((response) => response.json());
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+      <td>${cliente.nombre + " " + cliente.apellido}</td>
+      <td>${new Date(factura.fecha).toLocaleDateString("es-ES")}</td>
+      <td>
+        <div class="btn-group me-2">
+          <button type="button" class="btn btn-outline-warning edit-btn">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button type="button" class="btn btn-outline-warning info-btn">
+            <i class="bi bi-info-lg"></i>
+          </button>
+          <button class="btn btn-outline-danger delete-btn">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+      `;
         // Agregar el evento para el botón de editar
+<<<<<<< HEAD
         row.querySelector(".edit-btn").addEventListener("click", function(){
           LoadModalEditarFactura(cliente.nombre,cliente.apellido)
           idInput.value = factura.id
@@ -283,28 +416,35 @@ async function LoadFacturas() {
             onclick = "LoadComboClientes()"
             onclick = "LoadComboMedicamentos()"
             document.getElementById("comboClientes").selected = factura.cliente
+=======
+        row.querySelector(".edit-btn").addEventListener("click", function () {
+          LoadModalEditarFactura(factura);
+          modalEditarFactura.show();
+>>>>>>> Branch-Lautaro
           console.log("Botón de editar presionado para:", factura);
           // Mostrar modal
         });
 
         // Agregar el evento para el boton de informacion de factura
-        row.querySelector(".info-btn").addEventListener("click", function(){
-          modalInfoFactura.show()
-          LoadDetallesFacturaInfo(factura.id)
-        console.log("Botón de info presionado para:", factura);
-        // Mostrar modal
-      });
-        
+        row.querySelector(".info-btn").addEventListener("click", function () {
+          LoadDetallesFacturaInfo(factura.id);
+          modalInfoFactura.show();
+          console.log("Botón de info presionado para:", factura);
+          // Mostrar modal
+        });
+
         // Agregar el evento para el botón de eliminar
-        row.querySelector(".delete-btn").addEventListener("click", function(){
+        row.querySelector(".delete-btn").addEventListener("click", function () {
           DeleteFactura(factura.id);
           console.log("Botón de eliminar presionado para:", factura);
           // Eliminar medicamento
         });
 
         tbody.appendChild(row);
-      };
-    }
+      });
+    });
+}
+
 
     async function LoadDetallesFacturaInfo(id) {
       await fetch("https://localhost:7263/api/Factura/" + id)
@@ -338,22 +478,19 @@ async function LoadFacturas() {
 
     async function LoadDetallesFactura(id) {
       await fetch("https://localhost:7263/api/Factura/" + id)
-        .then((response) => response.json())
-        .then(async (factura) => {
+        .then(async (response) => await response.json())
+        .then((factura) => {
           const tbody = document.getElementById("tbody-detallesFacturaEditar");
           tbody.innerHTML = ""; // Limpiar la tabla
-          
-    
-          for (const detalleFactura of factura.detallesFacturas) {
-            const row = document.createElement("tr");
-            row.className = "text-center";
-            const medicamento = await fetch(
-              `https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`
-            ).then((response) => response.json());
 
+
+          factura.detallesFacturas.forEach( async (detalleFactura) => {
+            const medicamento = await fetch(`https://localhost:7263/api/Medicamento/${detalleFactura.idMedicamento}`)
+            .then(async (response) => await response.json());
+
+            const row = document.createElement("tr");
             row.innerHTML = `
                     <tr>
-                      <td class="d-none">${medicamento.id}</td>
                       <td>${medicamento.nombre}</td>
                       <td>${detalleFactura.cantidad}</td>
                       <td>${detalleFactura.precioUnitario}</td>
@@ -364,42 +501,43 @@ async function LoadFacturas() {
                           </button>
                         </div>
                       </td>
-                      </tr>
-                      `;
-            tbody.appendChild(row);
+                    </tr>
+                    `;
+
             // Agregar el evento para el botón de eliminar
             row.querySelector(".delete-btn").addEventListener("click", () => {
               row.remove();
             });
-          }
+            tbody.appendChild(row);
+          });
         })
-        .catch((error) => console.error("Error al cargar medicamentos:", error));
+        .catch((error) =>
+          console.error(`Error al cargar detalles de la factura id: ${id}`,error)
+      );
     }
     
+    // fetch("https://localhost:7263/api/Medicamento")
+    // .then((response) => response.json())
+    // .then((medicamentos) => {
+    //   const tbody = document.getElementById("tbody-medicamentos");
+    //   tbody.innerHTML = "";
 
 
 async function LoadClientes() {
-  const tbody = document.getElementById("tbody-Clientes");
-  const idInput = document.getElementById('editar-cliente-Id')
-  const nombreInput = document.getElementById('editar-clienteNombre')
-  const apellidoInput = document.getElementById('editar-clienteApellido')
-  const telefonoInput = document.getElementById('editar-cliente-numero')
-fetch("https://localhost:7263/api/Cliente")
-  .then((response) => response.json())
-  .then(async(clientes) => {
-    tbody.innerHTML = ""; // Limpiar la tabla
+  await fetch("https://localhost:7263/api/Cliente")
+  .then(async (response) => await response.json())
+  .then((clientes) => {
+    const tbody = document.getElementById("tbody-clientes");
+    tbody.innerHTML = "";
 
     clientes.forEach((cliente) => {
-      console.log(cliente)
       const row = document.createElement("tr");
-      
-
-       row.innerHTML = `
+      row.innerHTML = `
                 <tr>
-                  <td  style="text-align: center;">${cliente.nombre}</td>
-                  <td  style="text-align: center;">${cliente.apellido}</td>
-                  <td  style="text-align: center;">${cliente.telefono}</td>
-                  <td class="text-center">
+                  <td>${cliente.nombre}</td>
+                  <td>${cliente.apellido}</td>
+                  <td>${cliente.telefono}</td>
+                  <td>
                     <div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-outline-warning edit-btn" data-bs-toggle="modal"
                                     data-bs-target="#editar-cliente-modal">
@@ -414,21 +552,13 @@ fetch("https://localhost:7263/api/Cliente")
             `;
             
             row.querySelector(".edit-btn").addEventListener("click", function(){
-        
-              idInput.value = cliente.id
-              nombreInput.value = cliente.nombre
-              apellidoInput.value = cliente.apellido
-              telefonoInput.value = cliente.telefono
-
-          
+              LoadModalEditarCliente();         
             })
             
             row.querySelector(".del-btn").addEventListener("click", function(){
-
               DeleteCliente(cliente.id)
-
             })
-            
+
             tbody.appendChild(row);
     });
   })
@@ -485,7 +615,6 @@ await fetch("https://localhost:7263/api/Usuario",{
             row.querySelector(".edit-btn").addEventListener("click", function(){
               
               LoadModalTipoUsuario('comboTiposUsuariosEditar')
-              idInput.value = usuario.id
               nombreInput.value = usuario.nombre
               contraseñaInput.value = usuario.contraseña
               document.getElementById("comboTiposUsuarios").selected = usuario.idTipoUsuario
@@ -494,9 +623,7 @@ await fetch("https://localhost:7263/api/Usuario",{
             })
             
             row.querySelector(".del-btn").addEventListener("click", function(){
-
               DeleteCliente(usuario.id)
-
             })
             
             tbody.appendChild(row);
@@ -513,19 +640,18 @@ await fetch("https://localhost:7263/api/Usuario",{
 
 //#region Medicamento ----------------------------------------------------------------------------------------------------------------------------------------------------//
 async function UpdateMedicamento() {
+  const modal = document.getElementById("editar-medicamento-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
-  const modal = document.getElementById('editar-medicamento-modal')
-  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
-
-
-let med ={};
-med.id = document.getElementById('editar-medicamentoId').value
-med.nombre=document.getElementById('editar-medicamentoNombre').value
-med.descripcion=document.getElementById('editar-medicamentoDescripcion').value
-med.estado=document.getElementById('editar-medicamentoEstado').checked
-if(ValidarEdicionMedicamento()===true){
-
+  let med = {};
+  med.id = document.getElementById("editar-medicamentoId").value;
+  med.nombre = document.getElementById("editar-medicamentoNombre").value;
+  med.descripcion = document.getElementById("editar-medicamentoDescripcion").value;
+  med.estado = document.getElementById("editar-medicamentoEstado").checked;
+  med.precioUnitario = document.getElementById("editar-medicamentoPrecio").value;
   
+<<<<<<< HEAD
         const response = await fetch(`https://localhost:7263/api/Medicamento/${med.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -539,6 +665,21 @@ if(ValidarEdicionMedicamento()===true){
       alert('medicamento Actualizo correctamente')
     }
 }
+=======
+  const response = await fetch(`https://localhost:7263/api/Medicamento/${med.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(med),
+    credentials: "same-origin",
+  });
+  if (response.ok) {
+    LoadMedicamentos();
+    modalInstance.hide();
+    alert("medicamento Actualizo correctamente");
+  }else{
+    alert(response.json())
+  }
+>>>>>>> Branch-Lautaro
 }
 
 // O delete entidad, como lo veas mejor
@@ -552,78 +693,34 @@ async function DeleteMedicamento(id){
           credentials: 'same-origin'
       })
       if(response.ok){
+        LoadMedicamentos()
         alert('medicamento Eliminado correctamente')
       }
   }
 }
 
-async function CreateMedicamento(){
+async function CreateMedicamento() {
+  const modal = document.getElementById("nuevo-medicamento-modal");
+  const modalInstance =
+    bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
-  const modal = document.getElementById('nuevo-medicamento-modal')
-  const modalInstance = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal)
-
-if(ValidarNuevoMedicamento()===true){
-
-  let med ={};
-  med.nombre=document.getElementById('nuevo-medicamentoNombre').value
-  med.descripcion=document.getElementById('nuevo-medicamentoDescripcion').value
-  med.estado=document.getElementById('nuevo-medicamentoEstado').checked
-  console.log()
-    const response = await fetch('https://localhost:7263/api/Medicamento', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(med),
-        credentials: 'same-origin'
-        
-    })
-    if(response.ok){
-      LoadMedicamentos()
-      modalInstance.hide()
-      alert('medicamento Creado correctamente')
-    }
-}
-
-}
-function ValidarNuevoMedicamento(){
-
-  const nombreInput = document.getElementById('nuevo-medicamentoNombre')
-  const descripcionInput = document.getElementById('nuevo-medicamentoDescripcion')
-
-  if(nombreInput.value === ""){
-
-    
-    alert('por favor introduzca un nombre')
-    return false
+  let med = {};
+  med.nombre = document.getElementById("nuevo-medicamentoNombre").value;
+  med.descripcion = document.getElementById("nuevo-medicamentoDescripcion").value;
+  med.estado = document.getElementById("nuevo-medicamentoEstado").checked;
+  med.precioUnitario = document.getElementById("nuevo-medicamentoPrecio").value;
+  const response = await fetch("https://localhost:7263/api/Medicamento", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(med),
+    credentials: "same-origin",
+  });
+  if (response.ok) {
+    LoadMedicamentos();
+    modalInstance.hide();
+    alert("medicamento Creado correctamente");
   }
-  if(descripcionInput.value === ""){
-    alert('por favor introduzca una descripcion')
-    return false
-  }
-  
-
-  return true
 }
-function ValidarEdicionMedicamento(){
-
-  const nombreInput = document.getElementById('editar-medicamentoNombre')
-  const descripcionInput = document.getElementById('editar-medicamentoDescripcion')
-
-  if(nombreInput.value === ""){
-
-    
-    alert('por favor introduzca un nombre')
-    return false
-  }
-  if(descripcionInput.value === ""){
-    alert('por favor introduzca una descripcion')
-    return false
-  }
-  
-
-  return true
-}
-
-
 //#endregion Medicamento
 
 //#region Factura  ----------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -658,7 +755,7 @@ async function UpdateFactura(factura) {
 
   let facturaUPD = {
     id: document.getElementById("editar-facturaId").value,
-    idCliente: document.getElementById("comboClientesEditar").value,
+    idCliente: document.getElementById("editar-facturaComboClientes").value,
     fecha: (document.getElementById("editar-facturaFecha").value = new Date().toISOString()),
     detallesFacturas: lstDetalles
   };
@@ -693,6 +790,7 @@ alert('factura Eliminada correctamente')
 }
 
  async function CreateFactura() {
+<<<<<<< HEAD
  
   const lstDetalles =[]
   let contador = 0;
@@ -722,11 +820,37 @@ alert('factura Eliminada correctamente')
     
     }
   })};
+=======
+  const tbody = document.getElementById("tbody-detallesFacturaNuevo")
+  console.log(tbody.rows.length)
+  if(tbody.rows.length > 0){
+    tbody.forEach(row => row.forEach(td => {
+      
+    }));
+  }
+  //   celdas.forEach(celda => {
+  //     if (celdas.length === 0) return;
+  //     if(celda.cellIndex===0){
+  //       detalleFactura.idMedicamento = celda.textContent
+  //     }
+  //     if(celda.cellIndex===2){
+  //       detalleFactura.cantidad = celda.textContent
+  //     }
+  //     if(celda.cellIndex===3){
+  //       detalleFactura.precioUnitario = celda.textContent
+  //     }
+  //   });
+  //   if (Object.keys(detalleFactura).length > 0) {
+  //     lstDetalles.push(detalleFactura);
+    
+  //   }
+  // });
+>>>>>>> Branch-Lautaro
    
   console.log(lstDetalles)
 
    let factura = {};
-   const cboCliente = document.getElementById("comboClientes");
+   const cboCliente = document.getElementById("nueva-facturaComboClientes");
    factura.idCliente = lstClientes[cboCliente.selectedIndex].id;
    var fecha = document.getElementById("nueva-facturaFecha").value;
    fecha = new Date().toISOString();
@@ -743,7 +867,7 @@ alert('factura Eliminada correctamente')
    if (response.ok) {
      LoadFacturas();
      alert("factura Creada correctamente");
-     document.getElementById("tbody-detallesFactura").innerHTML = ""
+     document.getElementById("tbody-detallesFacturaNuevo").innerHTML = ""
    }
  }
 
@@ -1064,23 +1188,7 @@ async function CreateUsuario(){
 //#endregion Entidades
 
 //#region Login ----------------------------------------------------------------------------------------------------------------------------------------------------//
-
-
 function mostrarMenu() {
-  const menu = document.getElementById("inicio")
-  menu.style.display = 'block'
-  const menus = document.getElementsByClassName("menu-oculto");
-
-  for (let menu of menus) {
-    menu.className = "nav-link w-100";
-  }
-  for (let menu of menus) {
-    menu.className = "nav-link w-100";
-  }
-  for (let menu of menus) {
-    menu.className = "nav-link w-100";
-  }
-
   document.getElementById("inicio").innerHTML = `
                        
                             <div class="d-flex justify-content-center">
@@ -1088,57 +1196,43 @@ function mostrarMenu() {
                               </div>
                               <div class="d-flex justify-content-center">
                                 <img src="assets/Bienvenida.gif"  alt="..." style="height: 100%;width: 100%;">
-                              </div>
-                            
+                              </div>                           
   `
 }
+  document.getElementById("login").classList.remove("active")
+  document.getElementById("sidebarMenu").classList.remove("d-none")
 
-function esconderMenu(){
-  const menu = document.getElementById("inicio")
-  menu.style.display = 'none'
-}
-function storeToken(token){
- localStorage.setItem('token',token)
-}
-
-function login_succes(nombre, token) {
-    
-  document.getElementById('logoutBtn').addEventListener('click', function() {
-      alert('Sesión cerrada');
-      location.reload(); 
-  });
-  
-  document.getElementById('sidebar-user').innerText = nombre
-  
-  mostrarMenu()
-  storeToken(token)
-}
-
-
-async function Login(url) {
+async function Login() {
+  const url = 'https://localhost:7263/api/Login'
   const nombre = document.getElementById("loginUsuario").value;
+  console.log(nombre)
   const contraseña = document.getElementById("loginContraseña").value;
 
   await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      nombre: nombre,
-      contraseña: contraseña,
-    }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre: nombre, contraseña: contraseña }),
     credentials: "same-origin",
   })
-    .then( async response => await response.json())
-    .then( token => {
+    .then((response) => response.json())
+    .then((token) => {
       if (token != null) {
-        login_succes(nombre, token.token);
+        localStorage.setItem('token',token)
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+          alert('Sesión cerrada');
+          localStorage.removeItem(key = "token")
+          location.reload(); 
+      });
+      document.getElementById('navbar-user').innerText = nombre
+      document.getElementById("login").classList.remove("active")
+      document.getElementById("sidebarMenu").classList.remove("d-none")
+      // mostrarMenu()
+      }else{
+        console.log(response)
       }
     })
     .catch((error) => {
       console.error("Error en el login:", error);
     });
 }
-
 //#endregion

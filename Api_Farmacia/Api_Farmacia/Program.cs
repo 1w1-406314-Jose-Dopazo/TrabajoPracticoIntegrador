@@ -36,6 +36,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("administrador", policy => policy.RequireClaim("tipoUsuario", "Administrador"));
+    options.AddPolicy("vendedor", policy => policy.RequireClaim("vendedor", "Vendedor"));
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost", policy =>
