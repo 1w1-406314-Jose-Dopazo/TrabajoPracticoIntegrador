@@ -2,8 +2,14 @@
 //#region forms
 
 async function LoadComboClientes(idCombo) {
-  fetch("https://localhost:7263/api/cliente")
-    .then((respones) => respones.json())
+  await fetch("https://localhost:7263/api/Cliente", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  })
+  .then((respones) => respones.json())
     .then((clientes) => {
       const selectCliente = document.getElementById(idCombo);
       selectCliente.innerHTML = "";
@@ -20,7 +26,13 @@ async function LoadComboClientes(idCombo) {
 }
 
 function LoadComboMedicamentos(idCombo) {
-  fetch("https://localhost:7263/api/medicamento")
+  fetch("https://localhost:7263/api/medicamento", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  })
     .then((respones) => respones.json())
     .then((medicamentos) => {
       const selectCliente = document.getElementById(idCombo);
@@ -40,7 +52,13 @@ function LoadComboMedicamentos(idCombo) {
 }
 
 function LoadComboTiposUsuarios(idCombo) {
-  fetch("https://localhost:7263/api/TipoUsuario")
+  fetch("https://localhost:7263/api/TipoUsuario", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  })
     .then((respones) => respones.json())
     .then((tiposUsuarios) => {
       const selectTipoUsuario = document.getElementById(idCombo);
@@ -79,6 +97,10 @@ function LoadModalNuevoUsuario(){
 }
 
 function LoadModalEditarUsuario(usuario){
+  document.getElementById("editar-usuarioId").value = usuario.id
+  document.getElementById("editar-usuarioNombre").value = usuario.nombre
+  document.getElementById("editar-usuarioEmail").value = usuario.email
+  document.getElementById("editar-usuarioContraseña").value = usuario.contraseña
   LoadComboTiposUsuarios("editar-usuarioComboTipoUsuario")
 }
 
@@ -102,7 +124,13 @@ function LoadModalEditarCliente(cliente){
 //#region tablas
 
 async function LoadMedicamentos() {
-await fetch("https://localhost:7263/api/Medicamento")
+await fetch("https://localhost:7263/api/Medicamento", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+})
   .then((response) => response.json())
   .then((medicamentos) => {
     const tbody = document.getElementById("tbody-medicamentos");
@@ -164,9 +192,13 @@ async function AgregarDetalle(
   const comboMedicamentos = document.getElementById(idComboMedicamento);
 
   const idMedicamento = comboMedicamentos.value;
-  const medicamento = await fetch(
-    `https://localhost:7263/api/medicamento/` + idMedicamento
-  ).then((response) => response.json());
+  const medicamento = await fetch(`https://localhost:7263/api/medicamento/${idMedicamento}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }).then((response) => response.json());
   const cantidad = document.getElementById(idMedicamentoCantidad).value;
   if (cantidad < 1 || cantidad == null) {
     alert("Debe seleccionar al menos un medicamento");
@@ -373,7 +405,13 @@ async function LoadFacturas() {
 
 
 async function LoadClientes() {
-  await fetch("https://localhost:7263/api/Cliente")
+  await fetch("https://localhost:7263/api/Cliente", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  })
   .then(async (response) => await response.json())
   .then((clientes) => {
     const tbody = document.getElementById("tbody-clientes");
@@ -447,6 +485,7 @@ async function LoadUsuarios() {
         row.innerHTML = `
                 <tr>
                   <td  style="text-align: center;">${usuario.nombre}</td>
+                  <td  style="text-align: center;">${usuario.email}</td>
                   <td  style="text-align: center;">${usuario.contraseña}</td>
                    <td style="text-align: center;">${tiposUsuario.find(tipo => tipo.id === usuario.idTipoUsuario)?.nombre || "desconocido"}</td>
                   <td class="text-center">
@@ -775,6 +814,7 @@ async function UpdateUsuario() {
     bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
 
     let usuario = {
+      "id" : document.getElementById("editar-usuarioId").value,
       "nombre": document.getElementById("editar-usuarioNombre").value,
       "email": document.getElementById("editar-usuarioEmail").value,
     "contraseña": document.getElementById("editar-usuarioContraseña").value,
@@ -917,8 +957,9 @@ function mostrarMenu() {
                               </div>                           
   `
 }
-  document.getElementById("login").classList.remove("active")
-  document.getElementById("sidebarMenu").classList.remove("d-none")
+
+  // document.getElementById("login").classList.remove("active")
+  // document.getElementById("sidebarMenu").classList.remove("d-none")
 
 async function Login() {
   const url = 'https://localhost:7263/api/Login'
@@ -935,7 +976,7 @@ async function Login() {
     .then((response) => response.json())
     .then((token) => {
       if (token != null) {
-        localStorage.setItem('token',token)
+        localStorage.setItem('token',token.token)
         document.getElementById('logoutBtn').addEventListener('click', function() {
           alert('Sesión cerrada');
           localStorage.removeItem(key = "token")
